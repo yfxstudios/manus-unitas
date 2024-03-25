@@ -9,24 +9,31 @@ export default function dashboard(props) {
 
 
   const detailHandler = (id) => {
-    // find id of event in database
-    // fetch event details
-
-    fetch(`/api/events/${id}`)
-  };
+    console.log(events)
+    if (!id) {
+      alert("No ID provided!")
+    };
+    const event = events.find((event) => event._id === id);
+    if (!event) {
+      alert("No event found with that ID!")
+    } else {
+      setSelectedEvent(event)
+    }};
 
   const handleAccept = (id) => {
-    alert("Position accepted!" + selectedEvent.title);
+    const name = document.getElementById("name").value;
+    props.handleAccept(id, name);
   }
 
-  const handleDecline = () => {
-    alert("Position declined!");
+  const handleDecline = (id) => {
+    const name = document.getElementById("name").value;
+    props.handleDecline(id, name);
   }
 
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
-      <input id="name" type="text" className="input input-primary w-[35vw] mx-auto" placeholder="Enter your name" />
+      <input id="name" type="text" className="absolute top-12 input input-primary w-[35vw] mx-auto" placeholder="Enter your name" />
       <div className="w-[35vw] mx-auto mt-8">
         <h2 className="text-lg font-semibold mb-4">My Schedule</h2>
         <div className="flex flex-col space-y-4 text-primary-content">
@@ -41,21 +48,25 @@ export default function dashboard(props) {
                 <button
                   className="btn btn-primary"
                   onClick={() => {
-                    detailHandler(event.title);
+                    detailHandler(event._id);
                   }}
                 >View Details</button>
                 <button
                   className="btn btn-success"
-                  onClick={() => {
+                  onClick={(e) => {
                     setSelectedEvent(event);
-                    handleAccept();
+                    handleAccept(event._id);
+                    // e.target.classList.add("loading-spinner")
+                    // e.target.classList.add("loading")
                   }}
                 >Accept</button>
                 <button
                   className="btn btn-danger"
-                  onClick={() => {
+                  onClick={(e) => {
                     setSelectedEvent(event);
-                    handleDecline();
+                    handleDecline(event._id);
+                    // e.target.classList.add("loading-spinner")
+                    // e.target.classList.add("loading")
                   }}
                 >Decline</button>
               </div>
@@ -75,8 +86,17 @@ export default function dashboard(props) {
               </div>
             )}
             <div className="flex space-x-4 mt-4">
-              <button className="btn btn-outline btn-primary" onClick={handleAccept}>Accept Position</button>
-              <button className="btn btn-outline btn-danger" onClick={handleDecline}>Decline Position</button>
+              <button className="btn btn-outline btn-primary" onClick={(e) => {
+                handleAccept(selectedEvent._id)
+                // e.target.classList.add("loading-spinner")
+                // e.target.classList.add("loading")
+              }}>Accept Position</button>
+              <button className="btn btn-outline btn-danger" onClick={(e) => {
+                handleDecline(selectedEvent._id)
+                // e.target.classList.add("loading-spinner")
+                // e.target.classList.add("loading")
+                
+              }}>Decline Position</button>
             </div>
           </div>
         ) : (

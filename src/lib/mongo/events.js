@@ -23,7 +23,7 @@ export async function getEvents() {
 
 export async function getEvent(id) {
   await init().catch(console.error)
-  return events.findOne({ _id: ObjectId(id) })
+  return events.findOne({ _id: new ObjectId(id) })
 }
 
 export async function createEvent(event) {
@@ -33,10 +33,13 @@ export async function createEvent(event) {
 
 export async function updateEvent(id, event) {
   await init().catch(console.error)
-  return events.updateOne({ _id: ObjectId(id) }, { $set: event })
+  console.log('UPDATED')
+  // return events.updateOne({ _id: new ObjectId(id) }, { $set: event }, { upsert: false }) // MongoServerError: The dollar ($) prefixed field '$set' in '$set' is not allowed in the context of an update's replacement document. Consider using an aggregation pipeline with $replaceWith.
+    // at async $$ACTION_0 (./src/app/dashboard/page.js:45:9)
+  return events.updateOne({ _id: new ObjectId(id) }, event)
 }
 
 export async function deleteEvent(id) {
   await init().catch(console.error)
-  return events.deleteOne({ _id: ObjectId(id) })
+  return events.deleteOne({ _id: new ObjectId(id) })
 }
