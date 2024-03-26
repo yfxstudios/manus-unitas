@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SessionProvider } from "next-auth/react"
 
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
