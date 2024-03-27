@@ -11,17 +11,20 @@ let events
 
 let users
 
-const session = await getServerSession(options)
+let session;
+
 
 async function init() {
+  session = await getServerSession(options)
+  
   if (client) return client
   client = new MongoClient(uri, {})
   await client.connect()
-
+  
   if (session) {
     // check for users email in manus-unitas database ->> users collection
     // find users organization from user entry in users collection
-
+    
     const user = await session.user
     users = client.db('manus-unitas').collection('users')
     const userEntry = await users.findOne({ email: user.email })
@@ -30,7 +33,7 @@ async function init() {
     // console.log('organization', organization)
     events = client.db(organization).collection('events')
   }
-
+  
   if (events === undefined) {
     console.log('No events collection found')
   } else if (events === null) {
@@ -41,26 +44,17 @@ async function init() {
   }
 }
 
-export async function getEvents() {
-  // await init().catch(console.error)
-
-  if (client) return client
-  client = new MongoClient(uri, {})
-  await client.connect()
-
-  if (session) {
-    // check for users email in manus-unitas database ->> users collection
-    // find users organization from user entry in users collection
-
-    const user = await session.user
-    users = client.db('manus-unitas').collection('users')
-    const userEntry = await users.findOne({ email: user.email })
-    // console.log('userEntry', userEntry)
-    const organization = userEntry.organization.databaseName
-    // console.log('organization', organization)
-    events = client.db(organization).collection('events')
+export async function close() {
+  if (client) {
+    await client.close()
   }
+  client = null
+  events = null
+}
 
+export async function getEvents() {
+  session = await getServerSession(options)
+  await init().catch(console.error)
 
 
   if (events === undefined) {

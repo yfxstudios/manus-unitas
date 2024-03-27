@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 export default function dashboard(props) {
   const events = props.events;
@@ -9,7 +10,7 @@ export default function dashboard(props) {
 
 
   const detailHandler = (id) => {
-    console.log(events)
+    // console.log(events)
     if (!id) {
       alert("No ID provided!")
     };
@@ -31,10 +32,17 @@ export default function dashboard(props) {
     props.handleDecline(id, name);
   }
 
+  const logoutHandler = () => {
+    signOut();
+    props.logoutHandler();
+  }
+
+
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
       <div className="w-[35vw] mx-auto mt-8">
+        <button className="absolute top-4 right-4 btn btn-outline btn-primary" onClick={logoutHandler}>Logout</button>
         <h2 className="text-lg font-semibold mb-4">My Schedule</h2>
         <div className="flex flex-col space-y-4 text-primary-content">
 
