@@ -18,7 +18,8 @@ export default function dashboard(props) {
       alert("No event found with that ID!")
     } else {
       setSelectedEvent(event)
-    }};
+    }
+  };
 
   const handleAccept = (id) => {
     const name = document.getElementById("name").value;
@@ -33,7 +34,6 @@ export default function dashboard(props) {
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
-      <input id="name" type="text" className="absolute top-12 input input-primary w-[35vw] mx-auto" placeholder="Enter your name" />
       <div className="w-[35vw] mx-auto mt-8">
         <h2 className="text-lg font-semibold mb-4">My Schedule</h2>
         <div className="flex flex-col space-y-4 text-primary-content">
@@ -95,7 +95,7 @@ export default function dashboard(props) {
                 handleDecline(selectedEvent._id)
                 // e.target.classList.add("loading-spinner")
                 // e.target.classList.add("loading")
-                
+
               }}>Decline Position</button>
             </div>
           </div>

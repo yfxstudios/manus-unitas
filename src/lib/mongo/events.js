@@ -1,23 +1,68 @@
 import { MongoClient, ObjectId } from 'mongodb'
 
+import { getServerSession } from 'next-auth'
+import { options } from '@/app/api/auth/[...nextauth]/options'
+
 const uri = process.env.MONGODB_URI
-const options = {
-}
+
 
 let client
 let events
 
+let users
+
+const session = await getServerSession(options)
+
 async function init() {
   if (client) return client
-  client = new MongoClient(uri, options)
+  client = new MongoClient(uri, {})
   await client.connect()
-  events = client.db('manus-unitas').collection('events')
-  console.log('MongoDB connected')
-  return client
+
+  if (session) {
+    // check for users email in manus-unitas database ->> users collection
+    // find users organization from user entry in users collection
+
+    const user = await session.user
+    users = client.db('manus-unitas').collection('users')
+    const userEntry = await users.findOne({ email: user.email })
+    // console.log('userEntry', userEntry)
+    const organization = userEntry.organization.databaseName
+    // console.log('organization', organization)
+    events = client.db(organization).collection('events')
+  }
+
+  if (events === undefined) {
+    console.log('No events collection found')
+  } else if (events === null) {
+    console.log('events collection is null')
+  } else {
+    console.log('MongoDB connected')
+    return client
+  }
 }
 
 export async function getEvents() {
-  await init().catch(console.error)
+  // await init().catch(console.error)
+
+  if (client) return client
+  client = new MongoClient(uri, {})
+  await client.connect()
+
+  if (session) {
+    // check for users email in manus-unitas database ->> users collection
+    // find users organization from user entry in users collection
+
+    const user = await session.user
+    users = client.db('manus-unitas').collection('users')
+    const userEntry = await users.findOne({ email: user.email })
+    // console.log('userEntry', userEntry)
+    const organization = userEntry.organization.databaseName
+    // console.log('organization', organization)
+    events = client.db(organization).collection('events')
+  }
+
+
+
   if (events === undefined) {
     return []
   } else {

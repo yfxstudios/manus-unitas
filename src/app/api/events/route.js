@@ -1,10 +1,8 @@
 import { getEvents } from "@lib/mongo/events";
 
-export async function GET(req, res) {
-  try {
-    const events = await getEvents();
-    res.status(200).json(events);
-  } catch (error) {
-    res.status(400).json({ message: "Events not found" });
-  }
+async function handler(req, res) {
+  const events = await getEvents();
+  res.json(events);
 }
+
+export { handler as GET, handler as POST }
