@@ -45,11 +45,9 @@ export default async function page() {
     'use server'
     const event = await getEvent(id);
 
-    const email = await session.user.email;
+    const username = user.username
 
     // console.log(await getUserByEmail(session.user.email).username)
-
-    console.log(await getUserByEmail(email).volunteers)
 
 
 
@@ -59,6 +57,8 @@ export default async function page() {
 
 
     // Filter out circular references and extract necessary data
+
+
 
     if (event.volunteers[username]) {
 
@@ -76,7 +76,7 @@ export default async function page() {
 
     const event = await getEvent(id);
 
-    const username = await getUserByEmail(session.user.email).username;
+    const username = user.username;
 
     if (!event) {
       return

@@ -6,6 +6,8 @@ import { signOut } from "next-auth/react";
 export default function dashboard(props) {
   const [background, setBackground] = useState(false) //<----------------------------------------------------- Change this to true to see the background color change
   const [modalOpen, setModalOpen] = useState(0)
+  const [loading, setLoading] = useState(false)
+
   const events = props.events;
 
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -30,12 +32,20 @@ export default function dashboard(props) {
     }
   };
 
-  const handleAccept = (id) => {
-    props.handleAccept(id);
+  const handleAccept = async (id) => {
+    setLoading(true)
+    await props.handleAccept(id).then(() => {
+      console.log("Accepted")
+      setLoading(false)
+    })
   }
 
-  const handleDecline = (id) => {
-    props.handleDecline(id);
+  const handleDecline = async (id) => {
+    setLoading(true)
+    await props.handleDecline(id).then(() => {
+      console.log("Declined")
+      setLoading(false)
+    })
   }
 
   const logoutHandler = () => {
@@ -50,11 +60,23 @@ export default function dashboard(props) {
     setModalOpen(1)
   }
 
-
+// filter events to be only ones with the user's username as a volunteer
+  const filteredEvents = events.filter((event) => {
+    if (event.volunteers[props.user.username]) {
+      return event
+    } else {
+      return null
+    }
+  })
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
-      {/*{background && <div style={{ zIndex: 1 }} className="w-full h-full absolute bg-opacity-50" />}*/}
+      {loading && 
+      <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 100 }}>      
+        <span className="loading loading-dots loading-lg text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
+      </div>
+      }
+
       <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 0, display: background ? "block" : "none" }}></div>
       <h2 className="text-2xl font-semibold absolute top-4 left-4 text-primary">{props.user.organization.displayName}</h2>
       <button className="absolute top-4 right-4 btn btn-outline btn-primary" onClick={logoutHandler}>Logout</button>
@@ -89,37 +111,91 @@ export default function dashboard(props) {
         </div>
         <div className="flex flex-col space-y-4 text-primary-content">
 
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div key={event._id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg space-x-4">
               <div>
                 <h3 className="font-semibold">{event.title}</h3>
                 <p className="text-sm">{event.date}</p>
               </div>
-              <div className="flex space-x-4">
-                <button
+              <div className="flex space-x-4 items-center">
+                
+                {events.find((e) => e._id === event._id).volunteers[props.user.username].accepted && (
+                  <>
+                    <p className="text-success ">Accepted</p>
+                    <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      detailHandler(event._id);
+                    }}
+                  >View Details</button>
+                </>
+                // )
+                //   <>
+                //     <button
+                //       className="btn btn-primary"
+                //       onClick={() => {
+                //         detailHandler(event._id);
+                //       }}
+                //     >View Details</button>
+                //     <button
+                //       className="btn btn-success"
+                //       onClick={(e) => {
+                //         setSelectedEvent(event);
+                //         handleAccept(event._id);
+                //         // e.target.classList.add("loading-spinner")
+                //         // e.target.classList.add("loading")
+                //       }}
+                //     >Accept</button>
+                //     <button
+                //       className="btn btn-error"
+                //       onClick={(e) => {
+                //         setSelectedEvent(event);
+                //         handleDecline(event._id);
+                //         // e.target.classList.add("loading-spinner")
+                //         // e.target.classList.add("loading")
+                //      }}
+                //     >Decline</button></>
+                // )}
+                )}
+                {events.find((e) => e._id === event._id).volunteers[props.user.username].declined && (
+                  <>
+                  <p className="text-error">Declined</p>
+                  <button
                   className="btn btn-primary"
                   onClick={() => {
                     detailHandler(event._id);
                   }}
                 >View Details</button>
-                <button
-                  className="btn btn-success"
-                  onClick={(e) => {
-                    setSelectedEvent(event);
-                    handleAccept(event._id);
-                    // e.target.classList.add("loading-spinner")
-                    // e.target.classList.add("loading")
-                  }}
-                >Accept</button>
-                <button
-                  className="btn btn-danger"
-                  onClick={(e) => {
-                    setSelectedEvent(event);
-                    handleDecline(event._id);
-                    // e.target.classList.add("loading-spinner")
-                    // e.target.classList.add("loading")
-                  }}
-                >Decline</button>
+                </>
+                )}
+                {!events.find((e) => e._id === event._id).volunteers[props.user.username].accepted && !events.find((e) => e._id === event._id).volunteers[props.user.username].declined && (
+                  <>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        detailHandler(event._id);
+                      }}
+                    >View Details</button>
+                    <button
+                      className="btn btn-success"
+                      onClick={(e) => {
+                        setSelectedEvent(event);
+                        handleAccept(event._id);
+                        // e.target.classList.add("loading-spinner")
+                        // e.target.classList.add("loading")
+                      }}
+                    >Accept</button>
+                    <button
+                      className="btn btn-error"
+                      onClick={(e) => {
+                        setSelectedEvent(event);
+                        handleDecline(event._id);
+                        // e.target.classList.add("loading-spinner")
+                        // e.target.classList.add("loading")
+                     }}
+                    >Decline</button>
+                  </>
+                )}
               </div>
             </div>
           ))}
@@ -131,29 +207,43 @@ export default function dashboard(props) {
             <h2 className="text-lg font-semibold">{selectedEvent.title}</h2>
             <p className="mb-4 text-sm">{selectedEvent.date}</p>
             <p>{selectedEvent.description}</p>
-            {selectedEvent.role && (
+            {selectedEvent.volunteers[props.user.username] && (
               <div className="mt-4">
-                <h3 className="font-semibold">Role: {selectedEvent.volunteers.Matthew.role}</h3>
+                <h3 className="font-semibold">Role: {selectedEvent.volunteers[props.user.username].role}</h3>
               </div>
             )}
+            {selectedEvent.volunteers[props.user.username] && selectedEvent.volunteers[props.user.username].accepted ? (
             <div className="flex space-x-4 mt-4">
-              <button className="btn btn-outline btn-primary" onClick={(e) => {
+              <button className="btn btn-outline btn-primary btn-disabled" onClick={(e) => {
                 handleAccept(selectedEvent._id)
                 // e.target.classList.add("loading-spinner")
                 // e.target.classList.add("loading")
               }}>Accept Position</button>
-              <button className="btn btn-outline btn-danger" onClick={(e) => {
+              <button className="btn btn-outline btn-error" onClick={(e) => {
                 handleDecline(selectedEvent._id)
                 // e.target.classList.add("loading-spinner")
                 // e.target.classList.add("loading")
-
               }}>Decline Position</button>
-            </div>
+            </div>) : (
+              <div className="flex space-x-4 mt-4">
+                <button className="btn btn-primary btn-outline" onClick={(e) => {
+                  handleAccept(selectedEvent._id)
+                  // e.target.classList.add("loading-spinner")
+                  // e.target.classList.add("loading")
+                }}>Accept Position</button>
+                <button className="btn btn-error btn-disabled" onClick={(e) => {
+                  handleDecline(selectedEvent._id)
+                  // e.target.classList.add("loading-spinner")
+                  // e.target.classList.add("loading")
+                }}>Decline Position</button>
+              </div>
+            )}
           </div>
         ) : (
           <p className="text-center">Select an event to view details</p>
         )}
       </div>
+      <p className="absolute bottom-4 left-4 text-primary">{props.user.username}</p>
     </div>
   )
 }
