@@ -71,6 +71,11 @@ export async function getUser(id) {
   return users.findOne({ _id: new ObjectId(id) })
 }
 
+export async function getUserByEmail(email) {
+  await init().catch(console.error)
+  return users.findOne({ email: email })
+}
+
 export async function createUser(user) {
   await init().catch(console.error)
   return users.insertOne(user)

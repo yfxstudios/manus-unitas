@@ -1,13 +1,26 @@
 
 
-import { getEvents, updateEvent, getEvent, close } from "@/lib/mongo/events";
+import { getEvents, updateEvent, getEvent, close, createEvent } from "@/lib/mongo/events";
+import { getUserByEmail } from "@/lib/mongo/users";
+
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 import Dashboard from "./dashboard";
 
 
 
+
+
 export default async function page() {
-  const events = await getEvents();
+  let events = await getEvents();
+
+  const session = await getServerSession(options)
+
+
+  const user = await getUserByEmail(session.user.email);
+
+
 
 
   if (!events) {
@@ -15,8 +28,8 @@ export default async function page() {
   }
 
   // if (events[0]._id === undefined) {
-    // console.log('Events is not loaded properly:');
-    // return
+  // console.log('Events is not loaded properly:');
+  // return
   // }
 
   if (typeof events !== 'object') {
@@ -28,38 +41,53 @@ export default async function page() {
 
   // console.log(events);
 
-  const handleAccept = async (id, name) => {
+  const handleAccept = async (id) => {
     'use server'
     const event = await getEvent(id);
-  
-    // Filter out circular references and extract necessary data
 
-    if (event.volunteers[name]) {
+    const email = await session.user.email;
 
-      // Volunteer has been requested for this event
-      // update accepted status of specified volunteer
+    // console.log(await getUserByEmail(session.user.email).username)
 
-      await updateEvent(id, { $set: { [`volunteers.${name}.accepted`]: true, [`volunteers.${name}.declined`]: false } });
-    } else {
-      console.log('Volunteer not found')
-    }
-  }
+    console.log(await getUserByEmail(email).volunteers)
 
-  const handleDecline = async (id, name) => {
-    'use server'
 
-    const event = await getEvent(id);
 
     if (!event) {
       return
     }
 
-    if (event.volunteers[name]) {
+
+    // Filter out circular references and extract necessary data
+
+    if (event.volunteers[username]) {
 
       // Volunteer has been requested for this event
       // update accepted status of specified volunteer
 
-      await updateEvent(id, { $set: { [`volunteers.${name}.accepted`]: false, [`volunteers.${name}.declined`]: true } });
+      await updateEvent(id, { $set: { [`volunteers.${username}.accepted`]: true, [`volunteers.${username}.declined`]: false } });
+    } else {
+      console.log('Volunteer not found')
+    }
+  }
+
+  const handleDecline = async (id) => {
+    'use server'
+
+    const event = await getEvent(id);
+
+    const username = await getUserByEmail(session.user.email).username;
+
+    if (!event) {
+      return
+    }
+
+    if (event.volunteers[username]) {
+
+      // Volunteer has been requested for this event
+      // update accepted status of specified volunteer
+
+      await updateEvent(id, { $set: { [`volunteers.${username}.accepted`]: false, [`volunteers.${username}.declined`]: true } });
     } else {
       console.log('Volunteer not found')
     }
@@ -71,9 +99,15 @@ export default async function page() {
     await close();
   }
 
+  const createEventHandler = async (event) => {
+    'use server'
+    console.log('Create event handler')
+    createEvent(event);
+  }
+
 
 
   return (
-    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} />
+    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} user={user} />
   )
 }
