@@ -3,19 +3,25 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 
+
 export default function dashboard(props) {
+
   const [background, setBackground] = useState(false) //<----------------------------------------------------- Change this to true to see the background color change
   const [modalOpen, setModalOpen] = useState(0)
   const [loading, setLoading] = useState(false)
 
+  const [selectedPeople, setSelectedPeople] = useState([])
+
+  const [eventInfo, setEventInfo] = useState({
+    title: "",
+    date: "",
+    description: "",
+    volunteers: {}
+  })
+
   const events = props.events;
 
   const [selectedEvent, setSelectedEvent] = useState(null);
-
-  // console.log(props.user.organization.admin) // true
-
-
-
 
 
 
@@ -38,6 +44,7 @@ export default function dashboard(props) {
       console.log("Accepted")
       setLoading(false)
     })
+    setSelectedEvent(null)
   }
 
   const handleDecline = async (id) => {
@@ -46,6 +53,8 @@ export default function dashboard(props) {
       console.log("Declined")
       setLoading(false)
     })
+    setSelectedEvent(null)
+
   }
 
   const logoutHandler = () => {
@@ -53,14 +62,12 @@ export default function dashboard(props) {
     props.logoutHandler();
   }
 
-  const createEventHandler = (event) => {
-    console.log(event)
-    props.createEventHandler(event);
-    setBackground(true)
+  const openCreateEventModal = () => {
     setModalOpen(1)
+    setBackground(true)
   }
 
-// filter events to be only ones with the user's username as a volunteer
+  // filter events to be only ones with the user's username as a volunteer
   const filteredEvents = events.filter((event) => {
     if (event.volunteers[props.user.username]) {
       return event
@@ -71,10 +78,10 @@ export default function dashboard(props) {
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
-      {loading && 
-      <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 100 }}>      
-        <span className="loading loading-dots loading-lg text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
-      </div>
+      {loading &&
+        <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 100 }}>
+          <span className="loading loading-dots loading-lg text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></span>
+        </div>
       }
 
       <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 0, display: background ? "block" : "none" }}></div>
@@ -85,17 +92,20 @@ export default function dashboard(props) {
           <h2 className="text-lg font-semibold mb-4">My Schedule</h2>
           {props.user.organization.admin && (
             <>
-              <button className="btn btn-primary" onClick={createEventHandler}>Create Event</button>
+              <button className="btn btn-primary" onClick={openCreateEventModal}>Create Event</button>
 
               {modalOpen === 1 && (
-                <form className="flex flex-col space-y-4 text-primary-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-lg" onSubmit={(e) => {
-                  e.preventDefault();
-                  createEventHandler({
-                    title: document.getElementById("name").value,
-                    date: document.getElementById("date").value,
-                    description: document.getElementById("description").value
-                  });
-                }}>
+                <form className="flex flex-col space-y-4 text-primary-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw]"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setModalOpen(2);
+                    setEventInfo({
+                      title: document.getElementById("name").value,
+                      date: document.getElementById("date").value,
+                      description: document.getElementById("description").value,
+                      volunteers: selectedPeople.map((person) => ({ username: person.username, role: "volunteer", accepted: false, declined: false }))
+                    })
+                  }}>
 
                   <label htmlFor="name">Name</label>
                   <input type="text" id="name" className="input text-neutral-content" />
@@ -104,6 +114,90 @@ export default function dashboard(props) {
                   <label htmlFor="description">Description</label>
                   <textarea id="description" className="input text-neutral-content p-2"></textarea>
                   <button className="btn btn-primary" type="submit">Next</button>
+                </form>
+              )}
+              {modalOpen === 2 && (
+                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw]"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setModalOpen(3)
+                    setEventInfo({
+                      ...eventInfo,
+                      // volunteers: selectedPeople.map((person) => ({ username: person.username, role: "volunteer", accepted: false, declined: false })) This but as an object
+                      volunteers: selectedPeople.reduce((acc, person) => {
+                        acc[person.username] = { username: person.username, role: "volunteer", accepted: false, declined: false }
+                        return acc
+                      }, {})
+                    })
+                  }}>
+                  <h3 className="text-lg font-semibold">Select Volunteers</h3>
+
+                  <ul>
+                    {props.people.map((person) => (
+                      <li key={person._id} className="flex items-center p-4 rounded-lg space-x-4">
+                        <div className={`flex items-center border-b-[6px] cursor-pointer bg-gray-50 p-2 ${selectedPeople.includes(person) ? "border-success" : "border-neutral"}`}
+                          onClick={(e) => {
+                            if (selectedPeople.includes(person)) {
+                              setSelectedPeople(selectedPeople.filter((p) => p !== person))
+                            } else {
+                              setSelectedPeople([...selectedPeople, person])
+                            }
+                            console.log(selectedPeople)
+                          }}>
+                          <p className="text-primary-content"
+                            onClick={(e) => {
+                              if (selectedPeople.includes(person)) {
+                                setSelectedPeople(selectedPeople.filter((p) => p !== person))
+                              } else {
+                                setSelectedPeople([...selectedPeople, person])
+                              }
+                              console.log(selectedPeople)
+                            }}
+
+                          >{person.first_name} {person.last_name}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="btn btn-primary" type="submit">Next</button>
+                </form>
+              )}
+              {modalOpen === 3 && (
+                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw]">
+                  <h3 className="text-lg font-semibold">Review Event</h3>
+                  <h4 className="font-semibold">Name:</h4>
+                  <p>{eventInfo.title}</p>
+                  <h4 className="font-semibold">Date:</h4>
+                  <p>{eventInfo.date}</p>
+                  <h4 className="font-semibold">Description:</h4>
+                  <p>{eventInfo.description}</p>
+                  <h4 className="font-semibold">Volunteers:</h4>
+                  <ul>
+                    {selectedPeople.map((person) => (
+                      <li key={person._id} className="flex items-center p-4 rounded-lg space-x-4">
+                        <div className="flex items-center border-b-[6px] cursor-pointer bg-gray-50 p-2">
+                          <p className="text-primary-content">{person.first_name} {person.last_name}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="btn btn-primary" onClick={(e) => {
+                    props.createEventHandler(eventInfo)
+                    setModalOpen(0)
+                    setBackground(false)
+                    setEventInfo({
+                      title: "",
+                      date: "",
+                      description: "",
+                      volunteers: {}
+                    })
+                    setSelectedPeople(null)
+
+                  }
+                  }>Create Event</button>
+                  <button className="btn btn-error" onClick={(e) => {
+                    setModalOpen(1)
+                  }}>Back</button>
                 </form>
               )}
             </>
@@ -118,55 +212,28 @@ export default function dashboard(props) {
                 <p className="text-sm">{event.date}</p>
               </div>
               <div className="flex space-x-4 items-center">
-                
+
                 {events.find((e) => e._id === event._id).volunteers[props.user.username].accepted && (
                   <>
                     <p className="text-success ">Accepted</p>
                     <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      detailHandler(event._id);
-                    }}
-                  >View Details</button>
-                </>
-                // )
-                //   <>
-                //     <button
-                //       className="btn btn-primary"
-                //       onClick={() => {
-                //         detailHandler(event._id);
-                //       }}
-                //     >View Details</button>
-                //     <button
-                //       className="btn btn-success"
-                //       onClick={(e) => {
-                //         setSelectedEvent(event);
-                //         handleAccept(event._id);
-                //         // e.target.classList.add("loading-spinner")
-                //         // e.target.classList.add("loading")
-                //       }}
-                //     >Accept</button>
-                //     <button
-                //       className="btn btn-error"
-                //       onClick={(e) => {
-                //         setSelectedEvent(event);
-                //         handleDecline(event._id);
-                //         // e.target.classList.add("loading-spinner")
-                //         // e.target.classList.add("loading")
-                //      }}
-                //     >Decline</button></>
-                // )}
+                      className="btn btn-primary"
+                      onClick={() => {
+                        detailHandler(event._id);
+                      }}
+                    >View Details</button>
+                  </>
                 )}
                 {events.find((e) => e._id === event._id).volunteers[props.user.username].declined && (
                   <>
-                  <p className="text-error">Declined</p>
-                  <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    detailHandler(event._id);
-                  }}
-                >View Details</button>
-                </>
+                    <p className="text-error">Declined</p>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        detailHandler(event._id);
+                      }}
+                    >View Details</button>
+                  </>
                 )}
                 {!events.find((e) => e._id === event._id).volunteers[props.user.username].accepted && !events.find((e) => e._id === event._id).volunteers[props.user.username].declined && (
                   <>
@@ -179,20 +246,14 @@ export default function dashboard(props) {
                     <button
                       className="btn btn-success"
                       onClick={(e) => {
-                        setSelectedEvent(event);
                         handleAccept(event._id);
-                        // e.target.classList.add("loading-spinner")
-                        // e.target.classList.add("loading")
                       }}
                     >Accept</button>
                     <button
                       className="btn btn-error"
                       onClick={(e) => {
                         setSelectedEvent(event);
-                        handleDecline(event._id);
-                        // e.target.classList.add("loading-spinner")
-                        // e.target.classList.add("loading")
-                     }}
+                      }}
                     >Decline</button>
                   </>
                 )}
@@ -200,7 +261,7 @@ export default function dashboard(props) {
             </div>
           ))}
         </div>
-      </div>
+      </div >
       <div className="w-[35vw] mx-auto mt-8">
         {selectedEvent ? (
           <div className="bg-white p-4 rounded-lg text-primary-content">
@@ -213,18 +274,18 @@ export default function dashboard(props) {
               </div>
             )}
             {selectedEvent.volunteers[props.user.username] && selectedEvent.volunteers[props.user.username].accepted ? (
-            <div className="flex space-x-4 mt-4">
-              <button className="btn btn-outline btn-primary btn-disabled" onClick={(e) => {
-                handleAccept(selectedEvent._id)
-                // e.target.classList.add("loading-spinner")
-                // e.target.classList.add("loading")
-              }}>Accept Position</button>
-              <button className="btn btn-outline btn-error" onClick={(e) => {
-                handleDecline(selectedEvent._id)
-                // e.target.classList.add("loading-spinner")
-                // e.target.classList.add("loading")
-              }}>Decline Position</button>
-            </div>) : (
+              <div className="flex space-x-4 mt-4">
+                <button className="btn btn-outline btn-primary btn-disabled" onClick={(e) => {
+                  handleAccept(selectedEvent._id)
+                  // e.target.classList.add("loading-spinner")
+                  // e.target.classList.add("loading")
+                }}>Accept Position</button>
+                <button className="btn btn-outline btn-error" onClick={(e) => {
+                  handleDecline(selectedEvent._id)
+                  // e.target.classList.add("loading-spinner")
+                  // e.target.classList.add("loading")
+                }}>Decline Position</button>
+              </div>) : (
               <div className="flex space-x-4 mt-4">
                 <button className="btn btn-primary btn-outline" onClick={(e) => {
                   handleAccept(selectedEvent._id)
@@ -244,6 +305,6 @@ export default function dashboard(props) {
         )}
       </div>
       <p className="absolute bottom-4 left-4 text-primary">{props.user.username}</p>
-    </div>
+    </div >
   )
 }

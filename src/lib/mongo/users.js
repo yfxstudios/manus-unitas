@@ -1,19 +1,43 @@
 import { MongoClient, ObjectId } from 'mongodb'
 
+import { getServerSession } from 'next-auth'
+import { options } from '@/app/api/auth/[...nextauth]/options'
+
 const uri = process.env.MONGODB_URI
-const options = {
-}
+
 
 let client
 let users
+let org_members
 
 export async function init() {
   if (client) return client
-  client = new MongoClient(uri, options)
+  client = new MongoClient(uri, {})
   await client.connect()
   users = client.db('manus-unitas').collection('users')
-  console.log('MongoDB connected')
+  const session = await getServerSession(options)
+  if (session) {
+    const user = await session.user
+    users = client.db('manus-unitas').collection('users')
+    const userEntry = await users.findOne({ email: user.email })
+    const organization = userEntry.organization.databaseName
+    org_members = client.db(organization).collection('people')
+    console.log(org_members.find().toArray())
+  } else {
+    console.log('No session found')
+  }
   return client
+
+  close()
+}
+
+export async function close() {
+  if (client) {
+    await client.close()
+  }
+  client = null
+  users = null
+  org_members = null
 }
 
 export async function getUsers() {
@@ -22,6 +46,15 @@ export async function getUsers() {
     return []
   } else {
     return users.find().toArray()
+  }
+}
+
+export async function getOrgMembers() {
+  await init().catch(console.error)
+  if (org_members === undefined) {
+    return []
+  } else {
+    return org_members.find().toArray()
   }
 }
 
@@ -36,6 +69,7 @@ export async function getUserByEmail(email) {
 }
 
 export async function createUser(user) {
+  'use server'
   await init().catch(console.error)
   return users.insertOne(user)
 }

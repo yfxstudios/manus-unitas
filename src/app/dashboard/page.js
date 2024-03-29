@@ -1,12 +1,14 @@
 
 
 import { getEvents, updateEvent, getEvent, close, createEvent } from "@/lib/mongo/events";
-import { getUserByEmail } from "@/lib/mongo/users";
+import { getOrgMembers, getUserByEmail } from "@/lib/mongo/users";
 
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
 import Dashboard from "./dashboard";
+import { revalidatePath } from "next/cache";
+
 
 
 
@@ -17,9 +19,14 @@ export default async function page() {
 
   const session = await getServerSession(options)
 
+  const people = await getOrgMembers();
 
   const user = await getUserByEmail(session.user.email);
 
+  const update = async () => {
+    "use server"
+    revalidatePath('/dashboard')
+  }
 
 
 
@@ -69,6 +76,8 @@ export default async function page() {
     } else {
       console.log('Volunteer not found')
     }
+
+    update();
   }
 
   const handleDecline = async (id) => {
@@ -92,6 +101,7 @@ export default async function page() {
       console.log('Volunteer not found')
     }
 
+    update();
   }
 
   const handleLogout = async () => {
@@ -103,11 +113,13 @@ export default async function page() {
     'use server'
     console.log('Create event handler')
     createEvent(event);
+
+    update();
   }
 
 
 
   return (
-    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} user={user} />
+    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} user={user} people={people} />
   )
 }
