@@ -69,7 +69,6 @@ export async function getUserByEmail(email) {
 }
 
 export async function createUser(user) {
-  'use server'
   await init().catch(console.error)
   return users.insertOne(user)
 }
