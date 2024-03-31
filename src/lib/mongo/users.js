@@ -27,8 +27,6 @@ export async function init() {
     console.log('No session found')
   }
   return client
-
-  close()
 }
 
 export async function close() {

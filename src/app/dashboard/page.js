@@ -1,6 +1,6 @@
 
 
-import { getEvents, updateEvent, getEvent, close, createEvent } from "@/lib/mongo/events";
+import { getEvents, updateEvent, getEvent, close, createEvent, deleteEvent } from "@/lib/mongo/events";
 import { getOrgMembers, getUserByEmail } from "@/lib/mongo/users";
 
 import { getServerSession } from "next-auth";
@@ -27,6 +27,7 @@ export default async function page() {
     "use server"
     revalidatePath('/dashboard')
   }
+
 
 
 
@@ -62,8 +63,6 @@ export default async function page() {
       return
     }
 
-
-    // Filter out circular references and extract necessary data
 
 
 
@@ -118,8 +117,49 @@ export default async function page() {
   }
 
 
+  const handleUpdateEvent = async (id, event) => {
+    'use server'
+    // await updateEvent(id, event);
+    // await updateEvent(id, { $set: { [`volunteers.${username}.accepted`]: true, [`volunteers.${username}.declined`]: false } });
+    await updateEvent(id, { $set: event });
+    update();
+  }
+
+  // sort events by date and time and remove events that have already passed
+  events = events.filter(event => {
+    const date = new Date(event.date);
+    const time = new Date(event.startTime);
+    const now = new Date();
+
+
+
+    if (date < now) {
+      return false
+    }
+
+    if (date === now && time < now) {
+      return false
+    }
+
+    return true
+  }).sort((a, b) => {
+    return new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time);
+  })
+
+  const deleteEventHandler = async (id) => {
+    'use server'
+    await deleteEvent(id)
+    update();
+  }
+
+  // check if user.organization.accepted is true
+  if (!user.organization.accepted) {
+    return
+  }
+
+
 
   return (
-    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} user={user} people={people} />
+    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} />
   )
 }
