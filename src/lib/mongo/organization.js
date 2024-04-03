@@ -1,4 +1,3 @@
-import { MongoClient } from 'mongodb';
 import client from './index';
 
 let organizations;
@@ -42,8 +41,8 @@ export async function getOrganization(organizationName) {
 export async function createOrganization(organization, user) {
   await init().catch(console.error);
 
-  console.log(organization)
-  console.log(organizations)
+  // console.log(organization)
+  // console.log(organizations)
 
   const admin = client.db("admin")
   const result = await admin.command({ listDatabases: 1, nameOnly: true })
@@ -52,7 +51,7 @@ export async function createOrganization(organization, user) {
     return "Organization already exists"
   }
 
-  console.log(organization)
+  // console.log(organization)
 
   if (organizations === undefined) {
     return [];
@@ -66,11 +65,33 @@ export async function createOrganization(organization, user) {
         username: user.username,
         email: user.email,
         phone: user.phone,
-        admin: true
+        admin: true,
+        accepted: true
       });
     } catch (error) {
       console.error(error);
     }
+  }
+
+  close();
+}
+
+export async function addMember(organization, user) {
+  await init().catch(console.error);
+
+  try {
+    await client.db(organization).collection('people').insertOne({
+      first_name: user.first_name,
+      last_name: user.last,
+      username: user.username,
+      email: user.email,
+      phone: user.phone,
+      admin: false,
+      accepted: false,
+      declined: false
+    });
+  } catch (error) {
+    console.error(error);
   }
 
   close();

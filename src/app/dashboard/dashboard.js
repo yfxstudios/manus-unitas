@@ -4,9 +4,10 @@ import { useState } from "react";
 import { signOut } from "next-auth/react";
 
 import EditIcon from '@mui/icons-material/Edit';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
-export default function dashboard(props) {
+export default function Dashboard(props) {
 
   const [background, setBackground] = useState(false) //<----------------------------------------------------- Change this to true to see the background color change
   const [modalOpen, setModalOpen] = useState(0)
@@ -27,6 +28,13 @@ export default function dashboard(props) {
 
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const [users, setUsers] = useState(false)
+
+  const [acceptedUsers, setAcceptedUsers] = useState([])
+  const [declinedUsers, setDeclinedUsers] = useState([])
+
+  const [menuOpen, setMenuOpen] = useState(false)
+
 
 
   const detailHandler = (id) => {
@@ -45,7 +53,7 @@ export default function dashboard(props) {
   const handleAccept = async (id) => {
     setLoading(true)
     await props.handleAccept(id).then(() => {
-      console.log("Accepted")
+      // console.log("Accepted")
       setLoading(false)
     })
     setSelectedEvent(null)
@@ -54,7 +62,7 @@ export default function dashboard(props) {
   const handleDecline = async (id) => {
     setLoading(true)
     await props.handleDecline(id).then(() => {
-      console.log("Declined")
+      // console.log("Declined")
       setLoading(false)
     })
     setSelectedEvent(null)
@@ -84,7 +92,6 @@ export default function dashboard(props) {
     }
   })
 
-  console.log(events)
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
@@ -94,9 +101,36 @@ export default function dashboard(props) {
         </div>
       }
 
-      <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 0, display: background ? "block" : "none" }}></div>
+      <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 1, display: background ? "block" : "none" }}></div>
       <h2 className="text-2xl font-semibold absolute top-4 left-4 text-primary">{props.user.organization.displayName}</h2>
-      <button className="absolute top-4 right-4 btn btn-outline btn-primary" onClick={logoutHandler}>Logout</button>
+      <div className="absolute top-8 right-8 flex flex-row space-x-4 z-0">
+        {/* <button className="btn btn-outline btn-primary" onClick={logoutHandler}>Logout</button> */}
+        {/* check if user is an admin and if people.find users that have not been accepted and have not been declined */}
+        {props.user.organization.admin && props.people.find((person) => !person.accepted && !person.declined) && (
+          <button className="btn btn-info" onClick={() => {
+            setModalOpen(4)
+            setBackground(true)
+          }}>Accept Users</button>
+        )}
+        <div className="cursor-pointer dropdown dropdown-left">
+          <div tabIndex={0} role="button" className="btn bg-none">
+            <AccountCircleIcon className="" />
+          </div>
+          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li>
+              <a onClick={logoutHandler}>Logout</a>
+            </li>
+            <li>
+              <a onClick={() => {
+                setModalOpen(6)
+                setBackground(true)
+
+              }}>People</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div className="w-[35vw] mx-auto mt-8">
         <div className="flex flex-row items-center justify-between mb-4">
           <h2 className="text-lg font-semibold mb-4">My Schedule</h2>
@@ -105,7 +139,7 @@ export default function dashboard(props) {
               <button className="btn btn-primary" onClick={openCreateEventModal}>Create Event</button>
 
               {modalOpen === 1 && (
-                <form className="flex flex-col space-y-4 text-primary-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw]"
+                <form className="flex flex-col space-y-4 text-primary-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10"
                   onSubmit={(e) => {
                     e.preventDefault();
                     setModalOpen(2);
@@ -140,7 +174,7 @@ export default function dashboard(props) {
                 </form>
               )}
               {modalOpen === 2 && (
-                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw]"
+                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10"
                   onSubmit={(e) => {
                     e.preventDefault();
                     setModalOpen(3)
@@ -165,7 +199,7 @@ export default function dashboard(props) {
                             } else {
                               setSelectedPeople([...selectedPeople, person])
                             }
-                            console.log(selectedPeople)
+                            // console.log(selectedPeople)
                           }}>
                           <p className="text-primary-content"
                             onClick={(e) => {
@@ -174,7 +208,7 @@ export default function dashboard(props) {
                               } else {
                                 setSelectedPeople([...selectedPeople, person])
                               }
-                              console.log(selectedPeople)
+                              // console.log(selectedPeople)
                             }}
 
                           >{person.first_name} {person.last_name}</p>
@@ -186,7 +220,7 @@ export default function dashboard(props) {
                 </form>
               )}
               {modalOpen === 3 && (
-                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw]">
+                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
                   <h3 className="text-lg font-semibold">Review Event</h3>
                   <h4 className="font-semibold">Name:</h4>
                   <p>{eventInfo.title}</p>
@@ -224,6 +258,147 @@ export default function dashboard(props) {
                     setModalOpen(1)
                   }}>Back</button>
                 </form>
+              )}
+              {modalOpen === 4 && (
+                <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+                  <h3 className="text-lg font-semibold">Select Users to Accept or Decline</h3>
+                  <ul>
+                    {/* check if people.accepted is false */}
+                    {props.people.filter((person) => !person.accepted && !person.declined).map((person) => (
+                      <li key={person._id} className="flex items-center p-4 rounded-lg justify-between">
+                        <p className="text-primary-content">{person.first_name} {person.last_name}</p>
+                        <div className="flex space-x-4 items-center">
+                          {acceptedUsers.includes(person) && <p className="text-success">Accepted</p>}
+                          {declinedUsers.includes(person) && <p className="text-error">Declined</p>}
+                          <button
+                            className={`btn btn-primary ${acceptedUsers.includes(person) ? "btn-disabled" : ""}`}
+                            onClick={(e) => {
+                              setAcceptedUsers([...acceptedUsers, person])
+                              setDeclinedUsers(declinedUsers.filter((p) => p !== person))
+                            }}>Accept</button>
+                          <button
+                            className={`btn btn-error ${declinedUsers.includes(person) ? "btn-disabled" : ""}`}
+                            onClick={(e) => {
+                              setDeclinedUsers([...declinedUsers, person])
+                              setAcceptedUsers(acceptedUsers.filter((p) => p !== person))
+                            }}>Decline</button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="btn btn-primary" onClick={(e) => {
+                    setModalOpen(5)
+                  }}>Review Users</button>
+                  <button className="btn btn-error" onClick={(e) => {
+                    setModalOpen(0)
+                    setBackground(false)
+                    setAcceptedUsers([])
+                    setDeclinedUsers([])
+                  }}>Cancel</button>
+                </div>
+              )}
+              {modalOpen === 5 && (
+                <form className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+                  <h3 className="text-lg font-semibold">Review Users</h3>
+                  <ul>
+                    {acceptedUsers.map((person) => (
+                      <div key={person._id} className="flex items-center justify-between m-4">
+                        <p className="text-success">{person.first_name} {person.last_name}</p>
+                        <h1 className="text-success text-lg">Accepted</h1>
+                      </div>
+                    ))}
+                    {declinedUsers.map((person) => (
+                      <div key={person._id} className="flex items-center justify-between m-4">
+                        <p className="text-error">{person.first_name} {person.last_name}</p>
+                        <h1 className="text-error text-lg">Declined</h1>
+                      </div>
+                    ))}
+                  </ul>
+
+                  <button className="btn btn-primary" onClick={(e) => {
+                    acceptedUsers.forEach((person) => {
+                      props.acceptUser(person._id, person.email)
+                    })
+                    declinedUsers.forEach((person) => {
+                      props.declineUser(person._id, person.email)
+                    })
+                    setModalOpen(0)
+                    setBackground(false)
+                    setSelectedPeople([])
+                  }}>Apply</button>
+                  <button className="btn btn-error" onClick={(e) => {
+                    setModalOpen(4)
+                  }}>Back</button>
+                </form>
+              )}
+              {modalOpen === 6 && (
+                <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+                  <div className="flex justify-between w-full">
+                    <h3 className="text-lg font-semibold">People</h3>
+                    <a>View All</a>
+                  </div>
+                  <ul>
+                    {props.people.map((person) => (
+                      <li key={person._id} className="flex items-center rounded-lg space-x-4 mb-4">
+                        <div className="flex items-center w-full justify-between">
+                          <p className="text-primary-content">{person.first_name} {person.last_name}</p>
+                          <div className="flex space-x-4 items-center">
+                            <button className="btn btn-primary" onClick={(e) => {
+                              setModalOpen(7)
+                              setSelectedPeople(person)
+                            }}>View</button>
+                            <button className="btn btn-error" onClick={(e) => {
+                              setModalOpen(8)
+                              setSelectedPeople(person)
+                            }}>Delete</button>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="btn btn-error" onClick={(e) => {
+                    setModalOpen(0)
+                    setBackground(false)
+                  }}>Close</button>
+                </div>
+              )}
+              {modalOpen === 7 && (
+                <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+                  <h3 className="text-lg font-semibold">Person</h3>
+                  <p className="text-primary-content">Name: {selectedPeople.first_name} {selectedPeople.last_name}</p>
+                  <p className="text-primary-content">Username: {selectedPeople.username}</p>
+                  <p className="text-primary-content">Email: {selectedPeople.email}</p>
+                  <p className="text-primary-content">Phone: {selectedPeople.phone}</p>
+                  <button className="btn btn-error"
+                    onClick={(e) => {
+                      setModalOpen(6)
+                    }}
+                  >Back</button>
+                </div>
+              )}
+              {modalOpen === 8 && (
+                <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+                  <h3 className="text-lg font-semibold">Delete Person</h3>
+                  <p className="text-primary-content">Are you sure you want to delete {selectedPeople.first_name} {selectedPeople.last_name}?</p>
+                  <button className="btn btn-error"
+                    onClick={async (e) => {
+                      setLoading(true)
+                      const res = await props.deleteUserHandler(selectedPeople.email).then(() => {
+                        setLoading(false)
+                      })
+                      if (res === 500) {
+                        alert("An error occurred. Please try again later.")
+                      }
+                      setModalOpen(0)
+                      setBackground(false)
+                    }}
+                  >Delete</button>
+                  <button className="btn btn-primary"
+                    onClick={(e) => {
+                      setModalOpen(6)
+                    }}
+                  >Back</button>
+                </div>
               )}
             </>
           )}
@@ -347,6 +522,18 @@ export default function dashboard(props) {
                 <p className="text-sm">{selectedEvent.date}</p>
                 <p className="mb-4 text-sm">{selectedEvent.startTime} to {selectedEvent.endTime}</p>
                 <p>{selectedEvent.description}</p>
+                <div className="flex flex-col space-y-4 items-flex-start">
+                  <h3 className="font-semibold mt-10">Volunteers</h3>
+                  <ul>
+                    {Object.values(selectedEvent.volunteers).map((volunteer) => (
+                      <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
+                        <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                          <p>{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </>
             ) : (
               <div className="flex flex-col space-y-4">
@@ -358,7 +545,6 @@ export default function dashboard(props) {
                   <input type="time" defaultValue={selectedEvent.endTime} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content" id="time-end" />
                 </div>
                 <textarea value={selectedEvent.description} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content w-[80%] h-[100px]" style={{ resize: "none" }} id="description"></textarea>
-
               </div>
             )}
             {selectedEvent.volunteers[props.user.username] && (

@@ -1,14 +1,14 @@
-
+'use server'
 
 import { getEvents, updateEvent, getEvent, close, createEvent, deleteEvent } from "@/lib/mongo/events";
-import { getOrgMembers, getUserByEmail } from "@/lib/mongo/users";
+import { acceptUserByEmail, getOrgMembers, getUserByEmail, acceptUser, declineUserByEmail, declineUser, deleteUser } from "@/lib/mongo/users";
 
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
 import Dashboard from "./dashboard";
 import { revalidatePath } from "next/cache";
-
+import NotAccepted from "./notAccepted";
 
 
 
@@ -21,24 +21,27 @@ export default async function page() {
 
   const people = await getOrgMembers();
 
+
   const user = await getUserByEmail(session.user.email);
+
+  if (!people || !session || !user) {
+    setTimeout(() => {
+      revalidatePath('/dashboard')
+    }, 1000)
+    return (
+      <div className="loading loading-spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+    )
+  }
 
   const update = async () => {
     "use server"
     revalidatePath('/dashboard')
   }
 
-
-
-
   if (!events) {
     return
   }
 
-  // if (events[0]._id === undefined) {
-  // console.log('Events is not loaded properly:');
-  // return
-  // }
 
   if (typeof events !== 'object') {
     // Handle the case where events is not an object (maybe it's undefined, null, or another type)
@@ -120,7 +123,7 @@ export default async function page() {
   const handleUpdateEvent = async (id, event) => {
     'use server'
     // await updateEvent(id, event);
-    // await updateEvent(id, { $set: { [`volunteers.${username}.accepted`]: true, [`volunteers.${username}.declined`]: false } });
+    // await updateEvent(id, {$set: {[`volunteers.${username}.accepted`]: true, [`volunteers.${username}.declined`]: false } });
     await updateEvent(id, { $set: event });
     update();
   }
@@ -154,12 +157,39 @@ export default async function page() {
 
   // check if user.organization.accepted is true
   if (!user.organization.accepted) {
-    return
+    return (
+      <NotAccepted user={user} handleLogout={handleLogout} />
+    )
+  }
+
+  const acceptUserHandler = async (id, email) => {
+    'use server'
+    console.log(id)
+    await acceptUser(id)
+    await acceptUserByEmail(email, user.organization)
+    update();
+  }
+
+  const declineUserHandler = async (id, email) => {
+    'use server'
+    await declineUser(id)
+    await declineUserByEmail(email, user.organization)
+    update();
   }
 
 
+  const deleteUserHandler = async (email) => {
+    'use server'
+    // await api call to delete user
+    const res = await fetch(`http://localhost:3000/api/users/${email}`, {
+      method: 'DELETE'
+    })
+
+    return res.status
+  }
+
 
   return (
-    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} />
+    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} />
   )
 }

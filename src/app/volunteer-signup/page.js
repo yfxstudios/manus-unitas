@@ -1,13 +1,13 @@
 import React from 'react'
 import VolunteerSignUp from './signup'
-import { getOrganization, getOrganizations } from '@lib/mongo/organization'
+import { addMember, getOrganization, getOrganizations } from '@lib/mongo/organization'
 import { createUser, getUsers } from '@/lib/mongo/users'
 
 
 export default async function Page() {
   const handleSubmit = async (data) => {
     'use server'
-    console.log(data)
+    // console.log(data)
     const users = await getUsers()
 
     if (users.find(user => user.email === data.email)) {
@@ -21,9 +21,12 @@ export default async function Page() {
       organization: {
         admin: false,
         accepted: false,
-        databaseName: data.organization.displayName.trim().toLowerCase().replace(/ /g, '-')
+        declined: false,
+        databaseName: data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'),
+        displayName: data.organization.displayName
       }
     })
+    addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
     return "Success"
   }
 

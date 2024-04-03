@@ -23,11 +23,11 @@ export default function OrgSignUp() {
     redirect('/dashboard')
   }
 
-  
+
   const handleSubmit = async (formData) => {
     'use server'
 
-    console.log('submit')
+    // console.log('submit')
 
     const { organization, contactPhone, adminEmail, username, firstName, lastName, adminPhone, password, confirmPassword, type, description, terms } = formData
 
@@ -93,6 +93,7 @@ export default function OrgSignUp() {
         password: password,
         organization: {
           accepted: true,
+          declined: false,
           displayName: organization,
           databaseName: organization.toLowerCase().replace(/ /g, '-'),
           admin: true
@@ -104,6 +105,8 @@ export default function OrgSignUp() {
       return "success"
     } catch (error) {
       console.error(error)
+      // return error converted to string
+      return error.toString()
     }
   }
 

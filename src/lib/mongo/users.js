@@ -10,6 +10,7 @@ let client
 let users
 let org_members
 
+
 export async function init() {
   if (client) return client
   client = new MongoClient(uri, {})
@@ -22,7 +23,7 @@ export async function init() {
     const userEntry = await users.findOne({ email: user.email })
     const organization = userEntry.organization.databaseName
     org_members = client.db(organization).collection('people')
-    console.log(org_members.find().toArray())
+    // console.log(org_members.find().toArray())
   } else {
     console.log('No session found')
   }
@@ -56,6 +57,21 @@ export async function getOrgMembers() {
   }
 }
 
+export async function acceptUser(id) {
+  await init().catch(console.error)
+  return org_members.updateOne({ _id: new ObjectId(id) }, { $set: { accepted: true, declined: false } })
+}
+
+export async function declineUser(id) {
+  await init().catch(console.error)
+  return org_members.updateOne({ _id: new ObjectId(id) }, { $set: { accepted: false, declined: true } })
+}
+
+export async function getOrgMember(id) {
+  await init().catch(console.error)
+  return org_members.findOne({ _id: new ObjectId(id) })
+}
+
 export async function getUser(id) {
   await init().catch(console.error)
   return users.findOne({ _id: new ObjectId(id) })
@@ -63,6 +79,9 @@ export async function getUser(id) {
 
 export async function getUserByEmail(email) {
   await init().catch(console.error)
+  if (users === undefined) {
+    return null
+  }
   return users.findOne({ email: email })
 }
 
@@ -79,7 +98,40 @@ export async function updateUser(id, user) {
   return users.updateOne({ _id: new ObjectId(id) }, user)
 }
 
-export async function deleteUser(id) {
+export async function acceptUserByEmail(email, organization) {
   await init().catch(console.error)
-  return users.deleteOne({ _id: new ObjectId(id) })
+  console.log('UPDATED')
+  return users.updateOne({ email: email }, {
+    $set: {
+      organization: {
+        displayName: organization.displayName,
+        databaseName: organization.databaseName,
+        admin: false,
+        accepted: true,
+        declined: false,
+      }
+    }
+  })
+}
+
+export async function declineUserByEmail(email, organization) {
+  await init().catch(console.error)
+  console.log('UPDATED')
+  return users.updateOne({ email: email }, {
+    $set: {
+      organization: {
+        displayName: organization.displayName,
+        databaseName: organization.databaseName,
+        admin: false,
+        accepted: false,
+        declined: true
+      }
+    }
+  })
+}
+
+export async function deleteUser(email) {
+  await init().catch(console.error)
+  await org_members.deleteMany({ email: email })
+  return users.deleteOne({ email: email })
 }
