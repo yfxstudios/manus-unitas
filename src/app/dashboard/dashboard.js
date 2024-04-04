@@ -117,7 +117,7 @@ export default function Dashboard(props) {
   // console.log("SORTED ", sortedEvents)
 
   const fetchRoles = async (type) => {
-    await fetch(`http://localhost:3000/api/roles?type=${type}&organization=${props.user.organization.databaseName}`)
+    await fetch(`https://conduit.matthewyak.com/api/roles?type=${type}&organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
@@ -126,7 +126,7 @@ export default function Dashboard(props) {
   }
 
   const fetchAllRoles = async () => {
-    await fetch(`http://localhost:3000/api/roles/all?organization=${props.user.organization.databaseName}`)
+    await fetch(`https://conduit.matthewyak.com/api/roles/all?organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
