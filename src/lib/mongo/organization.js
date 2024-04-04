@@ -32,7 +32,6 @@ export async function getOrganization(organizationName) {
 
   const organization = await organizations.findOne({ displayName: organizationName });
 
-  close();
 
   return organization;
 }
@@ -59,6 +58,8 @@ export async function createOrganization(organization, user) {
     try {
       await organizations.insertOne(organization);
       await client.db(organization.databaseName).createCollection('events');
+      await client.db(organization.databaseName).createCollection('roles');
+      await client.db(organization.databaseName).createCollection('people');
       await client.db(organization.databaseName).collection('people').insertOne({
         first_name: user.firstName,
         last_name: user.lastName,
@@ -73,7 +74,6 @@ export async function createOrganization(organization, user) {
     }
   }
 
-  close();
 }
 
 export async function addMember(organization, user) {
@@ -94,5 +94,20 @@ export async function addMember(organization, user) {
     console.error(error);
   }
 
-  close();
+}
+
+export async function getRoles(organization) {
+  await init().catch(console.error);
+
+  const roles = await client.db(organization).collection('roles').find().toArray()
+
+  return roles;
+}
+
+export async function getRole(organization, roleType) {
+  await init().catch(console.error);
+
+  const roles = await client.db(organization).collection('roles').findOne({ type: roleType })
+
+  return roles.roles;
 }

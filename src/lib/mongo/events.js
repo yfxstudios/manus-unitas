@@ -42,8 +42,6 @@ async function init() {
     console.log('MongoDB connected')
     return client
   }
-
-  close()
 }
 
 export async function close() {

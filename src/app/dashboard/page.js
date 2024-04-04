@@ -9,6 +9,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import Dashboard from "./dashboard";
 import { revalidatePath } from "next/cache";
 import NotAccepted from "./notAccepted";
+import { getRoles } from "@/lib/mongo/organization";
 
 
 
@@ -21,16 +22,30 @@ export default async function page() {
 
   const people = await getOrgMembers();
 
+  let user = await getUserByEmail(session.user.email);
+  let roles = [];
+  let eventTypes = [];
 
-  const user = await getUserByEmail(session.user.email);
 
-  if (!people || !session || !user) {
-    setTimeout(() => {
+  if (user) {
+    console.log("USER FOUND", user.organization.databaseName)
+    roles = await getRoles(user.organization.databaseName);
+    eventTypes = roles.map(role => role.type)
+    console.log(roles)
+  }
+
+
+  // clear interval after done
+  if (!people || !session || !user || !events) {
+    setInterval(() => {
       revalidatePath('/dashboard')
-    }, 1000)
+    }, 2000)
+
     return (
       <div className="loading loading-spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
     )
+  } else {
+    clearInterval()
   }
 
   const update = async () => {
@@ -58,15 +73,12 @@ export default async function page() {
 
     const username = user.username
 
-    // console.log(await getUserByEmail(session.user.email).username)
-
+    console.log(username)
 
 
     if (!event) {
       return
     }
-
-
 
 
     if (event.volunteers[username]) {
@@ -129,7 +141,7 @@ export default async function page() {
   }
 
   // sort events by date and time and remove events that have already passed
-  events = events.filter(event => {
+  let filteredEvents = events.filter(event => {
     const date = new Date(event.date);
     const time = new Date(event.startTime);
     const now = new Date();
@@ -145,8 +157,6 @@ export default async function page() {
     }
 
     return true
-  }).sort((a, b) => {
-    return new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time);
   })
 
   const deleteEventHandler = async (id) => {
@@ -188,8 +198,19 @@ export default async function page() {
     return res.status
   }
 
+  const fetchRoles = async (type) => {
+    'use server'
+
+    // use ?type=${type} and ${organization}
+    fetch(`http://localhost:3000/api/roles?type=${type}&organization=${user.organization.databaseName}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
+  }
+
 
   return (
-    <Dashboard events={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} />
+    <Dashboard events={filteredEvents} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} fetchRoles={fetchRoles} />
   )
 }

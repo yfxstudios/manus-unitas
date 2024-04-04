@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 
 import EditIcon from '@mui/icons-material/Edit';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { longDate } from "@/lib/util/date";
+import { standardTime } from "@/lib/util/time";
 
 
 export default function Dashboard(props) {
@@ -24,16 +26,21 @@ export default function Dashboard(props) {
     volunteers: {}
   })
 
+  const [newRole, setNewRole] = useState({
+
+  })
+
   const events = props.events;
+
+  // console.log(events)
 
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const [users, setUsers] = useState(false)
 
   const [acceptedUsers, setAcceptedUsers] = useState([])
   const [declinedUsers, setDeclinedUsers] = useState([])
 
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [roles, setRoles] = useState([])
 
 
 
@@ -92,6 +99,46 @@ export default function Dashboard(props) {
     }
   })
 
+  const sortedEvents = filteredEvents.sort((a, b) => {
+    if (a.startTime < b.startTime) {
+      return -1
+    }
+    if (a.startTime > b.startTime) {
+      return 1
+    }
+    return 0
+  }).sort((a, b) => {
+    if (a.date < b.date) {
+      return -1
+    }
+    if (a.date > b.date) {
+      return 1
+    }
+    return 0
+  })
+
+  // console.log("SORTED ", sortedEvents)
+
+  const fetchRoles = async (type) => {
+    await fetch(`http://localhost:3000/api/roles?type=${type}&organization=${props.user.organization.databaseName}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setRoles(data)
+      })
+  }
+
+  useEffect(() => {
+    fetchRoles(props.eventTypes[0])
+  }, [])
+
+  useEffect(() => {
+    if (editingEvent) {
+      setBackground(true)
+    } else {
+      setBackground(false)
+    }
+  }, [editingEvent])
 
   return (
     <div className="flex flex-row items-center justify-center min-h-screen py-2">
@@ -102,6 +149,7 @@ export default function Dashboard(props) {
       }
 
       <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 1, display: background ? "block" : "none" }}></div>
+      <div className="w-full h-full fixed bg-primary-content bg-opacity-50" style={{ zIndex: 3, display: (modalOpen !== 0) ? "block" : "none" }}></div>
       <h2 className="text-2xl font-semibold absolute top-4 left-4 text-primary">{props.user.organization.displayName}</h2>
       <div className="absolute top-8 right-8 flex flex-row space-x-4 z-0">
         {/* <button className="btn btn-outline btn-primary" onClick={logoutHandler}>Logout</button> */}
@@ -120,13 +168,15 @@ export default function Dashboard(props) {
             <li>
               <a onClick={logoutHandler}>Logout</a>
             </li>
-            <li>
-              <a onClick={() => {
-                setModalOpen(6)
-                setBackground(true)
+            {props.user.organization.admin && (
+              <li>
+                <a onClick={() => {
+                  setModalOpen(6)
+                  setBackground(true)
 
-              }}>People</a>
-            </li>
+                }}>People</a>
+              </li>
+            )}
           </ul>
         </div>
       </div>
@@ -142,18 +192,35 @@ export default function Dashboard(props) {
                 <form className="flex flex-col space-y-4 text-primary-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    setModalOpen(2);
                     setEventInfo({
                       title: document.getElementById("name").value,
+                      type: document.getElementById("type").value,
                       date: document.getElementById("date").value,
                       startTime: document.getElementById("time-start").value,
                       endTime: document.getElementById("time-end").value,
                       description: document.getElementById("description").value,
 
-                      volunteers: selectedPeople.map((person) => ({ username: person.username, role: "volunteer", accepted: false, declined: false }))
+                      volunteers: selectedPeople.map((person) => ({ username: person.username, role: "", accepted: false, declined: false }))
                     })
-                  }}>
 
+                    if (document.getElementById("name").value === "" || document.getElementById("date").value === "" || document.getElementById("time-start").value === "" || document.getElementById("time-end").value === "" || document.getElementById("description").value === "") {
+                      alert("Please fill out all fields")
+                    } else if (document.getElementById("time-start").value > document.getElementById("time-end").value) {
+                      alert("Start time cannot be greater than end time")
+                    } else if (document.getElementById("date").value < new Date().toISOString().split("T")[0]) {
+                      alert("Date cannot be in the past")
+                    } else {
+                      setModalOpen(2)
+                    }
+                  }}>
+                  <label htmlFor="type">Type of Event</label>
+                  <select name="type" id="type" className="select select-bordered text-neutral-content" onChange={(e) => {
+                    fetchRoles(e.target.value)
+                  }}>
+                    {props.eventTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
                   <label htmlFor="name">Name</label>
                   <input type="text" id="name" className="input text-neutral-content" />
                   <label htmlFor="date">Date</label>
@@ -233,10 +300,30 @@ export default function Dashboard(props) {
                   <h4 className="font-semibold">Volunteers:</h4>
                   <ul>
                     {selectedPeople.map((person) => (
-                      <li key={person._id} className="flex items-center p-4 rounded-lg space-x-4">
+                      <li key={person._id} className="flex items-center p-4 rounded-lg justify-between">
                         <div className="flex items-center border-b-[6px] cursor-pointer bg-gray-50 p-2">
                           <p className="text-primary-content">{person.first_name} {person.last_name}</p>
                         </div>
+                        {/* <input className="input text-primary-content" DROPDOWN */}
+                        <select className="select select-bordered" name="role" id="role" onChange={(e) => {
+                          setEventInfo({
+                            ...eventInfo,
+                            volunteers: {
+                              ...eventInfo.volunteers,
+                              [person.username]: {
+                                ...eventInfo.volunteers[person.username],
+                                role: e.target.value
+                              }
+                            }
+                          })
+                        }}>
+                          {/* depending on type of event, display different roles */}
+                          {/* fetch /api/roles/{TYPE} to get roles */}
+                          <option value="" disabled selected>Select Role</option>
+                          {roles.map((role) => (
+                            <option key={role} value={role}>{role}</option>
+                          ))}
+                        </select>
                       </li>
                     ))}
                   </ul>
@@ -251,7 +338,6 @@ export default function Dashboard(props) {
                       volunteers: {}
                     })
                     setSelectedPeople(null)
-
                   }
                   }>Create Event</button>
                   <button className="btn btn-error" onClick={(e) => {
@@ -404,12 +490,12 @@ export default function Dashboard(props) {
           )}
         </div>
         <div className="flex flex-col space-y-4 text-primary-content">
-          {filteredEvents.map((event) => (
+          {sortedEvents.map((event) => (
             <div key={event._id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg space-x-4">
               <div>
                 <h3 className="font-semibold">{event.title}</h3>
-                <p className="text-sm">{event.date}</p>
-                <p className="text-sm">{event.startTime} to {event.endTime}</p>
+                <p className="text-sm">{longDate(event.date)}</p>
+                <p className="text-sm">{standardTime(event.startTime)} to {standardTime(event.endTime)}</p>
               </div>
               <div className="flex space-x-4 items-center">
 
@@ -462,35 +548,80 @@ export default function Dashboard(props) {
             </div>
           ))
           }
-          {!events.length === 0 && props.user.organization.admin && <p className="text-primary">All Events</p>}
-          {props.user.organization.admin && (
-            events.map((event) => (
-              <div key={event._id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg space-x-4">
-                <div>
-                  <h3 className="font-semibold">{event.title}</h3>
-                  <p className="text-sm">{event.date}</p>
-                  <p className="text-sm">{event.startTime} to {event.endTime}</p>
-                </div>
-                <div className="flex space-x-4 items-center">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      detailHandler(event._id);
-                    }}
-                  >View Details</button>
-                  <button
-                    className="btn btn-error"
-                    onClick={async (e) => {
-                      setLoading(true)
-                      await props.deleteEvent(event._id).then(() => {
-                        setLoading(false)
-                      })
-                    }}
-                  >Delete Event</button>
-                </div>
-              </div>
-
-            ))
+          {events.length !== 0 && <button className="btn btn-primary" onClick={() => {
+            setModalOpen(9)
+            setBackground(true)
+          }}>View All Events</button>}
+          {modalOpen === 9 && (
+            <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+              <h3 className="text-lg font-semibold">All Events</h3>
+              <ul>
+                {/* // divide events into sections by date: ex. December 25, 2024 - Christmas Service, Cemetery Cleanup... combining events with the same date */}
+                {/* first find all the different dates of the events */}
+                {props.events.map((event) => event.date).filter((value, index, self) => self.indexOf(value) === index).map((date) => (
+                  <li key={date} className="flex flex-col space-y-2 mb-8">
+                    <h4 className="font-semibold">{longDate(date)}</h4>
+                    <ul>
+                      {props.events.filter((event) => event.date === date).map((event) => (
+                        <>
+                          <li key={event._id} className="flex items-center justify-between px-2">
+                            <p className="text-primary-content">{event.title}</p>
+                            <button className="btn btn-primary" onClick={(e) => {
+                              setModalOpen(10)
+                              setSelectedEvent(event)
+                            }}>View</button>
+                          </li>
+                          {props.events.filter((e) => e.date === date).indexOf(event) !== props.events.filter((e) => e.date === date).length - 1 && <div className="divider"></div>}
+                        </>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+              <button className="btn btn-error" onClick={(e) => {
+                setModalOpen(0)
+                setBackground(false)
+              }}>Close</button>
+            </div>
+          )}
+          {modalOpen === 10 && selectedEvent && (
+            <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+              <h3 className="text-lg font-semibold">Event</h3>
+              <p className="text-primary-content">{selectedEvent.title}</p>
+              <p className="text-primary-content">{longDate(selectedEvent.date)}</p>
+              <p className="text-primary-content font-[500]">{standardTime(selectedEvent.startTime)}<span className="font-normal"> to </span>{standardTime(selectedEvent.endTime)}</p>
+              <p className="text-primary-content">{selectedEvent.description}</p>
+              <p className="text-primary-content">Volunteers:</p>
+              <ul className="flex flex-col space-y-6">
+                {/* {Object.values(selectedEvent.volunteers).map((volunteer) => (
+                  <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
+                    <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 justify-between ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                      <p
+                        className="text-primary-content"
+                      >{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
+                    </div>
+                  </li>
+                ))} */}
+                {/* Same as event date division, but for volunteers, divide by role */}
+                {Object.values(selectedEvent.volunteers).map((volunteer) => volunteer.role).filter((value, index, self) => self.indexOf(value) === index).map((role) => (
+                  <li key={role} className="flex flex-col space-y-2">
+                    <h4 className="font-semibold">{role}</h4>
+                    <ul>
+                      {Object.values(selectedEvent.volunteers).filter((volunteer) => volunteer.role === role).map((volunteer) => (
+                        <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
+                          <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                            <p className="text-primary-content">{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+              <button className="btn btn-error" onClick={(e) => {
+                setModalOpen(9)
+              }}>Back</button>
+            </div>
           )}
 
           {events.length === 0 && <h1 className="text-center text-primary">No events found</h1>}
@@ -500,7 +631,7 @@ export default function Dashboard(props) {
       </div >
       <div className="w-[35vw] mx-auto mt-8">
         {selectedEvent ? (
-          <div className="bg-white p-4 rounded-lg text-primary-content relative">
+          <div className="bg-white p-4 rounded-lg text-primary-content relative z-[2]">
             <EditIcon className="absolute top-4 right-4 cursor-pointer" onClick={(e) => {
               if (editingEvent) {
                 setEditingEvent(false)
@@ -510,7 +641,15 @@ export default function Dashboard(props) {
                   startTime: document.getElementById("time-start").value,
                   endTime: document.getElementById("time-end").value,
                   description: document.getElementById("description").value,
+                  volunteers: {
+                    ...selectedEvent.volunteers,
+                    [props.user.username]: {
+                      ...selectedEvent.volunteers[props.user.username],
+                      role: newRole[props.user.username].role
+                    }
+                  }
                 })
+                setSelectedEvent(null)
               } else {
                 setEditingEvent(true)
               }
@@ -519,25 +658,78 @@ export default function Dashboard(props) {
             {!editingEvent ? (
               <>
                 <h2 className="text-lg font-semibold">{selectedEvent.title}</h2>
-                <p className="text-sm">{selectedEvent.date}</p>
-                <p className="mb-4 text-sm">{selectedEvent.startTime} to {selectedEvent.endTime}</p>
+                <p className="text-sm">{longDate(selectedEvent.date)}</p>
+                <p className="mb-4 text-sm">{standardTime(selectedEvent.startTime)} to {standardTime(selectedEvent.endTime)}</p>
                 <p>{selectedEvent.description}</p>
-                <div className="flex flex-col space-y-4 items-flex-start">
-                  <h3 className="font-semibold mt-10">Volunteers</h3>
+                <div className="flex flex-col space-y-4 items-flex-start my-6">
+                  <h3 className="font-semibold">Volunteers</h3>
                   <ul>
                     {Object.values(selectedEvent.volunteers).map((volunteer) => (
                       <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
                         <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
                           <p>{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
                         </div>
+                        <p>{volunteer.role}</p>
                       </li>
                     ))}
+                    {/* filter by role, then display name divided by role */}
                   </ul>
                 </div>
+                {selectedEvent.volunteers[props.user.username] && selectedEvent.volunteers[props.user.username].accepted ? (
+                  <div className="flex flex-row justify-between">
+                    <div className="flex space-x-4 mt-4">
+                      <button className="btn btn-outline btn-primary btn-disabled" onClick={(e) => {
+                        handleAccept(selectedEvent._id)
+                        // e.target.classList.add("loading-spinner")
+                        // e.target.classList.add("loading")
+                      }}>Accept Position</button>
+                      <button className="btn btn-outline btn-error" onClick={(e) => {
+                        handleDecline(selectedEvent._id)
+                        // e.target.classList.add("loading-spinner")
+                        // e.target.classList.add("loading")
+                      }}>Decline Position</button>
+                    </div>
+                    <button className="btn btn-error" onClick={async (e) => {
+                      setLoading(true)
+                      await props.deleteEvent(selectedEvent._id).then(() => {
+                        setSelectedEvent(null)
+                        setLoading(false)
+                      })
+                    }}>Delete Event</button>
+                  </div>
+                ) : (
+                  <div className="flex flex-row justify-between mt-4">
+                    <div className="space-x-4">
+                      <button className="btn btn-primary btn-outline" onClick={(e) => {
+                        handleAccept(selectedEvent._id)
+                        // e.target.classList.add("loading-spinner")
+                        // e.target.classList.add("loading")
+                      }}>Accept Position</button>
+                      <button className="btn btn-error btn-disabled" onClick={(e) => {
+                        handleDecline(selectedEvent._id)
+                        // e.target.classList.add("loading-spinner")
+                        // e.target.classList.add("loading")
+                      }}>Decline Position</button>
+                    </div>
+                    <button className="btn btn-error" onClick={(e) => {
+                      props.deleteEvent(selectedEvent._id)
+                      setSelectedEvent(null)
+                    }}>Delete Event</button>
+                  </div>
+
+                )}
               </>
             ) : (
               <div className="flex flex-col space-y-4">
                 <input type="text" defaultValue={selectedEvent.title} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content w-[80%]" id="name" />
+                <select name="type" id="type" className="select select-bordered text-neutral-content" onChange={(e) => {
+                  setRoles(fetchRoles(e.target.value))
+                }}>
+                  {props.eventTypes.map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
+                <label htmlFor="date">Date</label>
                 <input type="date" defaultValue={selectedEvent.date} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content w-[80%]" id="date" />
                 <div className="flex flex-row space-x-4 items-center">
                   <input type="time" defaultValue={selectedEvent.startTime} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content" id="time-start" />
@@ -545,56 +737,34 @@ export default function Dashboard(props) {
                   <input type="time" defaultValue={selectedEvent.endTime} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content" id="time-end" />
                 </div>
                 <textarea value={selectedEvent.description} className="text-primary-content text-lg font-semibold outline-none bg-transparent border-b-2 border-primary-content w-[80%] h-[100px]" style={{ resize: "none" }} id="description"></textarea>
+                <div className="flex flex-col space-y-4 items-flex-start my-6">
+                  <h3 className="font-semibold">Volunteers</h3>
+                  <ul>
+                    {Object.values(selectedEvent.volunteers).map((volunteer) => (
+                      <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
+                        <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                          <p>{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
+                        </div>
+                        <select className="select select-bordered text-neutral-content" name="role" id="role" onChange={(e) => {
+                          setNewRole({
+                            ...newRole,
+                            [volunteer.username]: {
+                              role: e.target.value
+                            }
+                          })
+                        }}>
+                          <option value="" selected>{volunteer.role}</option>
+                          {roles.filter((role) => role !== volunteer.role).map((role) => (
+                            <option key={role} value={role}>{role}</option>
+                          ))}
+                        </select>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
-            {selectedEvent.volunteers[props.user.username] && (
-              <div className="mt-4">
-                <h3 className="font-semibold">Role: {selectedEvent.volunteers[props.user.username].role}</h3>
-              </div>
-            )}
-            {selectedEvent.volunteers[props.user.username] && selectedEvent.volunteers[props.user.username].accepted ? (
-              <div className="flex flex-row justify-between">
-                <div className="flex space-x-4 mt-4">
-                  <button className="btn btn-outline btn-primary btn-disabled" onClick={(e) => {
-                    handleAccept(selectedEvent._id)
-                    // e.target.classList.add("loading-spinner")
-                    // e.target.classList.add("loading")
-                  }}>Accept Position</button>
-                  <button className="btn btn-outline btn-error" onClick={(e) => {
-                    handleDecline(selectedEvent._id)
-                    // e.target.classList.add("loading-spinner")
-                    // e.target.classList.add("loading")
-                  }}>Decline Position</button>
-                </div>
-                <button className="btn btn-error" onClick={async (e) => {
-                  setLoading(true)
-                  await props.deleteEvent(selectedEvent._id).then(() => {
-                    setSelectedEvent(null)
-                    setLoading(false)
-                  })
-                }}>Delete Event</button>
-              </div>
-            ) : (
-              <div className="flex flex-row justify-between mt-4">
-                <div className="space-x-4">
-                  <button className="btn btn-primary btn-outline" onClick={(e) => {
-                    handleAccept(selectedEvent._id)
-                    // e.target.classList.add("loading-spinner")
-                    // e.target.classList.add("loading")
-                  }}>Accept Position</button>
-                  <button className="btn btn-error btn-disabled" onClick={(e) => {
-                    handleDecline(selectedEvent._id)
-                    // e.target.classList.add("loading-spinner")
-                    // e.target.classList.add("loading")
-                  }}>Decline Position</button>
-                </div>
-                <button className="btn btn-error" onClick={(e) => {
-                  props.deleteEvent(selectedEvent._id)
-                  setSelectedEvent(null)
-                }}>Delete Event</button>
-              </div>
 
-            )}
           </div>
         ) : (
           <p className="text-center">Select an event to view details</p>
