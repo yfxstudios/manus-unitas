@@ -79,10 +79,13 @@ export async function createOrganization(organization, user) {
 export async function addMember(organization, user) {
   await init().catch(console.error);
 
+  console.log('Adding member: ' + user + ' to organization ' + organization)
+
+
   try {
     await client.db(organization).collection('people').insertOne({
       first_name: user.first_name,
-      last_name: user.last,
+      last_name: user.last_name,
       username: user.username,
       email: user.email,
       phone: user.phone,
@@ -93,7 +96,6 @@ export async function addMember(organization, user) {
   } catch (error) {
     console.error(error);
   }
-
 }
 
 export async function getRoles(organization) {
