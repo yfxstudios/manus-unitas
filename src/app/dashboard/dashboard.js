@@ -19,12 +19,7 @@ export default function Dashboard(props) {
 
   const [editingEvent, setEditingEvent] = useState(false)
 
-  const [eventInfo, setEventInfo] = useState({
-    title: "",
-    date: "",
-    description: "",
-    volunteers: {}
-  })
+  const [eventInfo, setEventInfo] = useState({})
 
   const [newRole, setNewRole] = useState({
 
@@ -41,6 +36,8 @@ export default function Dashboard(props) {
   const [declinedUsers, setDeclinedUsers] = useState([])
 
   const [roles, setRoles] = useState([])
+  const [allRoles, setAllRoles] = useState([])
+  const [selectedRole, setSelectedRole] = useState("")
 
 
 
@@ -123,14 +120,27 @@ export default function Dashboard(props) {
     await fetch(`http://localhost:3000/api/roles?type=${type}&organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        // console.log(data)
         setRoles(data)
       })
   }
 
+  const fetchAllRoles = async () => {
+    await fetch(`http://localhost:3000/api/roles/all?organization=${props.user.organization.databaseName}`)
+      .then(res => res.json())
+      .then(data => {
+        // console.log(data)
+        setAllRoles(data)
+      })
+  }
+
+
   useEffect(() => {
     fetchRoles(props.eventTypes[0])
+    fetchAllRoles()
   }, [])
+
+
 
   useEffect(() => {
     if (editingEvent) {
@@ -169,13 +179,21 @@ export default function Dashboard(props) {
               <a onClick={logoutHandler}>Logout</a>
             </li>
             {props.user.organization.admin && (
-              <li>
-                <a onClick={() => {
-                  setModalOpen(6)
-                  setBackground(true)
+              <>
+                <li>
+                  <a onClick={() => {
+                    setModalOpen(6)
+                    setBackground(true)
 
-                }}>People</a>
-              </li>
+                  }}>People</a>
+                </li>
+                <li>
+                  <a onClick={() => {
+                    setModalOpen(11)
+                    setBackground(true)
+                  }}>Roles</a>
+                </li>
+              </>
             )}
           </ul>
         </div>
@@ -486,8 +504,174 @@ export default function Dashboard(props) {
                   >Back</button>
                 </div>
               )}
+              {modalOpen === 11 && (
+                <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+                  <h3 className="text-lg font-semibold">Roles</h3>
+                  <ul>
+                    {/* {props.roles.map((entry) => entry.roles).flat().filter((value, index, self) => self.indexOf(value) === index).map((role) => (
+                      <li key={role} className="flex items-center justify-between p-4 rounded-lg">
+                        <p className="text-primary-content">{role}</p>
+                        <button className="btn btn-primary"
+                          onClick={(e) => {
+                            setModalOpen(12)
+                            setSelectedRole(role)
+                          }}
+                        >Edit</button>
+                      </li>
+                    ))} */}
+                    {/* filter by role type same as volunteers and events */}
+                    {/* {console.log(allRoles)} */}
+
+                    {/* [
+                    {
+                      "_id": "660e108c516e2f10fb9cc3da",
+                    "type": "Sunday Service",
+                    "roles": [
+                    "ProPresenter",
+                    "Audio"
+                    ]
+    },
+                    {
+                      "_id": "660ef6610e40d90a4831ae03",
+                    "type": "Rehearsal",
+                    "roles": [
+                    "New Rehearsal Role"
+                    ]
+    }
+                    ] */}
+                    {allRoles.map((entry) => (
+                      <li key={entry._id} className="flex flex-col p-4 rounded-lg">
+                        <div className="flex items-center w-full justify-between">
+                          <p className="text-primary-content font-semibold">{entry.type}</p>
+                          <button className="btn btn-error" onClick={async (e) => {
+                            setLoading(true)
+                            await props.deleteTypeHandler(entry.type).then(() => {
+                              setLoading(false)
+                            })
+                            fetchAllRoles()
+                          }}>Delete Type</button>
+                        </div>
+                        <ul>
+                          {entry.roles.map((role) => (
+                            <li key={role} className="flex items-center justify-between p-2 w-full">
+                              <p className="text-primary-content">{role}</p>
+                              <button className="btn btn-primary"
+                                onClick={(e) => {
+                                  setModalOpen(12)
+                                  setSelectedRole(role)
+                                }}
+                              >Edit</button>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
+
+
+
+                  </ul>
+                  <button className="btn btn-primary" onClick={(e) => {
+                    setModalOpen(13)
+                  }}>Create Role</button>
+                  <button className="btn btn-secondary" onClick={(e) => {
+                    setModalOpen(14)
+                  }}>Create Type</button>
+                  <button className="btn btn-error" onClick={(e) => {
+                    setModalOpen(0)
+                    setBackground(false)
+                  }}>Close</button>
+                </div>
+              )}
             </>
           )}
+          {modalOpen === 12 && selectedRole && (
+            <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+              <div className="flex justify-between w-full">
+                <h3 className="text-lg font-semibold">Edit Role</h3>
+                <a
+                  className="text-primary-content cursor-pointer"
+                  onClick={(e) => {
+                    setModalOpen(11)
+                  }}>
+                  Back
+                </a>
+              </div>
+              <label htmlFor="role">Role</label>
+              <input type="text" id="role" className="input text-neutral-content" defaultValue={selectedRole} />
+              <button className="btn btn-primary" onClick={(e) => {
+                setLoading(true)
+                // entry.roles is an array of roles ["role1", "role2", "role3"]
+                props.updateRoleHandler(document.getElementById("role").value, props.roles.find((entry) => entry.roles.includes(selectedRole)), selectedRole).then(() => {
+                  setLoading(false)
+                  setModalOpen(11)
+                  // setBackground(false)
+                })
+              }}>Save</button>
+              <button className="btn btn-error btn-outline" onClick={(e) => {
+                setModalOpen(11)
+                setLoading(true)
+                props.deleteRoleHandler(props.roles.find((entry) => entry.roles.includes(selectedRole)).type, selectedRole).then(() => {
+                  setLoading(false)
+                })
+                fetchAllRoles()
+              }}>Delete</button>
+            </div>
+          )}
+          {modalOpen === 13 && (
+            <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+              <div className="flex justify-between w-full">
+                <h3 className="text-lg font-semibold">Create Role</h3>
+                <a
+                  className="text-primary-content cursor-pointer"
+                  onClick={(e) => {
+                    setModalOpen(11)
+                  }}>
+                  Back
+                </a>
+              </div>
+              <label htmlFor="type">Type</label>
+              <select name="type" id="type" className="select select-bordered text-neutral-content">
+                {props.eventTypes.map((type) => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+              <label htmlFor="role">Role</label>
+              <input type="text" id="role" className="input text-neutral-content" />
+              <button className="btn btn-primary" onClick={(e) => {
+                setLoading(true)
+                props.createRoleHandler(document.getElementById("role").value, document.getElementById("type").value).then(() => {
+                  setLoading(false)
+                  setModalOpen(11)
+                  fetchAllRoles()
+                })
+
+              }}>Create</button>
+              <button className="btn btn-error btn-outline" onClick={(e) => {
+                setModalOpen(11)
+              }}>Cancel</button>
+            </div>
+          )}
+          {modalOpen === 14 && (
+            <div className="flex flex-col space-y-4 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+              <div className="flex justify-between w-full">
+                <h3 className="text-lg font-semibold">Create Type</h3>
+              </div>
+              <label htmlFor="type">Type</label>
+              <input type="text" id="type" className="input text-neutral-content" />
+              <button className="btn btn-primary" onClick={async (e) => {
+                setLoading(true)
+                await props.createTypeHandler(document.getElementById("type").value).then(() => {
+                  setLoading(false)
+                  setModalOpen(11)
+                })
+                fetchAllRoles()
+              }}>Create</button>
+              <button className="btn btn-error btn-outline" onClick={(e) => {
+                setModalOpen(11)
+              }}>Cancel</button>
+            </div>
+          )}
+
         </div>
         <div className="flex flex-col space-y-4 text-primary-content">
           {sortedEvents.map((event) => (

@@ -111,3 +111,57 @@ export async function getRole(organization, roleType) {
 
   return roles.roles;
 }
+
+export async function createRole(organization, role, type) {
+  await init().catch(console.error);
+
+  try {
+    await client.db(organization).collection('roles').updateOne({ type: type }, { $push: { roles: role } }, { upsert: true });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteRole(organization, roleType, roleName) {
+  await init().catch(console.error);
+
+  // find entry by roleType and delete roleName from roles array
+  try {
+    await client.db(organization).collection('roles').updateOne({ type: roleType }, { $pull: { roles: roleName } });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function createType(organization, type) {
+  await init().catch(console.error);
+
+  try {
+    await client.db(organization).collection('roles').insertOne({ type: type, roles: [] });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteType(organization, type) {
+  await init().catch(console.error);
+
+  try {
+    await client.db(organization).collection('roles').deleteOne({ type: type });
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
+
+
+export async function updateRole(organization, roleType, update) {
+  await init().catch(console.error);
+
+  try {
+    await client.db(organization).collection('roles').updateOne({ type: roleType }, update);
+  }
+  catch (error) {
+    console.error(error);
+  }
+}

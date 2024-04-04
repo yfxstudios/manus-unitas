@@ -9,7 +9,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import Dashboard from "./dashboard";
 import { revalidatePath } from "next/cache";
 import NotAccepted from "./notAccepted";
-import { getRoles } from "@/lib/mongo/organization";
+import { createRole, createType, deleteRole, deleteType, getRoles, updateRole } from "@/lib/mongo/organization";
 
 
 
@@ -198,19 +198,66 @@ export default async function page() {
     return res.status
   }
 
-  const fetchRoles = async (type) => {
-    'use server'
 
-    // use ?type=${type} and ${organization}
-    fetch(`http://localhost:3000/api/roles?type=${type}&organization=${user.organization.databaseName}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-      })
+
+  const updateRoleHandler = async (newVal, role, old) => {
+    'use server'
+    // console.log(newVal, role)
+    // newVal = "Worship Leader 1", role = {
+    //   _id: "616b1f6c0e1a5b3d8a4c8d4e",
+    //   type: "Sunday Service",
+    //   roles: ["Worship Leader", "Audio", "ProPresenter"] <--------- find old value in this array
+    // }
+
+    const newRoles = role.roles.map(r => {
+      if (r === old) {
+        return newVal
+      }
+      return r
+    })
+
+    console.log(newRoles)
+
+
+    await updateRole(user.organization.databaseName, role.type, { $set: { roles: newRoles } }).then(() => {
+      update()
+    })
   }
 
 
+  const deleteRoleHandler = async (roleType, roleName) => {
+    'use server'
+    // console.log(roleType, roleName)
+    // await api call to delete role
+    await deleteRole(user.organization.databaseName, roleType, roleName).then(() => {
+      update()
+    })
+  }
+
+  const createRoleHandler = async (role, type) => {
+    'use server'
+
+    await createRole(user.organization.databaseName, role, type).then(() => {
+      update()
+    })
+  }
+
+  const createTypeHandler = async (type) => {
+    'use server'
+    await createType(user.organization.databaseName, type).then(() => {
+      update()
+    })
+  }
+
+  const deleteTypeHandler = async (type) => {
+    'use server'
+    // await api call to delete type
+    await deleteType(user.organization.databaseName, type).then(() => {
+      update()
+    })
+  }
+
   return (
-    <Dashboard events={filteredEvents} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} fetchRoles={fetchRoles} />
+    <Dashboard events={filteredEvents} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} updateRoleHandler={updateRoleHandler} deleteRoleHandler={deleteRoleHandler} createRoleHandler={createRoleHandler} createTypeHandler={createTypeHandler} deleteTypeHandler={deleteTypeHandler} />
   )
 }
