@@ -81,9 +81,10 @@ export async function addMember(organization, user) {
 
   console.log('Adding member: ' + user + ' to organization ' + organization)
 
+  let response;
 
   try {
-    const response = await client.db(organization).collection('people').insertOne({
+    response = await client.db(organization).collection('people').insertOne({
       first_name: user.first_name,
       last_name: user.last_name,
       username: user.username,
@@ -92,6 +93,8 @@ export async function addMember(organization, user) {
       admin: false,
       accepted: false,
       declined: false
+    }).then(() => {
+      return "success";
     });
   } catch (error) {
     console.error(error);

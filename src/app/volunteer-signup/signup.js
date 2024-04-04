@@ -76,7 +76,7 @@ export default function VolunteerSignUp(props) {
       alert('Username already exists')
     } else if (response === 'Organization already exists') {
       alert('Organization already exists')
-    } else if (response === 'Success') {
+    } else if (response === 'success') {
       signIn('credentials', {
         email: email,
         password: password,
@@ -84,7 +84,7 @@ export default function VolunteerSignUp(props) {
         callbackUrl: '/dashboard'
       })
     } else {
-      alert("An error occurred. Please try again later.")
+      alert(response)
     }
   }
 

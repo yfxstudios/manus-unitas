@@ -27,8 +27,7 @@ export default async function Page() {
       }
     })
     const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
-    console.log("Response: ", response)
-    return "Success"
+    return response
   }
 
   const organizations = await getOrganizations()
