@@ -33,13 +33,13 @@ import { SessionProvider } from "next-auth/react"
 export default function Home() {
   return (
     <div>
-      <h1>Manus Unitas</h1>
+      {/* <h1>Manus Unitas</h1>
       <p>
         Manus Unitas is a volunteer management software that helps nonprofits
         streamline their volunteer programs and engage their community more
         effectively.
-      </p>
-      
+      </p> */}
+
     </div>
   );
 }
