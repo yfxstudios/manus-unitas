@@ -83,7 +83,7 @@ export async function addMember(organization, user) {
 
 
   try {
-    await client.db(organization).collection('people').insertOne({
+    const response = await client.db(organization).collection('people').insertOne({
       first_name: user.first_name,
       last_name: user.last_name,
       username: user.username,
@@ -96,6 +96,8 @@ export async function addMember(organization, user) {
   } catch (error) {
     console.error(error);
   }
+
+  return response;
 }
 
 export async function getRoles(organization) {

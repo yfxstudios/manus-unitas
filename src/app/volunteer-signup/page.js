@@ -26,7 +26,8 @@ export default async function Page() {
         displayName: data.organization.displayName
       }
     })
-    addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
+    const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
+    console.log("Response: ", response)
     return "Success"
   }
 
