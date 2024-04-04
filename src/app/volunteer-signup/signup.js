@@ -126,7 +126,7 @@ export default function VolunteerSignUp(props) {
         }} />
         <div className="w-96 bg-white border border-gray-300 rounded mb-4">
           {organizationSuggestions.map(org => (
-            <div className="p-2 border-b border-gray-300 text-sm cursor-pointer text-primary-content"
+            <div className="p-2 border-b border-gray-300 text-sm cursor-pointer text-primary-content" key={org}
               onClick={() => {
                 document.getElementById('organization').value = org.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()) // replace - with space and capitalize first letter of each word
 
