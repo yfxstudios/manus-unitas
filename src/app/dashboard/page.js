@@ -191,7 +191,7 @@ export default async function page() {
   const deleteUserHandler = async (email) => {
     'use server'
     // await api call to delete user
-    const res = await fetch(`https://conduit.matthewyak.com/api/users/${email}`, {
+    const res = await fetch(`https://matthewyak.com/api/users/${email}`, {
       method: 'DELETE'
     })
 
