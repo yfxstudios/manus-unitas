@@ -1,4 +1,17 @@
-import { SessionProvider } from "next-auth/react"
+'use client';
+import EventIcon from '@mui/icons-material/Event';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  motion,
+  useAnimation,
+  useInView,
+  useTransform,
+  useScroll,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
+import { PeopleAlt } from '@mui/icons-material';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
@@ -31,15 +44,124 @@ import { SessionProvider } from "next-auth/react"
 // By focusing on these aspects, you can develop a valuable SaaS that helps nonprofits streamline volunteer management, improve volunteer engagement, and ultimately achieve their mission more effectively.
 
 export default function Home() {
-  return (
-    <div>
-      {/* <h1>Manus Unitas</h1>
-      <p>
-        Manus Unitas is a volunteer management software that helps nonprofits
-        streamline their volunteer programs and engage their community more
-        effectively.
-      </p> */}
+  const ref = useRef(null);
 
-    </div>
+
+
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({ opacity: 1 });
+  }, [controls]);
+
+  const router = useRouter();
+  return (
+    <>
+      <div className="navbar bg-base-300 p-8 absolute top-0 z-[1]">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </div>
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[2] p-2 shadow bg-base-100 rounded-box w-52">
+              <li><Link href="/signin">Sign In</Link></li>
+              <li><Link href="/signup">Sign Up</Link></li>
+              <li><Link href="/pricing">Pricing</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
+            </ul>
+          </div>
+          <a className="btn btn-ghost text-2xl">Manus Unitas</a>
+        </div>
+
+        <div className="navbar-end hidden lg:flex">
+          <Link className="px-10 cursor-pointer text-xl" href="/signin">Sign In</Link>
+          <Link className="btn btn-lg btn-accent" href="/signup"
+          >Try Free</Link>
+        </div>
+      </div>
+
+
+      {/* <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center">
+        <div className="items-center flex flex-col text-center relative z-[1]">
+          <div className="max-w-xl mb-5">
+            <h1 className="mb-5 text-7xl font-bold text-white">Drive Change.<br /><span className="text-transparent bg-clip-text bg-gradient-to-t from-primary to-accent">Effortlessly</span></h1>
+          </div>
+          <div className="max-w-xl">
+            <p className="mb-5 text-2xl text-white font-light">Manus Unitas is a volunteer management software designed to help nonprofits streamline their volunteer programs and drive social impact.</p>
+            <button className="btn btn-lg btn-accent btn-outline">
+              <Link href="/signup">Get Started for Free</Link>
+            </button>
+          </div>
+        </div>
+
+        <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent z-[-1]"></div>
+      </div> */}
+
+      <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center">
+        <motion.div
+          className="items-center flex flex-col text-center relative z-[1]"
+          animate={controls}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <div className="max-w-xl mb-5">
+            <h1 className="mb-5 text-7xl font-bold text-white">Drive Change.<br /><span className="text-transparent bg-clip-text bg-gradient-to-t from-primary to-accent">Effortlessly</span></h1>
+          </div>
+          <div className="max-w-xl">
+            <p className="mb-5 text-2xl text-white font-light">Manus Unitas is a volunteer management software designed to help nonprofits streamline their volunteer programs and drive social impact.</p>
+            <button className="btn btn-lg btn-accent btn-outline">
+              <Link href="/signup">Get Started for Free</Link>
+            </button>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent z-[-1]"></div>
+
+      <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center">
+        <h1 className="text-5xl font-bold text-center mb-10">Features</h1>
+        <div className="flex flex-col space-y-8 max-w-2xl items-start">
+          <motion.div className="flex flex-col items-center"
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{
+              once: true,
+            }}
+          >
+            <PeopleAlt className="text-9xl text-accent" />
+            <h2 className="text-3xl font-bold text-center my-5">Volunteer Management</h2>
+            <p className="text-xl text-center">Volunteer sign-up and database, volunteer matching, communication tools, onboarding and training materials, volunteer hour tracking.</p>
+          </motion.div>
+          <div className="divider divider-vertical" />
+          <motion.div className="flex flex-col items-center"
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{
+              once: true,
+            }}
+          >
+            <EventIcon className="text-9xl text-accent" />
+            <h2 className="text-3xl font-bold text-center my-5">Scheduling and Events</h2>
+            
+            <p className="text-xl text-center">Calendar management, event creation and promotion, volunteer scheduling for events, task management, email and SMS reminders.</p>
+          </motion.div>
+          <div className="divider divider-vertical" />
+          <motion.div className="flex flex-col items-center"
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{
+              once: true,
+            }}
+          >
+            <AnalyticsIcon className="text-9xl text-accent" />
+            <h2 className="text-3xl font-bold text-center my-5">Additional Features</h2>
+            <p className="text-xl text-center">Reporting and analytics, mobile app, integrations, security and data privacy.</p>
+          </motion.div>
+        </div>
+      </div >
+    </>
   );
 }

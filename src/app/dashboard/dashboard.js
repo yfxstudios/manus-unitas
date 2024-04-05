@@ -76,7 +76,9 @@ export default function Dashboard(props) {
   const logoutHandler = async () => {
     setLoading(true)
 
-    await signOut();
+    await signOut({
+      callbackUrl: "/"
+    })
     await props.logoutHandler().then(() => {
       setLoading(false)
     })
@@ -117,7 +119,7 @@ export default function Dashboard(props) {
   // console.log("SORTED ", sortedEvents)
 
   const fetchRoles = async (type) => {
-    await fetch(`https://matthewyak.com/api/roles?type=${type}&organization=${props.user.organization.databaseName}`)
+    await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/roles/${type}?organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
@@ -125,8 +127,9 @@ export default function Dashboard(props) {
       })
   }
 
+
   const fetchAllRoles = async () => {
-    await fetch(`https://matthewyak.com/api/roles/all?organization=${props.user.organization.databaseName}`)
+    await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/roles/all?organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
@@ -338,7 +341,7 @@ export default function Dashboard(props) {
                           {/* depending on type of event, display different roles */}
                           {/* fetch /api/roles/{TYPE} to get roles */}
                           <option value="" disabled selected>Select Role</option>
-                          {roles.map((role) => (
+                          {allRoles.map((entry) => entry.roles).flat().filter((value, index, self) => self.indexOf(value) === index).map((role) => (
                             <option key={role} value={role}>{role}</option>
                           ))}
                         </select>
@@ -607,10 +610,10 @@ export default function Dashboard(props) {
                   // setBackground(false)
                 })
               }}>Save</button>
-              <button className="btn btn-error btn-outline" onClick={(e) => {
+              <button className="btn btn-error btn-outline" onClick={async (e) => {
                 setModalOpen(11)
                 setLoading(true)
-                props.deleteRoleHandler(props.roles.find((entry) => entry.roles.includes(selectedRole)).type, selectedRole).then(() => {
+                await props.deleteRoleHandler(props.roles.find((entry) => entry.roles.includes(selectedRole)).type, selectedRole).then(() => {
                   setLoading(false)
                 })
                 fetchAllRoles()
@@ -637,14 +640,13 @@ export default function Dashboard(props) {
               </select>
               <label htmlFor="role">Role</label>
               <input type="text" id="role" className="input text-neutral-content" />
-              <button className="btn btn-primary" onClick={(e) => {
+              <button className="btn btn-primary" onClick={async (e) => {
                 setLoading(true)
-                props.createRoleHandler(document.getElementById("role").value, document.getElementById("type").value).then(() => {
+                await props.createRoleHandler(document.getElementById("role").value, document.getElementById("type").value).then(() => {
                   setLoading(false)
                   setModalOpen(11)
-                  fetchAllRoles()
                 })
-
+                fetchAllRoles()
               }}>Create</button>
               <button className="btn btn-error btn-outline" onClick={(e) => {
                 setModalOpen(11)
@@ -938,9 +940,13 @@ export default function Dashboard(props) {
                           })
                         }}>
                           <option value="" selected>{volunteer.role}</option>
-                          {roles.filter((role) => role !== volunteer.role).map((role) => (
+                          {/* {roles.filter((role) => role !== volunteer.role).map((role) => (
+                            <option key={role} value={role}>{role}</option>
+                          ))} */}
+                          {allRoles.find((entry) => entry.type === selectedEvent.type).roles.filter((role) => role !== volunteer.role).map((role) => (
                             <option key={role} value={role}>{role}</option>
                           ))}
+
                         </select>
                       </li>
                     ))}
