@@ -9,11 +9,14 @@ import {
   useTransform,
   useScroll,
 } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PeopleAlt } from "@mui/icons-material";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import TransitionLink from "./components/TransitionLink";
 import Footer from "./components/Footer";
+import Image from "next/image";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
 
@@ -45,18 +48,121 @@ import Footer from "./components/Footer";
 // By focusing on these aspects, you can develop a valuable SaaS that helps nonprofits streamline volunteer management, improve volunteer engagement, and ultimately achieve their mission more effectively.
 
 export default function Home() {
+  const backgroundImage = useRef(null)
+
+  const feature1 = useRef(null)
+  const feature2 = useRef(null)
+  const feature3 = useRef(null)
+
+  const [loading, setLoading] = useState(true);
+
+
+
+  useLayoutEffect(() => {
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: document.documentElement,
+        start: "top",
+        end: "+=500px",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    timeline
+      .from(backgroundImage.current, { clipPath: "inset(15%)" })
+      .to(backgroundImage.current, { clipPath: "inset(0%)" }, 0);
+
+    const feature1Timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: feature1.current,
+        start: "top 90%",
+        end: "bottom 20%",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    feature1Timeline
+      .from(feature1.current, { x: -100, opacity: 0 })
+      .to(feature1.current, { x: 0, opacity: 1 });
+
+    const feature2Timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: feature2.current,
+        start: "top 90%",
+        end: "bottom 20%",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    feature2Timeline
+      .from(feature2.current, { x: 100, opacity: 0 })
+      .to(feature2.current, { x: 0, opacity: 1 });
+
+    const feature3Timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: feature3.current,
+        start: "top 90%",
+        end: "bottom 20%",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    feature3Timeline
+      .from(feature3.current, { x: -100, opacity: 0 })
+      .to(feature3.current, { x: 0, opacity: 1 });
+
+  }, []);
+
+  useEffect(() => {
+
+    (
+      async () => {
+        const LocomotiveScroll = (await import('locomotive-scroll')).default
+        const locomotiveScroll = new LocomotiveScroll();
+      }
+    )()
+
+  }, [])
   const ref = useRef(null);
 
   const controls = useAnimation();
+
+
 
   useEffect(() => {
     controls.start({ opacity: 1 });
   }, [controls]);
 
-  const router = useRouter();
+
+  useLayoutEffect(() => {
+    setLoading(false);
+  }, []);
+
+
+
   return (
     <>
-      <div className="navbar bg-base-300 p-8 absolute top-0 z-[1]">
+      {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-base-300 flex items-center justify-center z-[9999]">
+          <div className="loading ease-linear rounded-full border-8 border-t-8 border-gray-200 h-64 w-64"></div>
+        </div>
+      )}
+      <Image
+        src="/images/background.jpeg"
+        layout="fill"
+        objectFit="cover"
+        alt="Background"
+        className="absolute top-0 left-0 z-[-1] h-[140vw] w-full filter brightness-50"
+        ref={backgroundImage}
+      />
+      <div className="navbar bg-base-300 p-8 absolute top-0 z-[1] bg-opacity-0">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -107,32 +213,17 @@ export default function Home() {
             Try Free
           </TransitionLink>
         </div>
-      </div>
+      </div >
 
-      {/* <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center">
-        <div className="items-center flex flex-col text-center relative z-[1]">
-          <div className="max-w-xl mb-5">
-            <h1 className="mb-5 text-7xl font-bold text-white">Drive Change.<br /><span className="text-transparent bg-clip-text bg-gradient-to-t from-primary to-accent">Effortlessly</span></h1>
-          </div>
-          <div className="max-w-xl">
-            <p className="mb-5 text-2xl text-white font-light">Manus Unitas is a volunteer management software designed to help nonprofits streamline their volunteer programs and drive social impact.</p>
-            <button className="btn btn-lg btn-accent btn-outline">
-              <Link href="/signup">Get Started for Free</Link>
-            </button>
-          </div>
-        </div>
 
-        <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent z-[-1]"></div>
-      </div> */}
-
-      <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center">
+      <div div className="min-h-screen bg-base-300 flex flex-col items-center justify-center bg-opacity-0" >
         <motion.div
-          className="items-center flex flex-col text-center relative z-[1]"
+          className="items-center flex flex-col text-center relative "
           animate={controls}
           initial={{ opacity: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="max-w-xl mb-5">
+          <div className="relative max-w-xl mb-5 z-[1]" data-scroll data-scroll-speed=".7">
             <h1 className="mb-5 text-7xl font-bold text-white">
               Drive Change.
               <br />
@@ -141,7 +232,7 @@ export default function Home() {
               </span>
             </h1>
           </div>
-          <div className="max-w-xl">
+          <div className="relative max-w-xl z-[1]" data-scroll data-scroll-speed=".1">
             <p className="mb-5 text-2xl text-white font-light">
               Manus Unitas is a volunteer management software designed to help
               nonprofits streamline their volunteer programs and drive social
@@ -154,20 +245,13 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent z-[-1]"></div>
 
       <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center py-20">
         <h1 className="text-5xl font-bold text-center mb-10">Features</h1>
         <div className="flex flex-col space-y-8 max-w-2xl items-start">
-          <motion.div
+          <div
             className="flex flex-col items-center"
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{
-              once: true,
-              margin: "-300px",
-            }}
+            ref={feature1}
           >
             <PeopleAlt className="text-9xl text-accent" />
             <h2 className="text-3xl font-bold text-center my-5">
@@ -177,17 +261,11 @@ export default function Home() {
               Volunteer sign-up and database, volunteer matching, communication
               tools, onboarding and training materials, volunteer hour tracking.
             </p>
-          </motion.div>
+          </div>
           <div className="divider divider-vertical" />
-          <motion.div
+          <div
             className="flex flex-col items-center"
-            initial={{ opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{
-              once: true,
-              margin: "-300px",
-            }}
+            ref={feature2}
           >
             <EventIcon className="text-9xl text-accent" />
             <h2 className="text-3xl font-bold text-center my-5">
@@ -198,17 +276,12 @@ export default function Home() {
               Calendar management, event creation and promotion, volunteer
               scheduling for events, task management, email and SMS reminders.
             </p>
-          </motion.div>
+          </div>
           <div className="divider divider-vertical" />
-          <motion.div
+          <div
             className="flex flex-col items-center"
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{
-              once: true,
-              margin: "-300px",
-            }}
+            ref={feature3}
+
           >
             <AnalyticsIcon className="text-9xl text-accent" />
             <h2 className="text-3xl font-bold text-center my-5">
@@ -218,7 +291,18 @@ export default function Home() {
               Reporting and analytics, mobile app, integrations, security and
               data privacy.
             </p>
-          </motion.div>
+          </div>
+        </div>
+      </div>
+      <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent items-center justify-center flex flex-col">
+        {/* Call to Action */}
+        <div className="flex flex-col items-center justify-center text-center text-white">
+          <h2 className="text-5xl font-bold mb-10">Ready to get started?</h2>
+          <p className="text-xl mb-10">
+            Start streamlining your volunteer programs and driving social impact today.</p>
+          <button className="btn btn-lg btn-secondary">
+            <Link href="/signup">Sign Up Now</Link>
+          </button>
         </div>
       </div>
 
