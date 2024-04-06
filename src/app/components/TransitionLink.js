@@ -1,7 +1,8 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { animatePageOut } from "@/utils/animations";
+import { animatePageOut, animatePageIn } from "@/utils/animations";
+import { useLayoutEffect } from "react";
 
 const TransitionLink = ({ href, children, className }) => {
   const router = useRouter();
@@ -12,6 +13,8 @@ const TransitionLink = ({ href, children, className }) => {
       animatePageOut(href, router);
     }
   };
+
+
 
   return (
     <div onClick={handleClick} className={className}>

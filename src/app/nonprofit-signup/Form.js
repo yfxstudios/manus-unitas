@@ -139,7 +139,7 @@ export default function Form(props) {
             } else if (response === 'Organization already exists') {
               alert('Organization already exists')
             } else if (response === 'success') {
-              router.push('/next-steps')
+              router.push('/dashboard')
             } else {
               alert(response)
             }

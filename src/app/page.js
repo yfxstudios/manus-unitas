@@ -54,7 +54,6 @@ export default function Home() {
   const feature2 = useRef(null)
   const feature3 = useRef(null)
 
-  const [loading, setLoading] = useState(true);
 
 
 
@@ -137,23 +136,14 @@ export default function Home() {
 
 
   useEffect(() => {
-    controls.start({ opacity: 1 });
+    // controls.start({ opacity: 1 }); delay of .8s
+    controls.start({ opacity: 1, animationDelay: 0.8 });
   }, [controls]);
-
-
-  useLayoutEffect(() => {
-    setLoading(false);
-  }, []);
 
 
 
   return (
     <>
-      {loading && (
-        <div className="fixed top-0 left-0 w-screen h-screen bg-base-300 flex items-center justify-center z-[9999]">
-          <div className="loading ease-linear rounded-full border-8 border-t-8 border-gray-200 h-64 w-64"></div>
-        </div>
-      )}
       <Image
         src="/images/background.jpeg"
         layout="fill"
@@ -239,7 +229,7 @@ export default function Home() {
               impact.
             </p>
             <button className="btn btn-lg btn-accent btn-outline">
-              <Link href="/signup">Get Started for Free</Link>
+              <TransitionLink href="/signup">Get Started for Free</TransitionLink>
             </button>
           </div>
         </motion.div>
@@ -301,7 +291,7 @@ export default function Home() {
           <p className="text-xl mb-10">
             Start streamlining your volunteer programs and driving social impact today.</p>
           <button className="btn btn-lg btn-secondary">
-            <Link href="/signup">Sign Up Now</Link>
+            <TransitionLink href="/signup">Sign Up Now</TransitionLink>
           </button>
         </div>
       </div>

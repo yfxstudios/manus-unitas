@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import TransitionLink from '../components/TransitionLink'
 
 export default function SignUp() {
   const router = useRouter()
@@ -35,13 +36,11 @@ export default function SignUp() {
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h1 className="text-3xl font-bold text-center mb-8 text-primary-content">Sign Up</h1>
           <div className="mb-4">
-            <button className="btn btn-primary w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={() => router.push('/volunteer-signup')}>
-              Volunteer Sign Up
+            <button className="btn btn-primary w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              <TransitionLink href="/volunteer-signup">Volunteer Sign Up</TransitionLink>
             </button>
-            <button className="btn btn-secondary w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
-              onClick={() => router.push('/nonprofit-signup')}>
-              Nonprofit Sign Up
+            <button className="btn btn-secondary w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">
+              <TransitionLink href="/nonprofit-signup">Nonprofit Sign Up</TransitionLink>
             </button>
           </div>
         </div>
