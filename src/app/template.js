@@ -5,6 +5,8 @@ import { animatePageIn } from "@/utils/animations";
 import { usePathname } from "next/navigation";
 
 export default function Template({ children }) {
+
+
   useLayoutEffect(() => {
     animatePageIn(pathname);
   }, []);

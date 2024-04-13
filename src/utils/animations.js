@@ -1,6 +1,9 @@
 import gsap from "gsap";
 
 export const animatePageIn = (pathname) => {
+  if (typeof window !== "undefined") {
+    document.body.style.overflow = 'auto';
+  }
 
 
   const bannerOne = document.getElementById("banner-1");
