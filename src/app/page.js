@@ -1,15 +1,11 @@
 "use client";
 import EventIcon from "@mui/icons-material/Event";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   motion,
-  useAnimation,
-  useInView,
-  useTransform,
-  useScroll,
+  useAnimation
 } from "framer-motion";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { PeopleAlt } from "@mui/icons-material";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import TransitionLink from "./components/TransitionLink";
@@ -17,6 +13,8 @@ import Footer from "./components/Footer";
 import Image from "next/image";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
+
+import { useGSAP } from '@gsap/react'
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
 
@@ -54,10 +52,16 @@ export default function Home() {
   const feature2 = useRef(null)
   const feature3 = useRef(null)
 
+  const getStarted = useRef(null)
+
+  const signUpHeading = useRef(null)
+  const signUpText = useRef(null)
+  const signUpBtn = useRef(null)
 
 
 
-  useLayoutEffect(() => {
+  useGSAP((context) => {
+    console.log(context)
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -78,8 +82,8 @@ export default function Home() {
     const feature1Timeline = gsap.timeline({
       scrollTrigger: {
         trigger: feature1.current,
-        start: "top 90%",
-        end: "bottom 20%",
+        start: "top bottom",
+        end: "bottom 60%",
         scrub: true,
         markers: false,
       },
@@ -87,13 +91,16 @@ export default function Home() {
 
     feature1Timeline
       .from(feature1.current, { x: -100, opacity: 0 })
-      .to(feature1.current, { x: 0, opacity: 1 });
+      .to(feature1.current, {
+        x: 0,
+        opacity: 1
+      });
 
     const feature2Timeline = gsap.timeline({
       scrollTrigger: {
         trigger: feature2.current,
-        start: "top 90%",
-        end: "bottom 20%",
+        start: "top bottom",
+        end: "bottom 60%",
         scrub: true,
         markers: false,
       },
@@ -106,8 +113,8 @@ export default function Home() {
     const feature3Timeline = gsap.timeline({
       scrollTrigger: {
         trigger: feature3.current,
-        start: "top 90%",
-        end: "bottom 20%",
+        start: "top bottom",
+        end: "bottom 60%",
         scrub: true,
         markers: false,
       },
@@ -117,16 +124,65 @@ export default function Home() {
       .from(feature3.current, { x: -100, opacity: 0 })
       .to(feature3.current, { x: 0, opacity: 1 });
 
-  }, []);
+
+    const signUpHeadingTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: getStarted.current,
+        start: "top bottom",
+        end: "bottom 60%",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    signUpHeadingTimeline
+      .from(signUpHeading.current, { y: 100, opacity: 0 })
+      .to(signUpHeading.current, { y: 0, opacity: 1 });
+
+    const signUpTextTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: getStarted.current,
+        start: "top bottom",
+        end: "bottom 60%",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    signUpTextTimeline
+      .from(signUpText.current, { y: 100, opacity: 0 })
+      .to(signUpText.current, { y: 0, opacity: 1 });
+
+    const signUpBtnTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: signUpBtn.current,
+        start: "top bottom",
+        end: "bottom 60%",
+        scrub: true,
+        markers: false,
+      },
+    });
+
+    signUpBtnTimeline
+      .from(signUpBtn.current, { y: 100, opacity: 0 })
+      .to(signUpBtn.current, { y: 0, opacity: 1 });
+
+  }, [])
 
   useEffect(() => {
 
     (
       async () => {
         const LocomotiveScroll = (await import('locomotive-scroll')).default
-        const locomotiveScroll = new LocomotiveScroll();
+        const locomotiveScroll = new LocomotiveScroll({
+          lenisOptions: {
+            wheelMultiplier: .6,
+          }
+        })
       }
+
     )()
+
 
   }, [])
   const ref = useRef(null);
@@ -143,13 +199,13 @@ export default function Home() {
 
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <Image
-        src="/images/background.jpeg"
+        src="/images/AdobeStock_275873051.jpeg"
         layout="fill"
         objectFit="cover"
         alt="Background"
-        className="absolute top-0 left-0 z-[-1] h-[140vw] w-full filter brightness-50"
+        className="absolute top-0 left-0 z-[-1] h-[140vw] w-full filter brightness-[.4]"
         ref={backgroundImage}
       />
       <div className="navbar bg-base-300 p-8 absolute top-0 z-[1] bg-opacity-0">
@@ -213,8 +269,9 @@ export default function Home() {
           initial={{ opacity: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="relative max-w-xl mb-5 z-[1]" data-scroll data-scroll-speed=".7">
-            <h1 className="mb-5 text-7xl font-bold text-white">
+          <div className="relative max-w-xl mb-5 z-[1] 
+          " data-scroll data-scroll-speed=".7">
+            <h1 className="mb-5 text-5xl font-bold text-white md:text-8xl">
               Drive Change.
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-t from-primary to-accent">
@@ -223,7 +280,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="relative max-w-xl z-[1]" data-scroll data-scroll-speed=".1">
-            <p className="mb-5 text-2xl text-white font-light">
+            <p className="mb-5 text-xl text-white font-light md:text-2xl px-5">
               Manus Unitas is a volunteer management software designed to help
               nonprofits streamline their volunteer programs and drive social
               impact.
@@ -236,7 +293,7 @@ export default function Home() {
       </div>
 
 
-      <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center py-20">
+      <div className="min-h-screen bg-base-300 flex flex-col items-center justify-center py-20 px-5">
         <h1 className="text-5xl font-bold text-center mb-10">Features</h1>
         <div className="flex flex-col space-y-8 max-w-2xl items-start">
           <div
@@ -244,7 +301,7 @@ export default function Home() {
             ref={feature1}
           >
             <PeopleAlt className="text-9xl text-accent" />
-            <h2 className="text-3xl font-bold text-center my-5">
+            <h2 className="text-4xl font-bold text-center my-5">
               Volunteer Management
             </h2>
             <p className="text-xl text-center">
@@ -258,7 +315,7 @@ export default function Home() {
             ref={feature2}
           >
             <EventIcon className="text-9xl text-accent" />
-            <h2 className="text-3xl font-bold text-center my-5">
+            <h2 className="text-4xl font-bold text-center my-5">
               Scheduling and Events
             </h2>
 
@@ -274,7 +331,7 @@ export default function Home() {
 
           >
             <AnalyticsIcon className="text-9xl text-accent" />
-            <h2 className="text-3xl font-bold text-center my-5">
+            <h2 className="text-4xl font-bold text-center my-5">
               Additional Features
             </h2>
             <p className="text-xl text-center">
@@ -286,17 +343,23 @@ export default function Home() {
       </div>
       <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent items-center justify-center flex flex-col">
         {/* Call to Action */}
-        <div className="flex flex-col items-center justify-center text-center text-white">
-          <h2 className="text-5xl font-bold mb-10">Ready to get started?</h2>
-          <p className="text-xl mb-10">
+        <div className="flex flex-col items-center justify-center text-center text-white" ref={getStarted}>
+          <h2 className="text-5xl font-bold mb-10"
+            ref={signUpHeading}
+          >Ready to get started?</h2>
+          <p className="text-xl mb-10"
+            ref={signUpText}
+          >
             Start streamlining your volunteer programs and driving social impact today.</p>
-          <button className="btn btn-lg btn-secondary">
+          <button className="btn btn-lg btn-secondary"
+            ref={signUpBtn}
+          >
             <TransitionLink href="/signup">Sign Up Now</TransitionLink>
           </button>
-        </div>
+        </div >
       </div>
 
       <Footer />
-    </>
+    </div >
   );
 }

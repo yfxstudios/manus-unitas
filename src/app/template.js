@@ -3,6 +3,7 @@
 import { useLayoutEffect } from "react";
 import { animatePageIn } from "@/utils/animations";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from 'react';
 
 export default function Template({ children }) {
   useLayoutEffect(() => {
@@ -16,6 +17,7 @@ export default function Template({ children }) {
     );
   }
 
+  const { width } = useWindowDimensions();
 
   return (
     <div>
@@ -26,4 +28,38 @@ export default function Template({ children }) {
       {children}
     </div>
   );
+
+}
+
+
+
+function getWindowDimensions() {
+  if (typeof window === 'undefined') {
+    return {
+      width: 0,
+      height: 0
+    };
+  }
+
+  const { innerWidth, innerHeight } = window;
+
+  return {
+    width: innerWidth,
+    height: innerHeight
+  };
+}
+
+function useWindowDimensions() {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowDimensions;
 }
