@@ -5,5 +5,5 @@ export const config = {
   matcher: [
     "/dashboard",
   ],
-  
+  redirect: "/signin",
 }

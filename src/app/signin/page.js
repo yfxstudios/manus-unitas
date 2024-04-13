@@ -3,12 +3,36 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import verifySignIn from '../verifySignIn';
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export default function SignIn() {
   const router = useRouter();
 
+  const buttonRef = useRef(null);
+  const modalRef = useRef(null);
+
+  // get search params from URL
+
+  let params = null;
+
+  if (typeof window !== 'undefined') {
+    params = new URLSearchParams(window.location.search);
+  }
+
+
+
   const [signedIn, setSignedIn] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (params && params.get('error')) {
+      if (params.get('error') === 'User not found' || params.get('error') === 'Password incorrect') {
+        setError('Invalid email or password');
+      } else {
+        setError(params.get('error') + '. Contact support for help');
+      }
+    }
+  }, []);
 
   const isSignedIn = async () => {
     setSignedIn(await verifySignIn());
@@ -35,12 +59,22 @@ export default function SignIn() {
           e.preventDefault();
           const email = document.getElementById('email').value;
           const password = document.getElementById('password').value;
+
+          buttonRef.current.childNodes[0].nodeValue = 'Signing in...';
+          // create span element to show loading spinner
+          const spinner = document.createElement('span');
+          spinner.className = 'loading'
+
+          buttonRef.current.appendChild(spinner);
+          buttonRef.current.classList.add('disabled');
+
           const result = await signIn('credentials', {
             redirect: true,
             email,
             password,
             callbackUrl: '/dashboard'
           });
+
         }
         }>
           <label className="input input-bordered flex items-center gap-2">
@@ -55,8 +89,17 @@ export default function SignIn() {
           <button
             type='submit'
             className="btn btn-primary"
+            ref={buttonRef}
           >Sign In</button>
         </form>
+        {error && (
+          <div className="absolute bottom-4 right-4 z-50 rounded-lg p-4">
+            <div role="alert" className="alert alert-error drop-shadow-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>{error}</span>
+            </div>
+          </div>
+        )}
       </div>
     )
   } else {

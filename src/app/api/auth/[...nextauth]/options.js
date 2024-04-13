@@ -33,5 +33,8 @@ export const options = {
       }
     })
   ],
-    
+  pages: {
+    signIn: '/signin',
+    error: '/signin',
+  }
 }

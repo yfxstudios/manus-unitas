@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react'
 
 export default function NotAccepted(props) {
   const handleLogout = async () => {
-    await signOut()
+    await signOut({ callbackUrl: '/signin' })
     props.handleLogout()
   }
   return (
