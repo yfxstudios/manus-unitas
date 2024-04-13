@@ -5,7 +5,7 @@ import {
   motion,
   useAnimation
 } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { PeopleAlt } from "@mui/icons-material";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import TransitionLink from "./components/TransitionLink";
@@ -58,12 +58,23 @@ export default function Home() {
   const signUpText = useRef(null)
   const signUpBtn = useRef(null)
 
+  const [loaded, setLoaded] = useState(false);
+
   const [pricing, setPricing] = useState("monthly");
 
+  if (typeof window !== "undefined") {
+    document.body.style.overflow = "hidden";
+  }
 
 
-  useGSAP((context) => {
-    console.log(context)
+  useLayoutEffect(() => {
+    if (loaded) {
+      stopLoading();
+    } else {
+    }
+  }, [loaded]);
+
+  useGSAP(() => {
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -209,6 +220,7 @@ export default function Home() {
         alt="Background"
         className="absolute top-0 left-0 z-[-1] h-[140vw] w-full filter brightness-[.4]"
         ref={backgroundImage}
+        onLoad={() => setLoaded(true)}
       />
       <div className="navbar bg-base-300 p-8 absolute top-0 z-[1] bg-opacity-0">
         <div className="navbar-start">
@@ -509,3 +521,17 @@ export default function Home() {
   );
 }
 
+
+
+const stopLoading = () => {
+  const loadingScreen = document.getElementById('loading-screen');
+
+  const tl = gsap.timeline();
+  tl.to(loadingScreen, {
+    opacity: 0, duration: 1, onComplete: () => {
+      loadingScreen.style.display = 'none';
+    }, onStart: () => {
+      document.body.style.overflow = 'auto';
+    }
+  })
+}

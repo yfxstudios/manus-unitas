@@ -1,10 +1,15 @@
 import gsap from "gsap";
 
-export const animatePageIn = () => {
+export const animatePageIn = (pathname) => {
+
+
   const bannerOne = document.getElementById("banner-1");
   const bannerTwo = document.getElementById("banner-2");
   const bannerThree = document.getElementById("banner-3");
   const bannerFour = document.getElementById("banner-4");
+  if (pathname === "/") {
+    return
+  }
 
   if (bannerOne && bannerTwo && bannerThree && bannerFour) {
     const tl = gsap.timeline();

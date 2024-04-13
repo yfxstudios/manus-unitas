@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 export default function Template({ children }) {
   useLayoutEffect(() => {
-    animatePageIn();
+    animatePageIn(pathname);
   }, []);
 
   const pathname = usePathname();
@@ -16,6 +16,16 @@ export default function Template({ children }) {
     );
   }
 
+  if (pathname === "/") {
+    return (
+      <div>
+        <div className="min-h-screen w-screen bg-neutral-950 fixed top-0 left-0 z-[1000]" id="loading-screen">
+          <span className="loading loading-ring loading-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div>
