@@ -11,3 +11,8 @@ export default async function verifySignIn() {
     return true
   }
 }
+
+export async function getSession() {
+  const session = await getServerSession(options)
+  return session
+}

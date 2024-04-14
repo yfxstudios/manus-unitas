@@ -1,11 +1,13 @@
 'use client'
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import verifySignIn from '../verifySignIn';
+import verifySignIn, { getSession } from '../verifySignIn';
 
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function SignIn() {
+  let session = getSession();
+
   const router = useRouter();
 
   const buttonRef = useRef(null);
@@ -21,7 +23,7 @@ export default function SignIn() {
 
 
 
-  const [signedIn, setSignedIn] = useState(null);
+  const [signedIn, setSignedIn] = useState(verifySignIn());
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -32,15 +34,16 @@ export default function SignIn() {
         setError(params.get('error') + '. Contact support for help');
       }
     }
-  }, []);
-
-  const isSignedIn = async () => {
-    setSignedIn(await verifySignIn());
-  }
+  }, [params]);
 
   useEffect(() => {
-    isSignedIn()
-  }, []);
+    if (session.user) {
+      setSignedIn(true);
+    } else {
+      setSignedIn(false);
+    }
+  }, [session])
+
 
   if (signedIn) {
     router.push('/dashboard');
