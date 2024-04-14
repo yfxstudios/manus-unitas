@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { longDate } from "@/lib/util/date";
 import { standardTime } from "@/lib/util/time";
+import { revalidatePath } from "next/cache";
 
 
 export default function Dashboard(props) {
@@ -21,9 +22,12 @@ export default function Dashboard(props) {
 
   const [eventInfo, setEventInfo] = useState({})
 
-  const [newRole, setNewRole] = useState({
+  const [newRole, setNewRole] = useState({})
 
-  })
+
+  const [tutorial, setTutorial] = useState(props.user.completedTutorial ? false : true)
+
+
 
   const events = props.events;
 
@@ -178,9 +182,7 @@ export default function Dashboard(props) {
             <AccountCircleIcon className="" />
           </div>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li>
-              <a onClick={logoutHandler}>Logout</a>
-            </li>
+
             {props.user.organization.admin && (
               <>
                 <li>
@@ -196,11 +198,41 @@ export default function Dashboard(props) {
                     setBackground(true)
                   }}>Roles</a>
                 </li>
+                <li>
+                  <a onClick={() => {
+                    setTutorial(true)
+                  }}>Tutorial</a>
+                </li>
               </>
             )}
+            <li>
+              <a onClick={logoutHandler}>Logout</a>
+            </li>
           </ul>
         </div>
       </div>
+
+      {tutorial && (
+        <div className="w-full h-full fixed bg-primary-content bg-opacity-50 z-10">
+          <div className="flex flex-col space-y-4 text-primary absolute top-[30%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded-2xl w-[40vw] z-10">
+            <h3 className="text-lg font-semibold">Welcome to the Dashboard</h3>
+            <p className="text-primary-content">This is where you can view and manage your schedule, accept or decline users, and create events.</p>
+            <p className="text-primary-content">{`To get started, click on the "Create Event" button to create an event.`}</p>
+            <p className="text-primary-content">{`To view all events, click on the "View All Events" button.`}</p>
+            <p className="text-primary-content">{`To accept or decline users, click on the "Accept Users" button.`}</p>
+            <p className="text-primary-content">{`To view all people, click on the "People" button.`}</p>
+            <p className="text-primary-content">{`To view all roles, click on the "Roles" button.`}</p>
+            <br />
+            <p className="text-primary-content">This information can be found under the menu in the top-right corner</p>
+            <button className="btn btn-primary" onClick={async () => {
+              setTutorial(false)
+              await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/endTutorial?user=${props.user._id}`, {
+                method: "POST"
+              })
+            }}>Got it!</button>
+          </div>
+        </div>
+      )}
 
       <div className="w-[35vw] mx-auto mt-8">
         <div className="flex flex-row items-center justify-between mb-4">
@@ -280,7 +312,7 @@ export default function Dashboard(props) {
                   <ul>
                     {props.people.map((person) => (
                       <li key={person._id} className="flex items-center p-4 rounded-lg space-x-4">
-                        <div className={`flex items-center border-b-[6px] cursor-pointer bg-gray-50 p-2 ${selectedPeople.includes(person) ? "border-success" : "border-neutral"}`}
+                        <div className={`flex items - center border - b - [6px] cursor - pointer bg - gray - 50 p - 2 ${selectedPeople.includes(person) ? "border-success" : "border-neutral"}`}
                           onClick={(e) => {
                             if (selectedPeople.includes(person)) {
                               setSelectedPeople(selectedPeople.filter((p) => p !== person))
@@ -378,13 +410,13 @@ export default function Dashboard(props) {
                           {acceptedUsers.includes(person) && <p className="text-success">Accepted</p>}
                           {declinedUsers.includes(person) && <p className="text-error">Declined</p>}
                           <button
-                            className={`btn btn-primary ${acceptedUsers.includes(person) ? "btn-disabled" : ""}`}
+                            className={`btn btn - primary ${acceptedUsers.includes(person) ? "btn-disabled" : ""}`}
                             onClick={(e) => {
                               setAcceptedUsers([...acceptedUsers, person])
                               setDeclinedUsers(declinedUsers.filter((p) => p !== person))
                             }}>Accept</button>
                           <button
-                            className={`btn btn-error ${declinedUsers.includes(person) ? "btn-disabled" : ""}`}
+                            className={`btn btn - error ${declinedUsers.includes(person) ? "btn-disabled" : ""}`}
                             onClick={(e) => {
                               setDeclinedUsers([...declinedUsers, person])
                               setAcceptedUsers(acceptedUsers.filter((p) => p !== person))
@@ -432,6 +464,7 @@ export default function Dashboard(props) {
                     setModalOpen(0)
                     setBackground(false)
                     setSelectedPeople([])
+                    props.update()
                   }}>Apply</button>
                   <button className="btn btn-error" onClick={(e) => {
                     setModalOpen(4)
@@ -781,7 +814,7 @@ export default function Dashboard(props) {
               <ul className="flex flex-col space-y-6">
                 {/* {Object.values(selectedEvent.volunteers).map((volunteer) => (
                   <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
-                    <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 justify-between ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                    <div className={`flex items - center border - b - [6px] bg - gray - 50 p - 2 justify - between ${ volunteer.accepted?"border-success" : volunteer.declined?"border-error" : "border-neutral" }`}>
                       <p
                         className="text-primary-content"
                       >{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
@@ -795,7 +828,7 @@ export default function Dashboard(props) {
                     <ul>
                       {Object.values(selectedEvent.volunteers).filter((volunteer) => volunteer.role === role).map((volunteer) => (
                         <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
-                          <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                          <div className={`flex items - center border - b - [6px] bg - gray - 50 p - 2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
                             <p className="text-primary-content">{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
                           </div>
                         </li>
@@ -814,7 +847,7 @@ export default function Dashboard(props) {
 
 
         </div>
-      </div >
+      </div>
       <div className="w-[35vw] mx-auto mt-8">
         {selectedEvent ? (
           <div className="bg-white p-4 rounded-lg text-primary-content relative z-[2]">
@@ -852,7 +885,7 @@ export default function Dashboard(props) {
                   <ul>
                     {Object.values(selectedEvent.volunteers).map((volunteer) => (
                       <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
-                        <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                        <div className={`flex items - center border - b - [6px] bg - gray - 50 p - 2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
                           <p>{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
                         </div>
                         <p>{volunteer.role}</p>
@@ -928,7 +961,7 @@ export default function Dashboard(props) {
                   <ul>
                     {Object.values(selectedEvent.volunteers).map((volunteer) => (
                       <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
-                        <div className={`flex items-center border-b-[6px] bg-gray-50 p-2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
+                        <div className={`flex items - center border - b - [6px] bg - gray - 50 p - 2 ${volunteer.accepted ? "border-success" : volunteer.declined ? "border-error" : "border-neutral"}`}>
                           <p>{props.people.find((person) => person.username === volunteer.username).first_name} {props.people.find((person) => person.username === volunteer.username).last_name}</p>
                         </div>
                         <select className="select select-bordered text-neutral-content" name="role" id="role" onChange={(e) => {

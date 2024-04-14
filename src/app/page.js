@@ -189,7 +189,7 @@ export default function Home() {
         const LocomotiveScroll = (await import('locomotive-scroll')).default
         const locomotiveScroll = new LocomotiveScroll({
           lenisOptions: {
-            wheelMultiplier: .6,
+            wheelMultiplier: .3,
           }
         })
       }
@@ -198,7 +198,6 @@ export default function Home() {
 
 
   }, [])
-  const ref = useRef(null);
 
   const controls = useAnimation();
 
@@ -215,7 +214,7 @@ export default function Home() {
     <div className="overflow-x-hidden">
       <Image
         src="/images/AdobeStock_275873051.jpeg"
-        layout="fill"
+        fill
         objectFit="cover"
         alt="Background"
         className="absolute top-0 left-0 z-[-1] h-[140vw] w-full filter brightness-[.4]"
@@ -387,7 +386,7 @@ export default function Home() {
             </div>
           </div>
           <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-base-content bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:text-white">
+            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Starter</h3>
               <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best option for small nonprofits and organizations.</p>
               {pricing === "monthly" &&
@@ -426,9 +425,9 @@ export default function Home() {
                   <span>Basic reporting</span>
                 </li>
               </ul>
-              <TransitionLink href="/signup" className="btn btn-md btn-accent">Get started</TransitionLink>
+              <TransitionLink href="/signup/admin" className="btn btn-md btn-accent">Get started</TransitionLink>
             </div>
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 ">
+            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Business</h3>
               <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Relevant for medium-sized nonprofits and organizations.</p>
               {pricing === "monthly" &&
@@ -469,8 +468,7 @@ export default function Home() {
               </ul>
               <TransitionLink href="/signup" className="btn btn-md btn-accent">Get started</TransitionLink>
             </div>
-
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 bg-base-100 dark:text-white">
+            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Enterprise</h3>
               <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best for large nonprofits and organizations.</p>
               {pricing === "monthly" &&

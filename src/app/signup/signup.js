@@ -1,50 +1,150 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import React from 'react'
-import TransitionLink from '../components/TransitionLink'
 
-export default function SignUp() {
-  const router = useRouter()
+import { useState } from 'react'
+
+import phoneNumberFormatter from '@lib/util/phoneNumber'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { signIn } from 'next-auth/react'
+
+export default function VolunteerSignUp(props) {
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [passwordVisible, setPasswordVisible] = useState(false)
+
+  const [organizationSuggestions, setOrganizationSuggestions] = useState([])
 
 
 
-  //   Signup Options:
+  const handleSubmit = async () => {
+    const firstName = document.getElementById('first-name').value
+    const lastName = document.getElementById('last-name').value
+    const username = document.getElementById('username').value
+    const email = document.getElementById('email').value
+    const phone = document.getElementById('phone').value
+    const password = document.getElementById('password').value
+    const confirmPassword = document.getElementById('confirm-password').value
+    const terms = document.getElementById('terms').checked
 
-  // Offer clear and prominent signup options for both volunteers and nonprofits.
-  // Use contrasting colors or icons to differentiate between the two signup paths.
-  // Volunteer Signup Process:
+    const organization = document.getElementById('organization').value
 
-  // Start with a simple signup form asking for basic information such as name, email address, and password.
-  //     Optionally, allow volunteers to sign up using their social media accounts for added convenience.
-  // Prompt volunteers to complete their profiles by providing additional details such as skills, interests, availability, and preferred causes or organizations to volunteer with.
-  // Guide volunteers through an optional tour or tutorial highlighting key features and how to use them effectively.
-  // Nonprofit Signup Process:
+    if (firstName === '' || lastName === '' || email === '' || phone === '' || password === '' || confirmPassword === '') {
+      alert('Please fill out all fields')
+      return
+    }
 
-  // Request essential information from nonprofits such as organization name, contact person, email address, and organization type(e.g., 501(c)(3)).
-  // Ask nonprofits to provide details about their volunteer opportunities, including the types of roles available, time commitments, and preferred skills or qualifications.
-  // Offer the option for nonprofits to upload their logo and provide a brief description of their mission and activities.
-  // Guide nonprofits through setting up their volunteer opportunities, including event creation, scheduling, and volunteer management features.
-  // Confirmation and Verification:
+    if (password !== confirmPassword) {
+      alert('Passwords do not match')
+      return
+    }
 
-  // Send a verification email to both volunteers and nonprofits to confirm their registration and activate their accounts.
-  // Include clear instructions and a link to verify their email addresses to complete the signup process.
+    if (!terms) {
+      alert('Please agree to the terms and conditions')
+      return
+    }
+
+    if (organization === '') {
+      alert('Please select an organization')
+      return
+    }
+
+    // console.log(organization.trim().toLowerCase().replace(/ /g, '-'))
+
+    if (!props.organizations.find(org => org === organization.trim().toLowerCase().replace(/ /g, '-'))) {
+      alert('Please select an organization from the list')
+      return
+    }
+
+
+    const response = await props.handleSubmit({
+      first_name: firstName,
+      last_name: lastName,
+      username: username,
+      email: email,
+      phone: phone,
+      password: password,
+      organization: {
+        accepted: false,
+        displayName: organization,
+        admin: false
+      }
+    })
+
+    if (response === 'User already exists') {
+      alert('User already exists')
+    } else if (response === 'Username already exists') {
+      alert('Username already exists')
+    } else if (response === 'Organization already exists') {
+      alert('Organization already exists')
+    } else if (response === 'success') {
+      signIn('credentials', {
+        email: email,
+        password: password,
+        redirect: true,
+        callbackUrl: '/dashboard'
+      })
+    } else {
+      alert(response)
+    }
+  }
 
   return (
-    <div className="flex flex-row items-center justify-center min-h-screen py-2">
-      <div className="w-full max-w-md">
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <h1 className="text-3xl font-bold text-center mb-8 text-primary-content">Sign Up</h1>
-          <div className="mb-4">
-            <button className="btn btn-primary w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              <TransitionLink href="/volunteer-signup">Volunteer Sign Up</TransitionLink>
-            </button>
-            <button className="btn btn-secondary w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4">
-              <TransitionLink href="/nonprofit-signup">Nonprofit Sign Up</TransitionLink>
-            </button>
-          </div>
+    <div className="flex flex-col items-center justify-center h-screen" >
+      <h1 className="text-4xl font-bold mb-8">Volunteer Sign Up</h1>
+      <div className="flex flex-col items-center justify-center">
+        <input type="text" placeholder="First Name" className="input w-96 mb-4" id='first-name' />
+        <input type="text" placeholder="Last Name" className="input w-96 mb-4" id='last-name' />
+        <input type="text" placeholder="Username" className="input w-96 mb-4" id='username' />
+        <input type="email" placeholder="Email" className="input w-96 mb-4" id='email' />
+        <input type="tel" placeholder="Phone Number" className="input w-96 mb-4" value={phoneNumber} onChange={(e) => setPhoneNumber(phoneNumberFormatter(e))} id='phone' />
+        {/* <input type="text" placeholder='Password' className='input w-96 mb-4' /> */}
+        <div className="relative w-96 mb-4">
+          <input type={passwordVisible ? 'text' : 'password'} placeholder="Password" className="input w-full" id='password' />
+          <button className="absolute right-2 top-[50%] transform -translate-y-1/2" onClick={() => setPasswordVisible(!passwordVisible)}>
+            {passwordVisible ? <VisibilityOff /> : <Visibility />}
+          </button>
         </div>
+        <div className="relative w-96 mb-8">
+          <input type={passwordVisible ? 'text' : 'password'} placeholder="Confirm Password" className="input w-full" id='confirm-password' />
+          <button className="absolute right-2 top-[50%] transform -translate-y-1/2" onClick={() => setPasswordVisible(!passwordVisible)}>
+            {passwordVisible ? <VisibilityOff /> : <Visibility />}
+          </button>
+        </div>
+
+        <p className="text-sm mb-2">Find your organization</p>
+        <input type="text" placeholder="Organization" className="input w-96" id='organization' onChange={(e) => {
+
+          const value = e.target.value.trim().toLowerCase()
+
+          if (value === '') {
+            setOrganizationSuggestions([])
+            return
+          }
+
+          const suggestions = props.organizations.filter(org => org.toLowerCase().includes(value))
+          setOrganizationSuggestions(suggestions)
+        }} />
+        <div className="w-96 bg-white border border-gray-300 rounded mb-4">
+          {organizationSuggestions.map(org => (
+            <div className="p-2 border-b border-gray-300 text-sm cursor-pointer text-primary-content" key={org}
+              onClick={() => {
+                document.getElementById('organization').value = org.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()) // replace - with space and capitalize first letter of each word
+
+                setOrganizationSuggestions([])
+              }}>{org.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}</div>
+          ))}
+        </div>
+
+
+        <div className="flex flex-row items-center justify-between mb-4">
+          <input type="checkbox" id="terms" className="mr-2" />
+          <label htmlFor="terms" className="text-sm">I agree to the Terms of Service and Privacy Policy</label>
+        </div>
+        <button className="btn btn-primary btn-outline w-96"
+          onClick={handleSubmit}
+        >Sign Up</button>
       </div>
-    </div>
+    </div >
   )
 }
+

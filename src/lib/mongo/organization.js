@@ -1,4 +1,5 @@
 import client from './index';
+import { updateUser } from './users';
 
 let organizations;
 
@@ -59,15 +60,24 @@ export async function createOrganization(organization, user) {
       await organizations.insertOne(organization);
       await client.db(organization.databaseName).createCollection('events');
       await client.db(organization.databaseName).createCollection('roles');
+      await client.db(organization.databaseName).collection('roles').insertOne({ type: 'Default Roles', roles: ["Event Organizer", "Volunteer"] });
       await client.db(organization.databaseName).createCollection('people');
       await client.db(organization.databaseName).collection('people').insertOne({
-        first_name: user.firstName,
-        last_name: user.lastName,
+        first_name: user.first_name,
+        last_name: user.last_name,
         username: user.username,
         email: user.email,
         phone: user.phone,
         admin: true,
         accepted: true
+      });
+
+      // await updateUser(user._id, { organization: { databaseName: organization.databaseName, displayName: organization.displayName, admin: true, accepted: true, declined: false }, completedSignup: true });
+      await updateUser(user._id, {
+        $set: {
+          organization: { databaseName: organization.databaseName, displayName: organization.displayName, admin: true, accepted: true, declined: false },
+          completedSignup: true
+        }
       });
     } catch (error) {
       console.error(error);

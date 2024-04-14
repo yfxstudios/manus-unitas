@@ -1,5 +1,3 @@
-'use server'
-
 import { getEvents, updateEvent, getEvent, close, createEvent, deleteEvent } from "@/lib/mongo/events";
 import { acceptUserByEmail, getOrgMembers, getUserByEmail, acceptUser, declineUserByEmail, declineUser, deleteUser } from "@/lib/mongo/users";
 
@@ -12,6 +10,9 @@ import NotAccepted from "./notAccepted";
 import { createRole, createType, deleteRole, deleteType, getRoles, updateRole } from "@/lib/mongo/organization";
 
 
+export const metadata = {
+  title: "Dashboard | Manus Unitas",
+}
 
 
 
@@ -257,6 +258,6 @@ export default async function page() {
   }
 
   return (
-    <Dashboard events={filteredEvents} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} updateRoleHandler={updateRoleHandler} deleteRoleHandler={deleteRoleHandler} createRoleHandler={createRoleHandler} createTypeHandler={createTypeHandler} deleteTypeHandler={deleteTypeHandler} />
+    <Dashboard events={filteredEvents} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} updateRoleHandler={updateRoleHandler} deleteRoleHandler={deleteRoleHandler} createRoleHandler={createRoleHandler} createTypeHandler={createTypeHandler} deleteTypeHandler={deleteTypeHandler} update={update} />
   )
 }

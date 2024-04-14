@@ -50,11 +50,11 @@ export async function getUsers() {
 
 export async function getOrgMembers() {
   await init().catch(console.error)
-  if (org_members === undefined) {
-    return []
-  } else {
-    return org_members.find().toArray()
-  }
+  const { user } = await getServerSession(options)
+  const userEntry = await users.findOne({ email: user.email })
+  const organization = userEntry.organization.databaseName
+  org_members = client.db(organization).collection('people')
+  return org_members.find().toArray()
 }
 
 export async function acceptUser(id) {
@@ -87,7 +87,8 @@ export async function getUserByEmail(email) {
 
 export async function createUser(user) {
   await init().catch(console.error)
-  return users.insertOne(user)
+  const response = await users.insertOne(user)
+  return 'success'
 }
 
 export async function updateUser(id, user) {

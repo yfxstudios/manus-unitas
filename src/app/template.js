@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 
 export default function Template({ children }) {
 
+  const pathname = usePathname();
 
   useLayoutEffect(() => {
     animatePageIn(pathname);
-  }, []);
+  }, [pathname]);
 
-  const pathname = usePathname();
 
   if (pathname === "/dashboard") {
     return (<>{children}</>

@@ -32,6 +32,8 @@ export const animatePageOut = (href, router) => {
   const bannerThree = document.getElementById("banner-3");
   const bannerFour = document.getElementById("banner-4");
 
+  const loadingScreen = document.getElementById("loading-screen");
+
   const tl = gsap.timeline();
   if (bannerOne && bannerTwo && bannerThree && bannerFour) {
     tl.set([bannerOne, bannerTwo, bannerThree, bannerFour], {
@@ -42,6 +44,18 @@ export const animatePageOut = (href, router) => {
       onComplete: () => {
         router.push(href);
       },
+    });
+  } else if (loadingScreen) {
+    loadingScreen.style.display = "block";
+    loadingScreen.childNodes[0].style.display = "none"
+    tl.set(loadingScreen, {
+      opacity: 0,
+    }).to(loadingScreen, {
+      opacity: 1,
+      onComplete: () => {
+        router.push(href);
+      },
+      duration: 0.5,
     });
   }
 };
