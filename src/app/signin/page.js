@@ -1,16 +1,12 @@
 'use client'
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import verifySignIn, { getSession } from '../verifySignIn';
+import verifySignIn from '../verifySignIn';
 
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function SignIn() {
-
-  let session = getSession();
-
   const router = useRouter();
-  let callbackUrl = '/dashboard';
 
   const buttonRef = useRef(null);
   const modalRef = useRef(null);
@@ -25,7 +21,7 @@ export default function SignIn() {
 
 
 
-  const [signedIn, setSignedIn] = useState(verifySignIn());
+  const [signedIn, setSignedIn] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -36,19 +32,18 @@ export default function SignIn() {
         setError(params.get('error') + '. Contact support for help');
       }
     }
-  }, [params]);
+  }, []);
+
+  const isSignedIn = async () => {
+    setSignedIn(await verifySignIn());
+  }
 
   useEffect(() => {
-    if (session.user) {
-      setSignedIn(true);
-    } else {
-      setSignedIn(false);
-    }
-  }, [session])
-
+    isSignedIn()
+  }, []);
 
   if (signedIn) {
-    router.push("/dashboard");
+    router.push('/dashboard');
     return (
       <div>
         <h1>Redirecting...</h1>
