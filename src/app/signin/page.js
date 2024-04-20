@@ -6,9 +6,11 @@ import verifySignIn, { getSession } from '../verifySignIn';
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function SignIn() {
+
   let session = getSession();
 
   const router = useRouter();
+  let callbackUrl = '/dashboard';
 
   const buttonRef = useRef(null);
   const modalRef = useRef(null);
@@ -46,7 +48,7 @@ export default function SignIn() {
 
 
   if (signedIn) {
-    router.push('/dashboard');
+    router.push("/dashboard");
     return (
       <div>
         <h1>Redirecting...</h1>
