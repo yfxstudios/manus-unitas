@@ -189,7 +189,7 @@ export default function Home() {
         const LocomotiveScroll = (await import('locomotive-scroll')).default
         const locomotiveScroll = new LocomotiveScroll({
           lenisOptions: {
-            wheelMultiplier: .3,
+            wheelMultiplier: .5,
           }
         })
       }
@@ -207,7 +207,6 @@ export default function Home() {
     // controls.start({ opacity: 1 }); delay of .8s
     controls.start({ opacity: 1, animationDelay: 0.8 });
   }, [controls]);
-
 
 
   return (
@@ -393,7 +392,7 @@ export default function Home() {
                 (
                   <div className="flex flex-col my-8">
                     <div className="flex justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$29</span>
+                      <span className="mr-2 text-5xl font-extrabold">$15</span>
                       <span className="text-gray-500 dark:text-gray-400">/month</span>
                     </div>
                     <p className="text-sm  text-gray-500 dark:text-gray-400">&nbsp;</p>
@@ -401,7 +400,7 @@ export default function Home() {
                 ) || (
                   <div className="flex flex-col my-8">
                     <div className="justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$24</span>
+                      <span className="mr-2 text-5xl font-extrabold">$12</span>
                       <span className="text-gray-500 dark:text-gray-400">/month</span>
                     </div>
                     <p className="text-sm  text-gray-500 dark:text-gray-400">Billed annually</p>
@@ -466,7 +465,7 @@ export default function Home() {
                   <span>Advanced reporting</span>
                 </li>
               </ul>
-              <TransitionLink href="/signup" className="btn btn-md btn-accent">Get started</TransitionLink>
+              <TransitionLink href="/signup" className="btn btn-md btn-accent btn-disabled">Coming Soon</TransitionLink>
             </div>
             <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
               <h3 className="mb-4 text-2xl font-semibold">Enterprise</h3>
@@ -508,7 +507,7 @@ export default function Home() {
                   <span>Advanced reporting</span>
                 </li>
               </ul>
-              <TransitionLink href="/signup" className="btn btn-md btn-accent">Get started</TransitionLink>
+              <TransitionLink href="/signup" className="btn btn-md btn-accent btn-disabled">Coming Soon</TransitionLink>
             </div>
           </div>
         </div>

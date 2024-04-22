@@ -20,6 +20,7 @@ export default async function Page() {
       ...data,
       completedSignup: false,
       completedTutorial: false,
+      plan: 'none',
       organization: {
         admin: true,
         accepted: false,

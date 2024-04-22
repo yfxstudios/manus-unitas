@@ -37,8 +37,8 @@ export default async function page() {
 
 
     if (organizationName === '' || organizationType === '' || organizationDescription === '' || organizationWebsite === '' || organizationAddress === '' || organizationPhone === '' || organizationEmail === '' || organizationContactName === '' || organizationContactPhone === '' || organizationContactEmail === '') {
-      alert('Please fill out all fields')
-      return
+      // alert('Please fill out all fields')
+      return 'Please fill out all fields'
     }
 
     const response = await createOrganization({
@@ -60,7 +60,7 @@ export default async function page() {
     if (response === 'Organization already exists') {
       alert('Organization already exists')
     } else {
-      redirect('/dashboard')
+      redirect('/subscription')
     }
   }
 

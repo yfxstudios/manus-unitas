@@ -7,6 +7,9 @@ export default function Footer() {
       <aside>
         <Image src="/logo.svg" width={80} height={80} alt="Manus Unitas" style={{ filter: "grayscale(100%), brightness(0.5)" }} />
 
+        <h1 className="text-xl font-bold text-warning mt-4" >Currently in development, early access available upon request</h1>
+        <a href="/contact" className="text-lg mb-4">Contact Us</a>
+
         <p className="font-bold">
           Manus Unitas <br />
           Providing reliable solutions since 2023

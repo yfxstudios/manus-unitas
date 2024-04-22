@@ -12,6 +12,7 @@ import { revalidatePath } from "next/cache";
 
 export default function Dashboard(props) {
 
+
   const [background, setBackground] = useState(false) //<----------------------------------------------------- Change this to true to see the background color change
   const [modalOpen, setModalOpen] = useState(0)
   const [loading, setLoading] = useState(false)

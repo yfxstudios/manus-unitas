@@ -64,6 +64,9 @@ export async function acceptUser(id) {
 
 export async function declineUser(id) {
   await init().catch(console.error)
+  const { user } = await getServerSession(options)
+
+  await users.deleteOne({ email: user.email })
   return org_members.updateOne({ _id: new ObjectId(id) }, { $set: { accepted: false, declined: true } })
 }
 

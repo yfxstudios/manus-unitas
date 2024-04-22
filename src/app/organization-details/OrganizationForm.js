@@ -38,6 +38,12 @@ export default function OrganizationForm({ handleSubmit }) {
           const organizationContactName = document.getElementById('organization-contact-name').value
           const organizationContactPhone = document.getElementById('organization-contact-phone').value
           const organizationContactEmail = document.getElementById('organization-contact-email').value
+
+          if (organizationName === '' || organizationType === '' || organizationDescription === '' || organizationWebsite === '' || organizationAddress === '' || organizationPhone === '' || organizationEmail === '' || organizationContactName === '' || organizationContactPhone === '' || organizationContactEmail === '') {
+            alert('Please fill out all fields')
+            return
+          }
+
           handleSubmit({
             organizationName,
             organizationType,
