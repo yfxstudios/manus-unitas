@@ -75,6 +75,7 @@ export default function VolunteerSignUp(props) {
   return (
     <div className="flex flex-col items-center justify-center h-screen" >
       <h1 className="text-4xl font-bold mb-8">Administrator Sign Up</h1>
+      <a href="/signup" className="underline mb-8">Sign up as a volunteer</a>
       <div className="flex flex-col items-center justify-center">
         <input type="text" placeholder="First Name" className="input w-96 mb-4" id='first-name' />
         <input type="text" placeholder="Last Name" className="input w-96 mb-4" id='last-name' />

@@ -250,9 +250,6 @@ export default function Home() {
                 <Link href="/signup">Sign Up</Link>
               </li>
               <li>
-                <Link href="/pricing">Pricing</Link>
-              </li>
-              <li>
                 <Link href="/contact">Contact</Link>
               </li>
             </ul>
@@ -267,7 +264,7 @@ export default function Home() {
           >
             Sign In
           </TransitionLink>
-          <TransitionLink className="btn btn-lg btn-accent" href="/signup">
+          <TransitionLink className="btn btn-lg btn-accent" href="/signup/admin">
             Try Free
           </TransitionLink>
         </div>
