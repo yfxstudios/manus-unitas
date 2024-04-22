@@ -7,7 +7,7 @@ export default function Subscription() {
   const [pricing, setPricing] = React.useState("monthly")
   return (
     <div className="min-h-screen flex flex-col w-full p-10 items-center justify-center">
-      <h1 className="text-4xl font-bold text-center max-w-md">Choose the plan that's right for you</h1>
+      <h1 className="text-4xl font-bold text-center max-w-md">{`Choose the plan that's right for you`}</h1>
 
       <section className="w-full">
         <div className="py-12 px-4 mx-auto max-w-screen-xl lg:px-6">
