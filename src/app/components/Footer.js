@@ -9,12 +9,13 @@ export default function Footer() {
 
         <h1 className="text-xl font-bold text-warning mt-4" >Currently in development, early access available upon request</h1>
         <a href="/contact" className="text-lg mb-4">Contact Us</a>
-
         <p className="font-bold">
           Manus Unitas <br />
           Providing reliable solutions since 2023
         </p>
-        <p>Copyright © 2024 - All right reserved</p>
+        <p className="mb-4">Copyright © 2024 - All right reserved</p>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms and Conditions</a>
       </aside>
       <nav>
         <div className="grid grid-flow-col gap-4">
