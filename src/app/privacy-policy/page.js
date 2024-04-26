@@ -5,10 +5,10 @@ export default function page() {
     <div className="mx-auto max-w-3xl p-4 my-16">
       <h1 className="text-3xl font-bold">Privacy Policy</h1>
       <p>
-        This privacy policy applies to the Manus Unitas app (hereby referred to
+        {`This privacy policy applies to the Manus Unitas app (hereby referred to
         as "Application") for mobile devices that was created by Matthew
         Yakligian (hereby referred to as "Service Provider") as a Commercial
-        service. This service is intended for use "AS IS".
+        service. This service is intended for use "AS IS".`}
       </p>
       <br />
       <h1 className="text-xl font-bold">Information Collection and Use</h1>

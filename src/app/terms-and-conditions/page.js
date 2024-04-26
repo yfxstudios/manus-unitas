@@ -6,10 +6,10 @@ export default function page() {
       <strong>Terms &amp; Conditions</strong>
       <br />
       <p>
-        These terms and conditions applies to the Manus Unitas app (hereby
+        {`These terms and conditions applies to the Manus Unitas app (hereby
         referred to as "Application") for mobile devices that was created by
         Matthew Yakligian (hereby referred to as "Service Provider") as a
-        Commercial service.
+        Commercial service.`}
       </p>
       <br />
       <p>
