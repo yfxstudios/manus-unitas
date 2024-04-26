@@ -17,7 +17,7 @@ export default function page() {
         information may include information such as
       </p>
       <ul>
-        <li>Your device's Internet Protocol address (e.g. IP address)</li>
+        <li>{`Your device's Internet Protocol address (e.g. IP address)`}</li>
         <li>
           The pages of the website that you visit, the time and date of your
           visit, the time spent on those pages
@@ -38,9 +38,9 @@ export default function page() {
         display: "none"
       }}>
         <p>
-          Manus Unitas collects your device's approximate location, which helps the
+          {`Manus Unitas collects your device's approximate location, which helps the
           Service Provider determine your approximate geographical location and
-          make use of in below ways:
+          make use of in below ways:`}
         </p>
         <ul>
           <li>
@@ -136,10 +136,10 @@ export default function page() {
       <br />
       <h1 className="text-xl font-bold">Data Retention Policy</h1>
       <p>
-        Manus Unitas will retain User Provided data for as long as you
+        {`Manus Unitas will retain User Provided data for as long as you
         use the website and for a reasonable time thereafter. If you'd like
         them to delete User Provided Data that you have provided via the
-        Application, please contact them at <a href="mailto:info@matthewyak.com">info@matthewyak.com</a> and they will
+        Application, please contact them at `}<a href="mailto:info@matthewyak.com">info@matthewyak.com</a> and they will
         respond in a reasonable time.
       </p>
       <br />
