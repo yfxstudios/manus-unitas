@@ -139,7 +139,7 @@ export default function page() {
         {`Manus Unitas will retain User Provided data for as long as you
         use the website and for a reasonable time thereafter. If you'd like
         them to delete User Provided Data that you have provided via the
-        Application, please contact them at `}<a href="mailto:info@matthewyak.com">info@matthewyak.com</a> and they will
+        Application, please contact them at `}<a href="mailto:info@manusunitas.com">info@manusunitas.com</a> and they will
         respond in a reasonable time.
       </p>
       <br />
@@ -158,7 +158,7 @@ export default function page() {
           information, Manus Unitas will immediately delete this from
           their servers. If you are a parent or guardian and you are aware that
           your child has provided us with personal information, please contact
-          Manus Unitas (<a href="mailto:info@matthewyak.com">info@matthewyak.com</a>) so that they will be able
+          Manus Unitas (<a href="mailto:info@manusunitas.com">info@manusunitas.com</a>) so that they will be able
           to take the necessary actions.
         </p>
       </div>
@@ -193,7 +193,7 @@ export default function page() {
       <p>
         If you have any questions regarding privacy while using Manus Unitas,
         or have questions about the practices, please contact us via email at
-        <a href="mailto:info@matthewyak.com">info@matthewyak.com</a>.
+        <a href="mailto:info@manusunitas.com">info@manusunitas.com</a>.
       </p>
     </div>
   );

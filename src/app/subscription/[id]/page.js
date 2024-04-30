@@ -1,12 +1,26 @@
+'use client'
 import React from 'react'
-import { getServerSession } from 'next-auth/next'
-import { options } from '@/app/api/auth/[...nextauth]/options'
-import { redirect } from 'next/navigation'
+// import { getServerSession } from 'next-auth/next'
+// import { options } from '@/app/api/auth/[...nextauth]/options'
+import { loadStripe } from '@stripe/stripe-js'
+
+import verifySignIn from '@/app/verifySignIn'
+
+
 
 export default async function page({ params }) {
-  const session = await getServerSession(options)
+  // const session = await getServerSession(options)
 
-  if (!session) {
+
+  // if (!session) {
+  // return (
+  //   <div className="flex items-center justify-center h-screen">
+  //     <h1 className="text-3xl">You need to be logged in to view this page</h1>
+  //   </div>
+  // )
+
+
+  if (verifySignIn() === false) {
     return (
       <div className="flex items-center justify-center h-screen">
         <h1 className="text-3xl">You need to be logged in to view this page</h1>
@@ -15,22 +29,55 @@ export default async function page({ params }) {
   }
 
 
+  const checkout = async (item) => {
+
+    const response = await fetch(`${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://manusunitas.com'}/api/paybill`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    }).then(res => res.json())
+
+    if (response.statusCode === 500) {
+      console.error(response.message)
+      return
+    }
+
+    if (response.statusCode === 400) {
+      console.error(response.message)
+      return
+    }
+
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: response.id
+    })
+
+  }
+
+
+
   if (params.id === "15") {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen space-y-6">
-        <p className="text-3xl">You are paying ${params.id}/month</p>
-        <p className="text-xl"> Save 10% by <a href="/subscription/12" className='underline'>paying yearly</a></p>
-        <button className="btn btn-primary">Subscribe</button>
-      </div>
-    )
+    // Starter monthly subscription
+
+    const item = {
+      priceID: "price_1PAjssAzvySG0yPg0rNfsZZW",
+      name: "Starter",
+      description: "Best option for small nonprofits and organizations."
+    }
+
+    checkout(item)
   } else if (params.id === "12") {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen space-y-6">
-        <p className="text-2xl">You are paying ${params.id}/month</p>
-        <p className='text-xl'>Billed yearly at ${params.id * 12}</p>
-        <button className="btn btn-primary">Subscribe</button>
-      </div>
-    )
+    // Starter annual subscription
+    const item = {
+      priceID: "price_1PAjtFAzvySG0yPgZAPvoAft",
+      name: "Starter",
+      description: "Best option for small nonprofits and organizations."
+    }
+
+    checkout(item)
   }
 
   else {

@@ -135,7 +135,7 @@ export default function page() {
       <strong>Contact Us</strong>
       <p>
         If you have any questions or suggestions about the Terms and Conditions,
-        please do not hesitate to contact us at <a href="mailto:info@matthewyak.com">info@matthewyak.com</a>.
+        please do not hesitate to contact us at <a href="mailto:info@manusunitas.com">info@manusunitas.com</a>.
       </p>
     </div>
   );

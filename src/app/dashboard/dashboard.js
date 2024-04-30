@@ -124,7 +124,7 @@ export default function Dashboard(props) {
   // console.log("SORTED ", sortedEvents)
 
   const fetchRoles = async (type) => {
-    await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/roles/${type}?organization=${props.user.organization.databaseName}`)
+    await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://manusunitas.com"}/api/roles/${type}?organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
@@ -134,7 +134,7 @@ export default function Dashboard(props) {
 
 
   const fetchAllRoles = async () => {
-    await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/roles/all?organization=${props.user.organization.databaseName}`)
+    await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://manusunitas.com"}/api/roles/all?organization=${props.user.organization.databaseName}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
@@ -227,7 +227,7 @@ export default function Dashboard(props) {
             <p className="text-primary-content">This information can be found under the menu in the top-right corner</p>
             <button className="btn btn-primary" onClick={async () => {
               setTutorial(false)
-              await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/endTutorial?user=${props.user._id}`, {
+              await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://manusunitas.com"}/api/endTutorial?user=${props.user._id}`, {
                 method: "POST"
               })
             }}>Got it!</button>

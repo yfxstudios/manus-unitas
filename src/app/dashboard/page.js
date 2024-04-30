@@ -192,7 +192,7 @@ export default async function page() {
   const deleteUserHandler = async (email) => {
     'use server'
     // await api call to delete user
-    const res = await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://matthewyak.com"}/api/users/${email}`, {
+    const res = await fetch(`${process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://manusunitas.com"}/api/users/${email}`, {
       method: 'DELETE'
     })
 
