@@ -1,21 +1,10 @@
-'use client'
+import React, { Suspense } from 'react'
+import Page from './success'
 
-import React from 'react'
-
-import { useSearchParams } from 'next/navigation'
-
-
-export default function Page() {
-
-  const searchParams = useSearchParams()
-
-  const sessionId = searchParams.get('session_id')
-
+export default function suspense() {
   return (
-    <div>
-      <h1>Subscription Success</h1>
-      <p>Your subscription was successful. Thank you for your support!</p>
-      {sessionId && <p>Session ID: {sessionId}</p>}
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Page />
+    </Suspense>
   )
 }
