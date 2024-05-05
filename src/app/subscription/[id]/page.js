@@ -63,7 +63,7 @@ export default async function page({ params }) {
     // Starter monthly subscription
 
     const item = {
-      priceID: "price_1PAjssAzvySG0yPg0rNfsZZW",
+      priceID: "price_1PCw8uRpYIAAAWYMsVwOWQJU",
       name: "Starter",
       description: "Best option for small nonprofits and organizations."
     }
@@ -72,7 +72,7 @@ export default async function page({ params }) {
   } else if (params.id === "12") {
     // Starter annual subscription
     const item = {
-      priceID: "price_1PAjtFAzvySG0yPgZAPvoAft",
+      priceID: "price_1PCw9XRpYIAAAWYMUiZNahtg",
       name: "Starter",
       description: "Best option for small nonprofits and organizations."
     }

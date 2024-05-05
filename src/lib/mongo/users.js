@@ -3,6 +3,8 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
+import Stripe from 'stripe'
+
 
 const uri = process.env.MONGODB_URI
 
@@ -91,7 +93,23 @@ export async function getUserByEmail(email) {
 
 export async function createUser(user) {
   await init().catch(console.error)
-  const response = await users.insertOne(user)
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2023-10-16",
+  })
+
+  const customer = await stripe.customers.create({
+    email: user.email,
+    name: user.first_name + ' ' + user.last_name,
+    phone: user.phone,
+  })
+
+  const response = await users.insertOne({
+    ...user,
+    customerId: customer.id,
+  })
+
+  console.log(customer)
+
   return 'success'
 }
 

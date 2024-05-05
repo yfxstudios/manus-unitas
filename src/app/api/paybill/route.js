@@ -1,5 +1,6 @@
 
 import Stripe from 'stripe';
+import mongoose from 'mongoose';
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -22,9 +23,11 @@ export async function POST(req) {
       orderAmount = Math.round(item.price * 103) / 100
     }
 
+    
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      customer: customerID,
       line_items: [
         {
           price: item.priceID,
