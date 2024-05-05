@@ -4,6 +4,7 @@ import { headers } from 'next/headers'
 import { buffer } from "node:stream/consumers"
 
 import mongoose from "mongoose";
+import Subscription from "@/schemas/subscriptionSchema";
 
 
 
@@ -11,9 +12,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2020-08-27",
 });
 
-mongoose.disconnect().then(() => {
-  mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
-})
+mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB')
@@ -22,33 +21,6 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (err) => {
   console.error(err)
 })
-
-
-const { Schema } = mongoose
-
-const subscriptionSchema = new Schema({
-  subscriptionId: String,
-  customerId: String,
-  priceId: String,
-  status: String,
-  quantity: Number,
-  startDate: Date,
-  endDate: Date,
-  trialStartDate: Date,
-  trialEndDate: Date,
-  createdAt: Date,
-  updatedAt: Date
-})
-
-//  ⨯ OverwriteModelError: Cannot overwrite `Subscription` model once compiled.
-
-let Subscription
-if (!mongoose.models.Subscription) {
-  Subscription = mongoose.model('Subscription', subscriptionSchema)
-} else {
-  Subscription = mongoose.models.Subscription
-}
-
 
 
 export async function POST(req) {
@@ -79,7 +51,7 @@ export async function POST(req) {
       const session = event.data.object
 
       const newSubscription = new Subscription({
-        subscriptionId: session.subscription,
+        subscriptionId: session.items.data[0].subscription,
         customerId: session.customer,
         priceId: session.items.data[0].price.id,
         status: session.status,
@@ -93,6 +65,18 @@ export async function POST(req) {
 
       await newSubscription.save().then(() => {
         console.log('Subscription saved')
+      }).catch((err) => {
+        console.error(err)
+      })
+      break
+    case "customer.subscription.updated":
+      const updatedSession = event.data.object
+
+      const updatedSubscription = await Subscription.findOne({ subscriptionId: updatedSession.items.data[0].subscription })
+      updatedSubscription.status = updatedSession.status
+
+      await updatedSubscription.save().then(() => {
+        console.log('Subscription updated')
       }).catch((err) => {
         console.error(err)
       })

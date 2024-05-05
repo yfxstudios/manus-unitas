@@ -1,5 +1,6 @@
 import client from './index';
 import { updateUser } from './users';
+import Organization from '@/schemas/organizationSchema';
 
 let organizations;
 
@@ -57,7 +58,10 @@ export async function createOrganization(organization, user) {
     return [];
   } else {
     try {
-      await organizations.insertOne(organization);
+      // await organizations.insertOne(organization);
+      const org = new Organization(organization);
+      await org.save();
+
       await client.db(organization.databaseName).createCollection('events');
       await client.db(organization.databaseName).createCollection('roles');
       await client.db(organization.databaseName).collection('roles').insertOne({ type: 'Default Roles', roles: ["Event Organizer", "Volunteer"] });

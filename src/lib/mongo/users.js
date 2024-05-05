@@ -3,6 +3,9 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
+
+import Users from '@/schemas/userSchema'
+
 import Stripe from 'stripe'
 
 
@@ -92,7 +95,7 @@ export async function getUserByEmail(email) {
 }
 
 export async function createUser(user) {
-  await init().catch(console.error)
+
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2023-10-16",
   })
@@ -103,12 +106,12 @@ export async function createUser(user) {
     phone: user.phone,
   })
 
-  const response = await users.insertOne({
+  const newUser = new Users({
     ...user,
-    customerId: customer.id,
+    customerID: customer.id
   })
 
-  console.log(customer)
+  await newUser.save().catch(console.error)
 
   return 'success'
 }

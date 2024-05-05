@@ -2,22 +2,49 @@
 import Stripe from 'stripe';
 import mongoose from 'mongoose';
 
-import User from '@/schemas/userSchema';
-import { getServerSession } from 'next-auth';
-import { options } from '../auth/[...nextauth]/options';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
 });
 
-export async function POST(req) {
-  const session = await getServerSession(options)
-  const user = await session.user
+mongoose.connect(process.env.MONGODB_URI + 'manus-unitas');
 
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB');
+}
+);
+
+mongoose.connection.on('error', (err) => {
+  console.error(err);
+}
+);
+
+const { Schema } = mongoose;
+
+const subscriptionSchema = new Schema({
+  subscriptionId: String,
+  customerId: String,
+  priceId: String,
+  status: String,
+  quantity: Number,
+  startDate: Date,
+  endDate: Date,
+  trialStartDate: Date,
+  trialEndDate: Date,
+  createdAt: Date,
+  updatedAt: Date,
+});
+
+let Subscription;
+if (!mongoose.models.Subscription) {
+  Subscription = mongoose.model('Subscription', subscriptionSchema);
+}
+
+export async function POST(req) {
   try {
     const item = await req.json();
 
-    const customerID = await User.findOne({ email: user.email }).customerId
+    // check if item exists (id and secretID match)
 
     console.log(item)
 
@@ -27,12 +54,11 @@ export async function POST(req) {
       orderAmount = Math.round(item.price * 103) / 100
     }
 
-
+    
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
       customer: customerID,
-      customer_email: user.email,
       line_items: [
         {
           price: item.priceID,
