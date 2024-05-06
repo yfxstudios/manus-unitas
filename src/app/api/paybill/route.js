@@ -7,7 +7,7 @@ import { getServerSession } from 'next-auth';
 import { options } from '../auth/[...nextauth]/options';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2024-04-10',
 });
 
 export async function POST(req) {
@@ -17,9 +17,8 @@ export async function POST(req) {
   try {
     const item = await req.json();
 
-    const customerID = await User.findOne({ email: user.email }).customerId
+    const customer = await User.findOne({ email: user.email }).lean()
 
-    console.log(item)
 
     let orderAmount = item.price
 
@@ -31,8 +30,7 @@ export async function POST(req) {
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      customer: customerID,
-      customer_email: user.email,
+      customer: customer.customerId.toString(),
       line_items: [
         {
           price: item.priceID,

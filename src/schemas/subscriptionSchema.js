@@ -6,6 +6,7 @@ const { Schema } = mongoose
 
 const subscriptionSchema = new Schema({
   subscriptionId: String,
+  productId: String,
   customerId: String,
   priceId: String,
   status: String,
@@ -19,10 +20,10 @@ const subscriptionSchema = new Schema({
 
 let Subscription
 
-if (!mongoose.models.subscription) {
-  Subscription = mongoose.model('subscription', subscriptionSchema)
+if (!mongoose.models.subscriptions) {
+  Subscription = mongoose.model('subscriptions', subscriptionSchema)
 } else {
-  Subscription = mongoose.models.subscription
+  Subscription = mongoose.models.subscriptions
 }
 
 export default Subscription

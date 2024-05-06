@@ -23,7 +23,7 @@ const userSchema = new Schema({
   },
   completedSignup: Boolean,
   completedTutorial: Boolean,
-  customerID: String,
+  customerId: String,
 })
 
 let Users

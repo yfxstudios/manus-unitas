@@ -14,6 +14,7 @@
     "@gsap/react": "^2.1.0",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
+    "@phosphor-icons/react": "^2.1.5",
     "@stripe/stripe-js": "^3.3.0",
     "@studio-freight/lenis": "^1.0.42",
     "firebase": "^10.11.1",
@@ -25,6 +26,7 @@
     "next": "^14.2.1",
     "next-auth": "^4.24.7",
     "react": "^18",
+    "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
     "stripe": "^15.4.0"
   },

@@ -97,7 +97,7 @@ export async function getUserByEmail(email) {
 export async function createUser(user) {
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2023-10-16",
+    apiVersion: "2024-04-10",
   })
 
   const customer = await stripe.customers.create({
@@ -108,7 +108,7 @@ export async function createUser(user) {
 
   const newUser = new Users({
     ...user,
-    customerID: customer.id
+    customerId: customer.id
   })
 
   await newUser.save().catch(console.error)

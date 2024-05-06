@@ -37,7 +37,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="forest">
+    <html lang="en" data-theme="dark">
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-1845XX0KGQ"></Script>
 
       <Script id="analytics">
