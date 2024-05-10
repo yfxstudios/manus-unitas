@@ -1,6 +1,6 @@
 import React from 'react'
 import AdminSignUp from './adminSignUp'
-import { addMember } from '@lib/mongo/organization'
+import { getOrganization } from '@lib/mongo/organization'
 import { createUser, getUsers } from '@/lib/mongo/users'
 
 
@@ -20,13 +20,9 @@ export default async function Page() {
       ...data,
       completedSignup: false,
       completedTutorial: false,
-      organization: {
-        admin: true,
-        accepted: false,
-        declined: false,
-        databaseName: null,
-        displayName: null
-      }
+      accepted: 1,
+      organizationId: null,
+      admin: true
     })
     // const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
     return response

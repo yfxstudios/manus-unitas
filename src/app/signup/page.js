@@ -16,15 +16,11 @@ export default async function Page() {
       return "Username already exists"
     }
 
+    console.log("ORGANIZATION: " + data.organization)
+
     createUser({
       ...data,
-      organization: {
-        admin: false,
-        accepted: false,
-        declined: false,
-        databaseName: data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'),
-        displayName: data.organization.displayName
-      }
+      organizationId: getOrganization(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'))._id,
     })
     const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
     return response

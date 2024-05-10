@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import mongoose from 'mongoose'
 
 mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
@@ -14,16 +15,14 @@ const userSchema = new Schema({
   email: String,
   phone: String,
   password: String,
-  organization: {
-    databaseName: String,
-    displayName: String,
-    admin: Boolean,
-    accepted: Boolean,
-    declined: Boolean
-  },
-  completedSignup: Boolean,
-  completedTutorial: Boolean,
-  customerId: String,
+  // new ObjectId('5f9b3b3b3b3b3b3b3b3b3b3b'),
+  organizationId: {},
+  admin: { type: Boolean, default: false },
+  // 0 - not accepted, 1 - accepted, 2 - declined
+  accepted: { type: Number, default: 0, min: 0, max: 2 },
+  completedSignup: { type: Boolean, default: false },
+  completedTutorial: { type: Boolean, default: false },
+  customerId: String
 })
 
 let Users

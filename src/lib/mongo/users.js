@@ -27,7 +27,7 @@ export async function init() {
     const user = await session.user
     users = client.db('manus-unitas').collection('users')
     const userEntry = await users.findOne({ email: user.email })
-    const organization = userEntry.organization.databaseName
+    const organization = userEntry.organization
     org_members = client.db(organization).collection('people')
     // console.log(org_members.find().toArray())
   } else {
@@ -58,7 +58,7 @@ export async function getOrgMembers() {
   await init().catch(console.error)
   const { user } = await getServerSession(options)
   const userEntry = await users.findOne({ email: user.email })
-  const organization = userEntry.organization.databaseName
+  const organization = userEntry.organization
   org_members = client.db(organization).collection('people')
   return org_members.find().toArray()
 }
@@ -95,7 +95,6 @@ export async function getUserByEmail(email) {
 }
 
 export async function createUser(user) {
-
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2024-04-10",
   })
@@ -131,7 +130,7 @@ export async function acceptUserByEmail(email, organization) {
     $set: {
       organization: {
         displayName: organization.displayName,
-        databaseName: organization.databaseName,
+        databaseName: organization,
         admin: false,
         accepted: true,
         declined: false,
@@ -147,7 +146,7 @@ export async function declineUserByEmail(email, organization) {
     $set: {
       organization: {
         displayName: organization.displayName,
-        databaseName: organization.databaseName,
+        databaseName: organization,
         admin: false,
         accepted: false,
         declined: true

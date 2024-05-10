@@ -48,7 +48,7 @@ export async function createOrganization(organization, user) {
   const admin = client.db("admin")
   const result = await admin.command({ listDatabases: 1, nameOnly: true })
 
-  if (result.databases.map(db => db.name).includes(organization.databaseName)) {
+  if (result.databases.map(db => db.name).includes(organization)) {
     return "Organization already exists"
   }
 
@@ -61,66 +61,18 @@ export async function createOrganization(organization, user) {
       // await organizations.insertOne(organization);
       const org = new Organization(organization);
       await org.save();
-
-      await client.db(organization.databaseName).createCollection('events');
-      await client.db(organization.databaseName).createCollection('roles');
-      await client.db(organization.databaseName).collection('roles').insertOne({ type: 'Default Roles', roles: ["Event Organizer", "Volunteer"] });
-      await client.db(organization.databaseName).createCollection('people');
-      await client.db(organization.databaseName).collection('people').insertOne({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        admin: true,
-        accepted: true
-      });
-
-      // await updateUser(user._id, { organization: { databaseName: organization.databaseName, displayName: organization.displayName, admin: true, accepted: true, declined: false }, completedSignup: true });
-      await updateUser(user._id, {
-        $set: {
-          organization: { databaseName: organization.databaseName, displayName: organization.displayName, admin: true, accepted: true, declined: false },
-          completedSignup: true
-        }
-      });
     } catch (error) {
       console.error(error);
     }
   }
 
-}
-
-export async function addMember(organization, user) {
-  await init().catch(console.error);
-
-  console.log('Adding member: ' + user + ' to organization ' + organization)
-
-  let response;
-
-  try {
-    response = await client.db(organization).collection('people').insertOne({
-      first_name: user.first_name,
-      last_name: user.last_name,
-      username: user.username,
-      email: user.email,
-      phone: user.phone,
-      admin: false,
-      accepted: false,
-      declined: false
-    }).then(() => {
-      return "success";
-    });
-  } catch (error) {
-    console.error(error);
-  }
-
-  return response;
+  return await Organization.findOne({ displayName: organization.displayName });
 }
 
 export async function getRoles(organization) {
   await init().catch(console.error);
 
-  const roles = await client.db(organization).collection('roles').find().toArray()
+  const roles = await client.db('manus-unitas').collection('roles').find().toArray()
 
   return roles;
 }
@@ -128,7 +80,7 @@ export async function getRoles(organization) {
 export async function getRole(organization, roleType) {
   await init().catch(console.error);
 
-  const roles = await client.db(organization).collection('roles').findOne({ type: roleType })
+  const roles = await client.db('manus-unitas').collection('roles').findOne({ type: roleType }) // TODO: fix roles
 
   return roles.roles;
 }
