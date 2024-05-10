@@ -115,7 +115,9 @@ export default function Dashboard(props) {
           {events.map((event) => (
             <div className="flex flex-col space-y-4 shadow-lg rounded-xl p-4 bg-base-300 hover:scale-[1.03] transition-all cursor-pointer" onClick={(e) => {
               setSelectedEvent(event)
-            }}>
+            }}
+              key={event._id}
+            >
               <h2 className="text-xl font-semibold">{event.title}</h2>
               <p>{longDate(event.date)}</p>
               <p>{standardTime(event.startTime)} to {standardTime(event.endTime)}</p>
