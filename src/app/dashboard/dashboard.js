@@ -3,13 +3,10 @@
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 
-import EditIcon from '@mui/icons-material/Edit';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { longDate } from "@/lib/util/date";
 import { standardTime } from "@/lib/util/time";
 import { CalendarBlank } from "@phosphor-icons/react/dist/ssr";
 import { Gear, Users } from "@phosphor-icons/react";
-import populateVolunteers from "./populateVolunteers";
 
 
 

@@ -288,20 +288,10 @@ export default async function page() {
 
   const userOrg = await Organization.findById(user.organizationId)
 
-  const populateEvent = async (id) => {
-    'use server'
-    const event = await Events.findOne({ _id: id }).populate('volunteers').lean().then(event => {
-      console.log(event)
-      return event
-    })
-  }
-
-
-
 
 
   return (
-    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} updateRoleHandler={updateRoleHandler} deleteRoleHandler={deleteRoleHandler} createRoleHandler={createRoleHandler} createTypeHandler={createTypeHandler} deleteTypeHandler={deleteTypeHandler} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} populateEvent={populateEvent} />
+    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} updateEvent={handleUpdateEvent} user={user} people={people} acceptUser={acceptUserHandler} declineUser={declineUserHandler} deleteUserHandler={deleteUserHandler} roles={roles} eventTypes={eventTypes} updateRoleHandler={updateRoleHandler} deleteRoleHandler={deleteRoleHandler} createRoleHandler={createRoleHandler} createTypeHandler={createTypeHandler} deleteTypeHandler={deleteTypeHandler} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} />
   )
 
   // DEV NEW DASHBOARD
