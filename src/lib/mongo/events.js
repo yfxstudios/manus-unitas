@@ -29,9 +29,9 @@ async function init() {
     users = client.db('manus-unitas').collection('users')
     const userEntry = await users.findOne({ email: user.email })
     // console.log('userEntry', userEntry)
-    const organization = userEntry.organization.databaseName
+    const organization = userEntry.organization
     // console.log('organization', organization)
-    events = client.db(organization).collection('events')
+    events = client.db('manus-unitas').collection('events')
   }
 
   if (events === undefined) {

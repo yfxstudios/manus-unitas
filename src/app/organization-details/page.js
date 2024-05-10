@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createOrganization } from '@/lib/mongo/organization'
 import OrganizationForm from './OrganizationForm';
+import Users from '@/schemas/userSchema'
+import Events from '@/schemas/eventSchema'
 
 export default async function page() {
   const session = await getServerSession(options)
@@ -55,6 +57,9 @@ export default async function page() {
       contactEmail: organizationContactEmail
     }, databaseUser)
 
+
+    // update user organizationId
+    await Users.updateOne({ email: databaseUser.email }, { organizationId: response._id })
 
 
     if (response === 'Organization already exists') {

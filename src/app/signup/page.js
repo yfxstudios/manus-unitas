@@ -1,6 +1,6 @@
 import React from 'react'
 import VolunteerSignUp from './signup'
-import { addMember, getOrganization, getOrganizations } from '@lib/mongo/organization'
+import { getOrganization, getOrganizations } from '@lib/mongo/organization'
 import { createUser, getUsers } from '@/lib/mongo/users'
 
 
@@ -16,17 +16,12 @@ export default async function Page() {
       return "Username already exists"
     }
 
+    console.log("ORGANIZATION: " + data.organization)
+
     createUser({
       ...data,
-      organization: {
-        admin: false,
-        accepted: false,
-        declined: false,
-        databaseName: data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'),
-        displayName: data.organization.displayName
-      }
+      organizationId: getOrganization(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'))._id,
     })
-    const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
     return response
   }
 

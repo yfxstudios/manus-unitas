@@ -1,20 +1,24 @@
 
 import Stripe from 'stripe';
+import mongoose from 'mongoose';
 
+import User from '@/schemas/userSchema';
+import { getServerSession } from 'next-auth';
+import { options } from '../auth/[...nextauth]/options';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2024-04-10',
 });
 
-
-
 export async function POST(req) {
+  const session = await getServerSession(options)
+  const user = await session.user
+
   try {
     const item = await req.json();
 
-    // check if item exists (id and secretID match)
+    const customer = await User.findOne({ email: user.email }).lean()
 
-    console.log(item)
 
     let orderAmount = item.price
 
@@ -23,8 +27,10 @@ export async function POST(req) {
     }
 
 
+
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      customer: customer.customerId.toString(),
       line_items: [
         {
           price: item.priceID,
