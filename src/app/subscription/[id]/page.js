@@ -31,7 +31,7 @@ export default async function page({ params }) {
 
   const checkout = async (item) => {
 
-    const response = await fetch(`${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://manusunitas.com'}/api/paybill`, {
+    const response = await fetch(`${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://www.manusunitas.com'}/api/paybill`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
