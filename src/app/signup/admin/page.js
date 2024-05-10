@@ -24,7 +24,6 @@ export default async function Page() {
       organizationId: null,
       admin: true
     })
-    // const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
     return response
   }
 

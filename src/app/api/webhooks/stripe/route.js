@@ -44,9 +44,9 @@ export async function POST(req) {
 
   // Handle the event
   switch (event.type) {
-    case "subscription_schedule.canceled":
-      throw new Error("Not implemented yet")
-      break;
+    case "customer.subscription.deleted":
+      throw new Error("Not implemented")
+      break
     case "customer.subscription.created":
       const session = event.data.object
 

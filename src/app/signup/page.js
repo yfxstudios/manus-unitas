@@ -1,6 +1,6 @@
 import React from 'react'
 import VolunteerSignUp from './signup'
-import { addMember, getOrganization, getOrganizations } from '@lib/mongo/organization'
+import { getOrganization, getOrganizations } from '@lib/mongo/organization'
 import { createUser, getUsers } from '@/lib/mongo/users'
 
 
@@ -22,7 +22,6 @@ export default async function Page() {
       ...data,
       organizationId: getOrganization(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'))._id,
     })
-    const response = await addMember(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'), data)
     return response
   }
 
