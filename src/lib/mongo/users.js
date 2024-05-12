@@ -1,10 +1,10 @@
-import { MongoClient, ObjectId } from 'mongodb'
+import { ObjectId } from 'mongodb'
 
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
 
 
-import Users from '@/schemas/userSchema'
+import Users from '@/lib/schemas/userSchema'
 
 import Stripe from 'stripe'
 
@@ -12,36 +12,30 @@ import Stripe from 'stripe'
 const uri = process.env.MONGODB_URI
 
 
-let client
-let users
 let org_members
+let users
+let client
 
 
 export async function init() {
-  if (client) return client
-  client = new MongoClient(uri, {})
-  await client.connect()
-  users = client.db('manus-unitas').collection('users')
+  mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
   const session = await getServerSession(options)
   if (session) {
     const user = await session.user
-    users = client.db('manus-unitas').collection('users')
-    const userEntry = await users.findOne({ email: user.email })
+    // users = client.db('manus-unitas').collection('users')
+    const userEntry = await Users.findOne({ email: user.email })
     const organization = userEntry.organization
-    org_members = client.db(organization).collection('people')
+    // org_members = client.db(organization).collection('people')
     // console.log(org_members.find().toArray())
   } else {
     console.log('No session found')
   }
-  return client
 }
 
 export async function close() {
   if (client) {
     await client.close()
   }
-  client = null
-  users = null
   org_members = null
 }
 
@@ -50,31 +44,18 @@ export async function getUsers() {
   if (users === undefined) {
     return []
   } else {
-    return users.find().toArray()
+    return Users.find({})
   }
 }
 
 export async function getOrgMembers() {
   await init().catch(console.error)
   const { user } = await getServerSession(options)
-  const userEntry = await users.findOne({ email: user.email })
-  const organization = userEntry.organization
-  org_members = client.db(organization).collection('people')
-  return org_members.find().toArray()
+  const userEntry = await Users.findOne({ email: user.email })
+  const organization = userEntry.organizationId
+  return Users.find({ organizationId: organization })
 }
 
-export async function acceptUser(id) {
-  await init().catch(console.error)
-  return org_members.updateOne({ _id: new ObjectId(id) }, { $set: { accepted: true, declined: false } })
-}
-
-export async function declineUser(id) {
-  await init().catch(console.error)
-  const { user } = await getServerSession(options)
-
-  await users.deleteOne({ email: user.email })
-  return org_members.updateOne({ _id: new ObjectId(id) }, { $set: { accepted: false, declined: true } })
-}
 
 export async function getOrgMember(id) {
   await init().catch(console.error)

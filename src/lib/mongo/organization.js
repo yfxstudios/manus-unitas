@@ -1,6 +1,6 @@
 import client from './index';
 import { updateUser } from './users';
-import Organization from '@/schemas/organizationSchema';
+import Organization from '@/lib/schemas/organizationSchema';
 
 let organizations;
 

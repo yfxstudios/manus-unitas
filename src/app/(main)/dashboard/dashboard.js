@@ -6,43 +6,27 @@ import { signOut } from "next-auth/react";
 import { longDate } from "@/lib/util/date";
 import { standardTime } from "@/lib/util/time";
 import { CalendarBlank } from "@phosphor-icons/react/dist/ssr";
-import { Gear, Users } from "@phosphor-icons/react";
+import { CaretDown, CaretLeft, Gear, Users, X } from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { usePathname } from "next/navigation";
 
 
 
 
 export default function Dashboard(props) {
+  const pathName = usePathname()
   const events = props.events
-  const [background, setBackground] = useState(false) //<----------------------------------------------------- Change this to true to see the background color change
-  const [modalOpen, setModalOpen] = useState(0)
   const [loading, setLoading] = useState(false)
-
-  const [selectedPeople, setSelectedPeople] = useState([])
-
-  const [editingEvent, setEditingEvent] = useState(false)
-
-  const [eventInfo, setEventInfo] = useState({})
-
-  const [newRole, setNewRole] = useState({})
-
-
-  const [tutorial, setTutorial] = useState(props.user.completedTutorial ? false : true)
-
-
+  const [creatingEvent, setCreatingEvent] = useState(false)
 
 
   // console.log(events)
 
   const [selectedEvent, setSelectedEvent] = useState(null);
-
-
-  const [acceptedUsers, setAcceptedUsers] = useState([])
-  const [declinedUsers, setDeclinedUsers] = useState([])
-
-  const [roles, setRoles] = useState([])
-  const [allRoles, setAllRoles] = useState([])
-  const [selectedRole, setSelectedRole] = useState("")
-
 
 
   const handleAccept = async (id) => {
@@ -66,15 +50,9 @@ export default function Dashboard(props) {
     })
   }
 
-  useEffect(() => {
-    if (editingEvent) {
-      setBackground(true)
-    } else {
-      setBackground(false)
-    }
-  }, [editingEvent])
 
   const [selectedNavOption, setSelectedNavOption] = useState("events")
+
 
 
   // re fetch selectedEvent
@@ -88,10 +66,10 @@ export default function Dashboard(props) {
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col space-y-4 text-[white] bg-base-300 sticky left-0 top-0 w-1/6 h-screen z-5 px-4 py-8">
+      <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1/6 h-screen z-5 px-4 py-8">
         <h1 className="text-3xl font-semibold">{props.userOrg.displayName}</h1>
-        <div className="divider"></div>
-        <div className={`flex flex-row space-x-4 items-center rounded-xl p-4 cursor-pointer transition-all ${selectedNavOption === "events" ? "bg-primary hover:bg-primary/85" : "bg-base-200 hover:bg-base-100"}`} onClick={(e) => { setSelectedNavOption("events") }}>
+        <Separator />
+        {/* <div className={`flex flex-row space-x-4 items-center rounded-xl p-4 cursor-pointer transition-all ${selectedNavOption === "events" ? "bg-primary hover:bg-primary/85" : "bg-base-200 hover:bg-base-100"}`} onClick={(e) => { setSelectedNavOption("events") }}>
           <CalendarBlank size={32} />
           <p className="text-[14px]">Events</p>
         </div>
@@ -103,11 +81,31 @@ export default function Dashboard(props) {
           <Gear size={32} />
           <p className="text-[14px]">Settings</p>
         </div>
-        <div className="divider"></div>
-
+        <div className="divider"></div> */}
+        <TooltipProvider>
+          {/* <Tooltip>
+            <TooltipTrigger>Hover</TooltipTrigger>
+            <TooltipContent>
+              <p>Add to library</p>
+            </TooltipContent>
+          </Tooltip> */}
+          {menuItems.map((item) => (
+            <ul key={item.name}>
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger>
+                  <li>
+                    <Link href={item.href}
+                      className={clsx('group h-8 w-8 flex items-center justify-center scale-[1.5] rounded-lg p-[3px] cursor-pointer', {
+                        'dark:bg-[#2F006B] bg-[#EEE0FF]': item.name === pathName,
+                      })}></Link>
+                  </li>
+                </TooltipTrigger>
+              </Tooltip>
+            </ul>
+          ))}
+        </TooltipProvider>
       </div>
-
-      <div className="flex flex-row justify-center space-x-8 text-[white] w-full px-36 py-48">
+      <div className="flex flex-row justify-center space-x-8 w-full px-36 py-48">
         <div className="flex flex-col w-1/2 space-y-4">
           <div className="flex flex-row space-x-4 items-center">
             <h1 className="text-2xl font-semibold">Events</h1>
@@ -124,21 +122,36 @@ export default function Dashboard(props) {
               <p>{event.description}</p>
             </div>
           ))}
-          <button className="btn btn-primary" onClick={(e) => {
-            props.createEventHandler({
-              title: "New Event",
-              date: "2024-12-25",
-              startTime: "00:00",
-              endTime: "00:00",
-              description: "Description",
-              volunteers: [
-                {
-                  _id: props.user._id,
-                }
-              ],
-              organization: props.userOrg._id
-            })
-          }}>Create Event</button>
+          {events.length === 0 && (
+            <div className="flex flex-col space-y-4 rounded-xl relative">
+              <div className="flex flex-col space-y-4">
+                <Input type="text" placeholder="Title" id="title" />
+                <Input type="date" placeholder="Date" id="date" />
+                <Input type="time" placeholder="Start Time" id="startTime" />
+                <Input type="time" placeholder="End Time" id="endTime" />
+                <Textarea placeholder="Description" id="description" />
+                <Button onClick={(e) => {
+                  setCreatingEvent(false)
+                  props.createEventHandler({
+                    title: document.getElementById("title").value,
+                    date: document.getElementById("date").value,
+                    startTime: document.getElementById("startTime").value,
+                    endTime: document.getElementById("endTime").value,
+                    description: document.getElementById("description").value,
+                    volunteers: [
+                      {
+                        _id: props.user._id,
+                      }
+                    ],
+                    organization: props.userOrg._id
+                  })
+                }}
+                >Create Event</Button>
+              </div>
+            </div>
+          )}
+
+
         </div>
         <div className="divider divider-horizontal h-1/2"></div>
         <div className="flex flex-col w-1/2 space-y-4">
@@ -148,7 +161,7 @@ export default function Dashboard(props) {
             <div className="flex flex-col bg-base-300 rounded-xl relative">
               {loading && (
                 <div className="flex justify-center items-center z-10 rounded-xl bg-black opacity-50 w-full h-full absolute p-0 m-0">
-                  <div className="loading loading-dots text-accent size-16 p-0 m-0" />
+                  <div className="loading loading-dots size-16 p-0 m-0" />
                 </div>
               )}
               {selectedEvent ? (
@@ -159,13 +172,11 @@ export default function Dashboard(props) {
                   <p>{selectedEvent.description}</p>
                   <div className="flex flex-col space-y-4 items-flex-start my-6">
                     <h3 className="font-semibold">Volunteers</h3>
-                    <ul>
+                    <ul className="flex flex-col space-y-2 px-2">
                       {selectedEvent.volunteers.map((volunteer) => (
-                        <li key={volunteer.username} className="flex items-center justify-between p-2 rounded-lg">
+                        <li key={volunteer.username} className="flex items-center justify-between rounded-lg">
                           <div className={`flex items-center border-b-[6px] bg-base-100 p-2 justify-between ${selectedEvent.accepted.includes(volunteer._id) ? "border-success" : selectedEvent.rejected.includes(volunteer._id) ? "border-error" : "border-neutral"}`}>
-                            <p
-                              className="text-[white]"
-                            >
+                            <p>
                               {volunteer.first_name} {volunteer.last_name}
                             </p>
                           </div>
@@ -176,26 +187,28 @@ export default function Dashboard(props) {
                   </div>
                   <div className="flex flex-row justify-between mt-4">
                     <div className="flex space-x-4">
-                      <button className="btn btn-outline btn-primary" onClick={(e) => {
+                      <Button variant="outline" onClick={(e) => {
                         handleAccept(selectedEvent._id)
-                      }}>Accept Position</button>
-                      <button className="btn btn-outline btn-error" onClick={(e) => {
+                      }}>Accept Position</Button>
+                      <Button variant="outline" onClick={(e) => {
                         handleDecline(selectedEvent._id)
-                      }}>Decline Position</button>
+                      }}>Decline Position</Button>
                     </div>
-                    <button className="btn btn-error" onClick={(e) => {
+                    <Button variant="destructive" onClick={(e) => {
                       props.deleteEvent(selectedEvent._id)
                       setSelectedEvent(null)
-                    }}>Delete Event</button>
+                    }}>Delete Event</Button>
                   </div>
                 </div>
               ) : (
-                <p className="m-4">Select an event to view details</p>
+                <div className="flex flex-col space-y-4 p-4">
+                  <p>Select an event to view more information</p>
+                </div>
               )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }

@@ -2,6 +2,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 
 
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 
@@ -52,7 +53,10 @@ export default function RootLayout({ children }) {
         }
 
       </Script>
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+
+        {children}
+      </body>
     </html>
   );
 }

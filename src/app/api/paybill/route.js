@@ -2,7 +2,7 @@
 import Stripe from 'stripe';
 import mongoose from 'mongoose';
 
-import User from '@/schemas/userSchema';
+import User from '@/lib/schemas/userSchema';
 import { getServerSession } from 'next-auth';
 import { options } from '../auth/[...nextauth]/options';
 

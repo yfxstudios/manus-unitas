@@ -4,7 +4,7 @@ import { headers } from 'next/headers'
 import { buffer } from "node:stream/consumers"
 
 import mongoose from "mongoose";
-import Subscription from "@/schemas/subscriptionSchema";
+import Subscription from "@/lib/schemas/subscriptionSchema";
 
 
 
@@ -51,9 +51,13 @@ export async function POST(req) {
       const session = event.data.object
 
 
-      if (await Subscription.findOne({ customer: session.items.data[0].subscription })) {
-        Subscription.updateOne({ subscriptionId: session.items.data[0].subscription }, {
+      if (await Subscription.findOne({ customer: session.items.data[0].subscription }).updatedAt > session.created) {
+        console.log("newer subscription already exists")
+        break
+      } else {
+        const newSubscription = new Subscription({
           subscriptionId: session.items.data[0].subscription,
+          productId: session.items.data[0].price.product,
           customerId: session.customer,
           priceId: session.items.data[0].price.id,
           status: session.status,
@@ -63,43 +67,26 @@ export async function POST(req) {
           trialEndDate: new Date(session.trial_end * 1000),
           createdAt: new Date(session.created * 1000),
           updatedAt: new Date(session.created * 1000)
-        }).then(() => {
-          console.log('Subscription updated')
+        })
+
+        await newSubscription.save().then(() => {
+          console.log('Subscription saved')
         }).catch((err) => {
           console.error(err)
         })
-
         break
       }
-
-      const newSubscription = new Subscription({
-        subscriptionId: session.items.data[0].subscription,
-        productId: session.items.data[0].price.product,
-        customerId: session.customer,
-        priceId: session.items.data[0].price.id,
-        status: session.status,
-        startDate: new Date(session.current_period_start * 1000),
-        endDate: new Date(session.current_period_end * 1000),
-        trialStartDate: new Date(session.trial_start * 1000),
-        trialEndDate: new Date(session.trial_end * 1000),
-        createdAt: new Date(session.created * 1000),
-        updatedAt: new Date(session.created * 1000)
-      })
-
-      await newSubscription.save().then(() => {
-        console.log('Subscription saved')
-      }).catch((err) => {
-        console.error(err)
-      })
-      break
     case "customer.subscription.updated":
       const updatedSession = event.data.object
-      const updatedSubscription = await Subscription.findOne({ subscriptionId: updatedSession.items.data[0].subscription })
-      if (!updatedSubscription) {
-        console.error(`Subscription ${updatedSession.items.data[0].subscription} not found`)
+      let updatedSubscription = await Subscription.findOne({ subscriptionId: updatedSession.items.data[0].subscription })
 
-        break
+      if (!updatedSubscription) {
+        // refresh subscription data
+        mongoose.connection.close()
+        mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
+        updatedSubscription = await Subscription.findOne({ subscriptionId: updatedSession.items.data[0].subscription })
       }
+
       updatedSubscription.status = updatedSession.status
 
       await updatedSubscription.save().then(() => {

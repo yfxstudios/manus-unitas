@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createOrganization } from '@/lib/mongo/organization'
 import OrganizationForm from './OrganizationForm';
-import Users from '@/schemas/userSchema'
-import Events from '@/schemas/eventSchema'
+import Users from '@/lib/schemas/userSchema'
+import Events from '@/lib/schemas/eventSchema'
 
 export default async function page() {
   const session = await getServerSession(options)
