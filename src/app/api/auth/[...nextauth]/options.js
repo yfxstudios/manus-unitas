@@ -15,7 +15,7 @@ export const options = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        const user = await Users.findOne({ email === credentials.email })
+        const user = await Users.findOne({ email: credentials.email })
         if (user) {
           if (user.password === credentials.password) {
             return user
