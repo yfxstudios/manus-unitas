@@ -1,7 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { getUsers } from '@/lib/mongo/users'
 
 export const options = {
   providers: [
@@ -16,11 +15,7 @@ export const options = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        const users = await getUsers()
-        if (!users) {
-          throw new Error('Connection to database failed')
-        }
-        const user = users.find(user => user.email === credentials.email)
+        const user = await Users.find(user => user.email === credentials.email)
         if (user) {
           if (user.password === credentials.password) {
             return user
