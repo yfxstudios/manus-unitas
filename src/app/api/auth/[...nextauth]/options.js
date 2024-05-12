@@ -1,6 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-
+import Users from "@/lib/schemas/userSchema"
 
 export const options = {
   providers: [
