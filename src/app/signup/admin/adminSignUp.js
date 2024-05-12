@@ -4,9 +4,10 @@ import React from 'react'
 
 import { useState } from 'react'
 
-
-import phoneNumberFormatter from '@lib/util/phoneNumber'
+import phoneNumberFormatter from '@/lib/util/phoneNumber'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+
+
 import { signIn } from 'next-auth/react'
 
 export default function VolunteerSignUp(props) {
@@ -27,7 +28,6 @@ export default function VolunteerSignUp(props) {
     const confirmPassword = document.getElementById('confirm-password').value
     const terms = document.getElementById('terms').checked
 
-    const organization = document.getElementById('organization').value
 
     if (firstName === '' || lastName === '' || email === '' || phone === '' || password === '' || confirmPassword === '') {
       alert('Please fill out all fields')
@@ -44,19 +44,6 @@ export default function VolunteerSignUp(props) {
       return
     }
 
-    if (organization === '') {
-      alert('Please select an organization')
-      return
-    }
-
-    // console.log(organization.trim().toLowerCase().replace(/ /g, '-'))
-
-    if (!props.organizations.find(org => org === organization.trim().toLowerCase().replace(/ /g, '-'))) {
-      alert('Please select an organization from the list')
-      return
-    }
-
-
     const response = await props.handleSubmit({
       first_name: firstName,
       last_name: lastName,
@@ -66,7 +53,7 @@ export default function VolunteerSignUp(props) {
       password: password,
       organization: {
         accepted: false,
-        displayName: organization,
+        displayName: null,
         admin: false
       }
     })
@@ -82,16 +69,15 @@ export default function VolunteerSignUp(props) {
         email: email,
         password: password,
         redirect: true,
-        callbackUrl: '/dashboard'
+        callbackUrl: '/organization-details'
       })
-    } else {
-      alert(response)
     }
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen" >
-      <h1 className="text-4xl font-bold mb-8">Volunteer Sign Up</h1>
+      <h1 className="text-4xl font-bold mb-8">Administrator Sign Up</h1>
+      <a href="/signup" className="underline mb-8">Sign up as a volunteer</a>
       <div className="flex flex-col items-center justify-center">
         <input type="text" placeholder="First Name" className="input w-96 mb-4" id='first-name' />
         <input type="text" placeholder="Last Name" className="input w-96 mb-4" id='last-name' />
@@ -110,30 +96,6 @@ export default function VolunteerSignUp(props) {
           <button className="absolute right-2 top-[50%] transform -translate-y-1/2" onClick={() => setPasswordVisible(!passwordVisible)}>
             {passwordVisible ? <VisibilityOff /> : <Visibility />}
           </button>
-        </div>
-
-        <p className="text-sm mb-2">Find your organization</p>
-        <input type="text" placeholder="Organization" className="input w-96" id='organization' onChange={(e) => {
-
-          const value = e.target.value.trim().toLowerCase()
-
-          if (value === '') {
-            setOrganizationSuggestions([])
-            return
-          }
-
-          const suggestions = props.organizations.filter(org => org.toLowerCase().includes(value))
-          setOrganizationSuggestions(suggestions)
-        }} />
-        <div className="w-96 bg-white border border-gray-300 rounded mb-4">
-          {organizationSuggestions.map(org => (
-            <div className="p-2 border-b border-gray-300 text-sm cursor-pointer text-primary-content" key={org}
-              onClick={() => {
-                document.getElementById('organization').value = org.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()) // replace - with space and capitalize first letter of each word
-
-                setOrganizationSuggestions([])
-              }}>{org.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}</div>
-          ))}
         </div>
 
 

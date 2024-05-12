@@ -7,18 +7,19 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from './ui/tooltip";
-import { menuOptions } from "@/lib/constant";
+} from "../ui/tooltip";
+import { menuOptions } from "@/lib/contant";
 import clsx from "clsx";
+import Image from "next/image";
 
 const MenuOptions = props => {
 	const pathName = usePathname();
 
 	return (
-		<nav className=" dark:bg-black h-screen overflow-scroll  justify-between flex items-center flex-col  gap-10 py-6 px-2">
+		<nav className=" dark:bg-black h-screen overflow-none  justify-between flex items-center flex-col gap-10 py-6 px-4">
 			<div className="flex items-center justify-center flex-col gap-8">
-				<Link className="flex font-bold flex-row " href="/">
-					fuzzie.
+				<Link className="flex font-bold flex-row" href="/">
+					<Image src="/logo.svg" width={40} height={40} />
 				</Link>
 				<TooltipProvider>
 					{menuOptions.map(menuItem => (
@@ -56,3 +57,5 @@ const MenuOptions = props => {
 		</nav>
 	);
 };
+
+export default MenuOptions;

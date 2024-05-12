@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 
-import { longDate } from "@/lib/util/date";
+// import { longDate } from "@/lib/util/date";
+import { longDate } from '@/lib/util/date'
 import { standardTime } from "@/lib/util/time";
 import { CalendarBlank } from "@phosphor-icons/react/dist/ssr";
 import { CaretDown, CaretLeft, Gear, Users, X } from "@phosphor-icons/react";
@@ -82,28 +83,7 @@ export default function Dashboard(props) {
           <p className="text-[14px]">Settings</p>
         </div>
         <div className="divider"></div> */}
-        <TooltipProvider>
-          {/* <Tooltip>
-            <TooltipTrigger>Hover</TooltipTrigger>
-            <TooltipContent>
-              <p>Add to library</p>
-            </TooltipContent>
-          </Tooltip> */}
-          {menuItems.map((item) => (
-            <ul key={item.name}>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger>
-                  <li>
-                    <Link href={item.href}
-                      className={clsx('group h-8 w-8 flex items-center justify-center scale-[1.5] rounded-lg p-[3px] cursor-pointer', {
-                        'dark:bg-[#2F006B] bg-[#EEE0FF]': item.name === pathName,
-                      })}></Link>
-                  </li>
-                </TooltipTrigger>
-              </Tooltip>
-            </ul>
-          ))}
-        </TooltipProvider>
+
       </div>
       <div className="flex flex-row justify-center space-x-8 w-full px-36 py-48">
         <div className="flex flex-col w-1/2 space-y-4">

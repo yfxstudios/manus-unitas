@@ -1,6 +1,6 @@
 import React from 'react'
 import VolunteerSignUp from './signup'
-import { getOrganization, getOrganizations } from '@lib/mongo/organization'
+import { getOrganization, getOrganizations } from '@/lib/mongo/organization'
 import { createUser, getUsers } from '@/lib/mongo/users'
 
 

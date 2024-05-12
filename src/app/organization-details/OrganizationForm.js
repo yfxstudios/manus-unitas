@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import phoneNumberFormatter from '@lib/util/phoneNumber'
+import phoneNumberFormatter from '@/lib/util/phoneNumber'
 
 export default function OrganizationForm({ handleSubmit }) {
 

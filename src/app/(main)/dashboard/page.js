@@ -1,12 +1,9 @@
-import { getEvents, updateEvent, getEvent, close, createEvent, deleteEvent } from "@/lib/mongo/events";
 
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
 import Dashboard from "./dashboard";
 import { revalidatePath } from "next/cache";
-import NotAccepted from "./notAccepted";
-import { createRole, createType, deleteRole, deleteType, getRoles, updateRole } from "@/lib/mongo/organization";
 
 import Subscription from "@/lib/schemas/subscriptionSchema";
 import Users from "@/lib/schemas/userSchema";
@@ -14,7 +11,6 @@ import Events from "@/lib/schemas/eventSchema";
 import Stripe from "stripe";
 import Organization from "@/lib/schemas/organizationSchema";
 
-import { ObjectId } from 'mongodb'
 
 
 export const metadata = {
@@ -122,7 +118,7 @@ export default async function page() {
 
   const handleLogout = async () => {
     "use server"
-    await close();
+    console.log('Logging out')
   }
 
   const createEventHandler = async (e) => {
@@ -138,13 +134,6 @@ export default async function page() {
     'use server'
     await Events.findByIdAndDelete(id);
     update();
-  }
-
-  // check if user.accepted is true
-  if (!user.accepted) {
-    return (
-      <NotAccepted user={user} handleLogout={handleLogout} />
-    )
   }
 
 
