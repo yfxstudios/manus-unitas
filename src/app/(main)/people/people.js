@@ -11,7 +11,7 @@ export default function People(props) {
         <Separator />
       </div>
       <div className="flex flex-row justify-center space-x-8 w-full px-36 py-48">
-        <div className="flex flex-col w-1/2 space-y-4">
+        <div className="flex flex-col space-y-4">
           <div className="flex flex-row space-x-4 items-center justify-between">
             <h1 className="text-2xl font-semibold">People</h1>
             <Button className="btn btn-primary">Add Person</Button>
@@ -25,7 +25,7 @@ export default function People(props) {
                   <div className="flex flex-row items-center space-x-4">
                     <div className="h-12 w-12 bg-base-200 rounded-full"></div>
                     <div className="flex flex-col">
-                      <h1 className="text-lg font-semibold">{user.name}</h1>
+                      <h1 className="text-lg font-semibold">{user.first_name} {user.last_name}</h1>
                       <p className="text-sm">{user.email}</p>
                     </div>
                   </div>
@@ -39,15 +39,6 @@ export default function People(props) {
           </div>
         </div>
         <div className="divider divider-horizontal h-1/2"></div>
-        <div className="flex flex-col w-1/2 space-y-4">
-          <div className="flex flex-col space-y-4 rounded-xl">
-            {/* more information about event */}
-            <h1 className="text-2xl font-semibold">Person</h1>
-            <div className="flex flex-col bg-base-300 rounded-xl relative">
-
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )

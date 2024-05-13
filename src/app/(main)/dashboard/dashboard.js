@@ -14,6 +14,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+
+import { format } from "date-fns";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 
@@ -23,6 +32,8 @@ export default function Dashboard(props) {
   const events = props.events
   const [loading, setLoading] = useState(false)
   const [creatingEvent, setCreatingEvent] = useState(false)
+
+  const [date, setDate] = useState(null)
 
 
   // console.log(events)
@@ -52,7 +63,7 @@ export default function Dashboard(props) {
   }
 
 
-  const [selectedNavOption, setSelectedNavOption] = useState("events")
+  const [accordionOpen, setAccordionOpen] = useState(false)
 
 
 
@@ -70,69 +81,102 @@ export default function Dashboard(props) {
       <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1/6 h-screen z-5 px-4 py-8">
         <h1 className="text-3xl font-semibold">{props.userOrg.displayName}</h1>
         <Separator />
-        {/* <div className={`flex flex-row space-x-4 items-center rounded-xl p-4 cursor-pointer transition-all ${selectedNavOption === "events" ? "bg-primary hover:bg-primary/85" : "bg-base-200 hover:bg-base-100"}`} onClick={(e) => { setSelectedNavOption("events") }}>
-          <CalendarBlank size={32} />
-          <p className="text-[14px]">Events</p>
-        </div>
-        <div className={`flex flex-row space-x-4 items-center rounded-xl p-4 cursor-pointer transition-all ${selectedNavOption === "people" ? "bg-primary hover:bg-primary/85" : "bg-base-200 hover:bg-base-100"}`} onClick={(e) => { setSelectedNavOption("people") }}>
-          <Users size={32} />
-          <p className="text-[14px]">People</p>
-        </div>
-        <div className={`flex flex-row space-x-4 items-center rounded-xl p-4 cursor-pointer transition-all ${selectedNavOption === "settings" ? "bg-primary hover:bg-primary/85" : "bg-base-200 hover:bg-base-100"}`} onClick={(e) => { setSelectedNavOption("settings") }}>
-          <Gear size={32} />
-          <p className="text-[14px]">Settings</p>
-        </div>
-        <div className="divider"></div> */}
-
       </div>
-      <div className="flex flex-row justify-center space-x-8 w-full px-36 py-48">
-        <div className="flex flex-col w-1/2 space-y-4">
+      <div className="flex flex-row justify-center space-x-8 w-full px-36 pt-48">
+        <c className="flex flex-col w-1/2 space-y-4">
           <div className="flex flex-row space-x-4 items-center">
             <h1 className="text-2xl font-semibold">Events</h1>
           </div>
-          {events.map((event) => (
-            <div className="flex flex-col space-y-4 shadow-lg rounded-xl p-4 bg-base-300 hover:scale-[1.03] transition-all cursor-pointer" onClick={(e) => {
-              setSelectedEvent(event)
-            }}
-              key={event._id}
-            >
-              <h2 className="text-xl font-semibold">{event.title}</h2>
-              <p>{longDate(event.date)}</p>
-              <p>{standardTime(event.startTime)} to {standardTime(event.endTime)}</p>
-              <p>{event.description}</p>
-            </div>
-          ))}
-          {events.length === 0 && (
-            <div className="flex flex-col space-y-4 rounded-xl relative">
-              <div className="flex flex-col space-y-4">
-                <Input type="text" placeholder="Title" id="title" />
-                <Input type="date" placeholder="Date" id="date" />
-                <Input type="time" placeholder="Start Time" id="startTime" />
-                <Input type="time" placeholder="End Time" id="endTime" />
-                <Textarea placeholder="Description" id="description" />
-                <Button onClick={(e) => {
-                  setCreatingEvent(false)
-                  props.createEventHandler({
-                    title: document.getElementById("title").value,
-                    date: document.getElementById("date").value,
-                    startTime: document.getElementById("startTime").value,
-                    endTime: document.getElementById("endTime").value,
-                    description: document.getElementById("description").value,
-                    volunteers: [
-                      {
-                        _id: props.user._id,
-                      }
-                    ],
-                    organization: props.userOrg._id
-                  })
-                }}
-                >Create Event</Button>
-              </div>
-            </div>
-          )}
+          {/* // set defaultValue to "item-1" if events.length === 0 */}
+          <Accordion type="single" collapsible defaultValue={events.length === 0 ? "item-1" : ""} value={accordionOpen} onValueChange={setAccordionOpen}>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Create Event</AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col space-y-4 rounded-xl relative">
+                  <div className="flex flex-col space-y-4">
+                    <Input type="text" placeholder="Title" id="title" />
+                    {/* <Input type="date" placeholder="Date" id="date" /> */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[280px] justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {date ? format(date, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <Input type="time" placeholder="Start Time" id="startTime" />
+                    <Input type="time" placeholder="End Time" id="endTime" />
+                    <Textarea placeholder="Description" id="description" />
+                    <Button onClick={(e) => {
+                      setCreatingEvent(false)
+                      props.createEventHandler({
+                        title: document.getElementById("title").value,
+                        date: date,
+                        startTime: document.getElementById("startTime").value,
+                        endTime: document.getElementById("endTime").value,
+                        description: document.getElementById("description").value,
+                        volunteers: [
+                          {
+                            _id: props.user._id,
+                          }
+                        ],
+                        organization: props.userOrg._id
+                      }).then(() => {
+                        setDate(null)
+                        document.getElementById("title").value = ""
+                        document.getElementById("startTime").value = ""
+                        document.getElementById("endTime").value = ""
+                        document.getElementById("description").value = ""
+                      })
+
+                      setAccordionOpen(false)
+                    }}
+                    >Create Event</Button>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <ScrollArea className="max-h-[calc(100vh-400px)] w-full p-3">
+            {events.map((event) => (
+              <Card key={event._id} className="mb-4">
+                <CardHeader>
+                  <CardTitle>
+                    {event.title}
+                  </CardTitle>
+                  <CardDescription>
+                    {event.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>{longDate(event.date)}</p>
+                  <p>{standardTime(event.startTime)} to {standardTime(event.endTime)}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button variant="outline" onClick={(e) => {
+                    setSelectedEvent(event)
+                  }}>View</Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </ScrollArea>
 
 
-        </div>
+        </c>
         <div className="divider divider-horizontal h-1/2"></div>
         <div className="flex flex-col w-1/2 space-y-4">
           <div className="flex flex-col space-y-4 rounded-xl">
@@ -145,41 +189,46 @@ export default function Dashboard(props) {
                 </div>
               )}
               {selectedEvent ? (
-                <div className="m-4">
-                  <h2 className="text-xl font-semibold">{selectedEvent.title}</h2>
-                  <p>{longDate(selectedEvent.date)}</p>
-                  <p>{standardTime(selectedEvent.startTime)} to {standardTime(selectedEvent.endTime)}</p>
-                  <p>{selectedEvent.description}</p>
-                  <div className="flex flex-col space-y-4 items-flex-start my-6">
-                    <h3 className="font-semibold">Volunteers</h3>
-                    <ul className="flex flex-col space-y-2 px-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>
+                      {selectedEvent.title}
+                    </CardTitle>
+                    <CardDescription>
+                      {selectedEvent.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{longDate(selectedEvent.date)}</p>
+                    <p>{standardTime(selectedEvent.startTime)} to {standardTime(selectedEvent.endTime)}</p>
+                    <br />
+                    <div className="flex flex-col space-y-4">
                       {selectedEvent.volunteers.map((volunteer) => (
-                        <li key={volunteer.username} className="flex items-center justify-between rounded-lg">
-                          <div className={`flex items-center border-b-[6px] bg-base-100 p-2 justify-between ${selectedEvent.accepted.includes(volunteer._id) ? "border-success" : selectedEvent.rejected.includes(volunteer._id) ? "border-error" : "border-neutral"}`}>
-                            <p>
-                              {volunteer.first_name} {volunteer.last_name}
-                            </p>
+                        <div key={volunteer._id} className="flex flex-row space-x-4 items-center">
+                          <div className="h-12 w-12 bg-secondary rounded-full">
+                            {/* TODO: add profile image */}
                           </div>
-                          <p>{volunteer.role}</p>
-                        </li>
+                          <div className="flex flex-col">
+                            <h1 className="text-lg font-semibold">{volunteer.first_name} {volunteer.last_name}</h1>
+                            <p className="text-sm">{volunteer.email}</p>
+                          </div>
+                        </div>
                       ))}
-                    </ul>
-                  </div>
-                  <div className="flex flex-row justify-between mt-4">
-                    <div className="flex space-x-4">
-                      <Button variant="outline" onClick={(e) => {
-                        handleAccept(selectedEvent._id)
-                      }}>Accept Position</Button>
-                      <Button variant="outline" onClick={(e) => {
-                        handleDecline(selectedEvent._id)
-                      }}>Decline Position</Button>
                     </div>
+                  </CardContent>
+                  <CardFooter className="flex flex-row space-x-4">
+                    <Button variant="outline" onClick={(e) => {
+                      handleAccept(selectedEvent._id)
+                    }}>Accept Position</Button>
+                    <Button variant="outline" onClick={(e) => {
+                      handleDecline(selectedEvent._id)
+                    }}>Decline Position</Button>
                     <Button variant="destructive" onClick={(e) => {
                       props.deleteEvent(selectedEvent._id)
                       setSelectedEvent(null)
                     }}>Delete Event</Button>
-                  </div>
-                </div>
+                  </CardFooter>
+                </Card>
               ) : (
                 <div className="flex flex-col space-y-4 p-4">
                   <p>Select an event to view more information</p>
