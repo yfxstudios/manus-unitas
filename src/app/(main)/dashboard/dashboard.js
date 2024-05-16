@@ -82,7 +82,7 @@ export default function Dashboard(props) {
       {/* <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1 /6 h - screen z - 5 px - 4 py - 8">
         <Separator />
       </div > */}
-      <div className="flex flex-col lg:flex-row justify-center gap-8 w-full px-36 pt-48">
+      <div className="flex flex-col lg:flex-row justify-center gap-8 w-full px-8 py-16 lg:px-36 lg:pt-48">
         <div className="flex flex-col lg:w-1/2 space-y-4">
           <div className="flex flex-row space-x-4 items-center">
             <h1 className="text-2xl font-semibold">Events</h1>
