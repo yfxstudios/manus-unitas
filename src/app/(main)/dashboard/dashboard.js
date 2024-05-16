@@ -20,9 +20,10 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 
-import { format } from "date-fns";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+
+import NewEventForm from "./_components/newEventForm";
 
 
 
@@ -78,12 +79,11 @@ export default function Dashboard(props) {
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1/6 h-screen z-5 px-4 py-8">
-        <h1 className="text-3xl font-semibold">{props.userOrg.displayName}</h1>
+      {/* <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1 /6 h - screen z - 5 px - 4 py - 8">
         <Separator />
-      </div>
-      <div className="flex flex-row justify-center space-x-8 w-full px-36 pt-48">
-        <c className="flex flex-col w-1/2 space-y-4">
+      </div > */}
+      <div className="flex flex-col lg:flex-row justify-center gap-8 w-full px-36 pt-48">
+        <div className="flex flex-col lg:w-1/2 space-y-4">
           <div className="flex flex-row space-x-4 items-center">
             <h1 className="text-2xl font-semibold">Events</h1>
           </div>
@@ -92,62 +92,10 @@ export default function Dashboard(props) {
             <AccordionItem value="item-1">
               <AccordionTrigger>Create Event</AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col space-y-4 rounded-xl relative">
-                  <div className="flex flex-col space-y-4">
-                    <Input type="text" placeholder="Title" id="title" />
-                    {/* <Input type="date" placeholder="Date" id="date" /> */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-[280px] justify-start text-left font-normal",
-                            !date && "text-muted-foreground"
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? format(date, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <Input type="time" placeholder="Start Time" id="startTime" />
-                    <Input type="time" placeholder="End Time" id="endTime" />
-                    <Textarea placeholder="Description" id="description" />
-                    <Button onClick={(e) => {
-                      setCreatingEvent(false)
-                      props.createEventHandler({
-                        title: document.getElementById("title").value,
-                        date: date,
-                        startTime: document.getElementById("startTime").value,
-                        endTime: document.getElementById("endTime").value,
-                        description: document.getElementById("description").value,
-                        volunteers: [
-                          {
-                            _id: props.user._id,
-                          }
-                        ],
-                        organization: props.userOrg._id
-                      }).then(() => {
-                        setDate(null)
-                        document.getElementById("title").value = ""
-                        document.getElementById("startTime").value = ""
-                        document.getElementById("endTime").value = ""
-                        document.getElementById("description").value = ""
-                      })
-
-                      setAccordionOpen(false)
-                    }}
-                    >Create Event</Button>
-                  </div>
-                </div>
+                <NewEventForm onSubmit={async (e) => {
+                  await props.createEvent(e)
+                  setAccordionOpen(false)
+                }} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -176,9 +124,9 @@ export default function Dashboard(props) {
           </ScrollArea>
 
 
-        </c>
+        </div>
         <div className="divider divider-horizontal h-1/2"></div>
-        <div className="flex flex-col w-1/2 space-y-4">
+        <div className="flex flex-col lg:w-1/2 space-y-4">
           <div className="flex flex-col space-y-4 rounded-xl">
             {/* more information about event */}
             <h1 className="text-2xl font-semibold">Event</h1>
@@ -237,7 +185,7 @@ export default function Dashboard(props) {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </div >
   )
 }

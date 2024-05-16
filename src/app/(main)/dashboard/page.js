@@ -121,13 +121,27 @@ export default async function page() {
     console.log('Logging out')
   }
 
-  const createEventHandler = async (e) => {
+  const createEvent = async (e) => {
     'use server'
     console.log('Create event handler')
-    const event = new Events(e);
+    const event = new Events({
+      title: e.title,
+      description: e.description,
+      date: e.date,
+      startTime: e.startTime,
+      endTime: e.endTime,
+      organizationId: user.organizationId,
+      volunteers: [
+        user._id
+      ],
+      accepted: [],
+      rejected: []
+    })
+
     await event.save();
 
     update();
+    return
   }
 
   const deleteEventHandler = async (id) => {
@@ -142,6 +156,6 @@ export default async function page() {
 
 
   return (
-    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEventHandler={createEventHandler} deleteEvent={deleteEventHandler} user={user} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} />
+    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEvent={createEvent} deleteEvent={deleteEventHandler} user={user} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} />
   )
 }
