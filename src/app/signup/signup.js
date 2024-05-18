@@ -6,7 +6,6 @@ import { useState } from 'react'
 
 
 import phoneNumberFormatter from '@lib/util/phoneNumber'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { signIn } from 'next-auth/react'
 
 export default function VolunteerSignUp(props) {
@@ -107,9 +106,7 @@ export default function VolunteerSignUp(props) {
         </div>
         <div className="relative w-96 mb-8">
           <input type={passwordVisible ? 'text' : 'password'} placeholder="Confirm Password" className="input w-full" id='confirm-password' />
-          <button className="absolute right-2 top-[50%] transform -translate-y-1/2" onClick={() => setPasswordVisible(!passwordVisible)}>
-            {passwordVisible ? <VisibilityOff /> : <Visibility />}
-          </button>
+          
         </div>
 
         <p className="text-sm mb-2">Find your organization</p>
