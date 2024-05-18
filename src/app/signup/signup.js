@@ -99,16 +99,10 @@ export default function VolunteerSignUp(props) {
         <input type="tel" placeholder="Phone Number" className="input w-96 mb-4" value={phoneNumber} onChange={(e) => setPhoneNumber(phoneNumberFormatter(e))} id='phone' />
         {/* <input type="text" placeholder='Password' className='input w-96 mb-4' /> */}
         <div className="relative w-96 mb-4">
-          <input type={passwordVisible ? 'text' : 'password'} placeholder="Password" className="input w-full" id='password' />
-          <button className="absolute right-2 top-[50%] transform -translate-y-1/2" onClick={() => setPasswordVisible(!passwordVisible)}>
-            {passwordVisible ? <VisibilityOff /> : <Visibility />}
-          </button>
+          <input type="password" placeholder="Password" className="input w-full" id='password' />
         </div>
         <div className="relative w-96 mb-8">
-          <input type={passwordVisible ? 'text' : 'password'} placeholder="Confirm Password" className="input w-full" id='confirm-password' />
-          <button className="absolute right-2 top-[50%] transform -translate-y-1/2" onClick={() => setPasswordVisible(!passwordVisible)}>
-            {passwordVisible ? <VisibilityOff /> : <Visibility />}
-          </button>
+          <input type="password" placeholder="Confirm Password" className="input w-full" id='confirm-password' />
         </div>
 
         <p className="text-sm mb-2">Find your organization</p>
