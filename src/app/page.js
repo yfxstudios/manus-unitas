@@ -1,13 +1,10 @@
 "use client";
-import EventIcon from "@mui/icons-material/Event";
 import Link from "next/link";
 import {
   motion,
   useAnimation
 } from "framer-motion";
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { PeopleAlt } from "@mui/icons-material";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import TransitionLink from "./components/TransitionLink";
 import Footer from "./components/Footer";
 import Image from "next/image";
@@ -15,6 +12,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 
 import { useGSAP } from '@gsap/react'
+import { AreaChart, CalendarCheck2, UsersRound } from "lucide-react";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
 
@@ -220,55 +220,8 @@ export default function Home() {
         ref={backgroundImage}
         onLoad={() => setLoaded(true)}
       />
-      <div className="navbar bg-base-300 p-8 absolute top-0 z-[1] bg-opacity-0">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[2] p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li>
-                <Link href="/signin">Sign In</Link>
-              </li>
-              <li>
-                <Link href="/signup">Sign Up</Link>
-              </li>
-              <li>
-                <Link href="/contact">Contact</Link>
-              </li>
-            </ul>
-          </div>
-          <a className="btn btn-ghost text-2xl">Manus Unitas</a>
-        </div>
 
-        <div className="navbar-end hidden lg:flex">
-          <TransitionLink
-            className="px-10 cursor-pointer text-xl"
-            href="/signin"
-          >
-            Sign In
-          </TransitionLink>
-          <TransitionLink className="btn btn-lg btn-accent" href="/signup/admin">
-            Try Free
-          </TransitionLink>
-        </div>
-      </div >
+
 
 
       <div div className="min-h-screen bg-base-300 flex flex-col items-center justify-center bg-opacity-0" >
@@ -308,7 +261,7 @@ export default function Home() {
             className="flex flex-col items-center"
             ref={feature1}
           >
-            <PeopleAlt className="text-9xl text-accent" />
+            <UsersRound size={64} className="text-primary" />
             <h2 className="text-4xl font-bold text-center my-5">
               Volunteer Management
             </h2>
@@ -322,7 +275,7 @@ export default function Home() {
             className="flex flex-col items-center"
             ref={feature2}
           >
-            <EventIcon className="text-9xl text-accent" />
+            <CalendarCheck2 size={64} className="text-primary" />
             <h2 className="text-4xl font-bold text-center my-5">
               Scheduling and Events
             </h2>
@@ -338,7 +291,7 @@ export default function Home() {
             ref={feature3}
 
           >
-            <AnalyticsIcon className="text-9xl text-accent" />
+            <AreaChart size={64} className="text-primary" />
             <h2 className="text-4xl font-bold text-center my-5">
               Additional Features
             </h2>
@@ -368,7 +321,7 @@ export default function Home() {
       </div>
 
 
-      <section className="bg-base-300">
+      <section className="bg-muted">
         <div className="py-16 px-4 mx-auto max-w-screen-xl lg:py-32 lg:px-6">
           <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-base-content dark:text-white">Pricing Plans</h2>
@@ -529,3 +482,27 @@ const stopLoading = () => {
     }
   })
 }
+
+
+const ListItem = React.forwardRef(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = 'ListItem'

@@ -154,8 +154,6 @@ const EditUserForm = props => {
 										}}
 										className="cursor-pointer"
 									/>
-									{console.log(field.value)}{" "}
-									{/* This always returns the initial value */}
 								</div>
 							</FormControl>
 							<FormMessage />

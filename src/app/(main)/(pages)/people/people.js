@@ -79,7 +79,12 @@ export default function People(props) {
 
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="destructive">Delete</Button>
+                        <Button
+                          variant="destructive"
+                          {...user.email === props.user.email && { disabled: true }}
+                        >
+                          Delete
+                        </Button>
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
