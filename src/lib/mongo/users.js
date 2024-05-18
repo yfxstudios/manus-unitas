@@ -8,6 +8,8 @@ import Users from '@/lib/schemas/userSchema'
 
 import Stripe from 'stripe'
 
+import mongoose from 'mongoose'
+
 
 const uri = process.env.MONGODB_URI
 

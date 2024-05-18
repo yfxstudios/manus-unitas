@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
-import Dashboard from "./dashboard";
+import Dashboard from "./dashboard/dashboard";
 import { revalidatePath } from "next/cache";
 
 import Subscription from "@/lib/schemas/subscriptionSchema";
@@ -47,7 +47,7 @@ export default async function page() {
         <div className="flex flex-col items-center justify-center h-screen">
           <h1 className="text-3xl font-bold">Subscription Required</h1>
           <p className="text-lg">Please subscribe to access this page</p>
-          <a href="/subscription" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Subscribe</a>
+          <a href="/subscribe" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Subscribe</a>
         </div>
       )
     }

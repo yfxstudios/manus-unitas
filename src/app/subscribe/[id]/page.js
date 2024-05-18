@@ -5,6 +5,7 @@ import React from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 
 import verifySignIn from '@/app/verifySignIn'
+import { Loader2 } from 'lucide-react'
 
 
 
@@ -69,6 +70,12 @@ export default async function page({ params }) {
     }
 
     checkout(item)
+
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 />
+      </div>
+    )
   } else if (params.id === "12") {
     // Starter annual subscription
     const item = {
@@ -78,6 +85,12 @@ export default async function page({ params }) {
     }
 
     checkout(item)
+
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 />
+      </div>
+    )
   }
 
   else {
@@ -87,4 +100,5 @@ export default async function page({ params }) {
       </div>
     )
   }
+
 }

@@ -29,12 +29,9 @@ import NewEventForm from "./_components/newEventForm";
 
 
 export default function Dashboard(props) {
-  const pathName = usePathname()
   const events = props.events
   const [loading, setLoading] = useState(false)
-  const [creatingEvent, setCreatingEvent] = useState(false)
 
-  const [date, setDate] = useState(null)
 
 
   // console.log(events)

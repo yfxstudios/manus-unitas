@@ -5,22 +5,13 @@ import { buffer } from "node:stream/consumers"
 
 import mongoose from "mongoose";
 import Subscription from "@/lib/schemas/subscriptionSchema";
+import Plan from "@/lib/schemas/planSchema";
 
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2020-08-27",
 });
-
-mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
-
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB')
-})
-
-mongoose.connection.on('error', (err) => {
-  console.error(err)
-})
 
 
 export async function POST(req) {
@@ -95,6 +86,7 @@ export async function POST(req) {
         console.error(err)
       })
       break
+
     default:
       console.log(`Unhandled event type ${event.type}`)
   }

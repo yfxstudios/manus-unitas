@@ -4,6 +4,7 @@ import Users from "@/lib/schemas/userSchema";
 import { getServerSession } from "next-auth";
 
 import People from "./people";
+import { revalidatePath } from "next/cache";
 
 export default async function page() {
   'use server'
@@ -19,8 +20,26 @@ export default async function page() {
 
   console.log(users)
 
+  const onEditUser = async (data, uid) => {
+    'use server'
+    console.log(data, uid)
+
+    const user = await Users.findOneAndUpdate({ _id: uid }, data, { new: true }).lean()
+
+    revalidatePath('/people')
+  }
+
+  const onDeleteUser = async (uid) => {
+    'use server'
+    console.log(uid)
+
+    await Users.findOneAndDelete({ _id: uid }).lean()
+
+    revalidatePath('/people')
+  }
+
   return (
-    <People user={user} users={users} org={org} />
+    <People user={user} users={users} org={org} onEditUser={onEditUser} onDeleteUser={onDeleteUser} />
   )
 
 }
