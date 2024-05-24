@@ -10,6 +10,7 @@ import Users from "@/lib/schemas/userSchema";
 import Events from "@/lib/schemas/eventSchema";
 import Stripe from "stripe";
 import Organization from "@/lib/schemas/organizationSchema";
+import { usePathname, useSearchParams } from "next/navigation";
 
 
 
@@ -25,6 +26,7 @@ export default async function page() {
   const session = await getServerSession(options)
 
   const user = await Users.findOne({ email: session.user.email }).lean()
+
 
 
   let subscription

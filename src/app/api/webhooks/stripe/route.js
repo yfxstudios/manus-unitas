@@ -5,7 +5,6 @@ import { buffer } from "node:stream/consumers"
 
 import mongoose from "mongoose";
 import Subscription from "@/lib/schemas/subscriptionSchema";
-import Plan from "@/lib/schemas/planSchema";
 
 
 

@@ -7,7 +7,7 @@ import "./globals.css";
 import { initializeApp } from "firebase/app";
 
 import Script from "next/script";
-import { ThemeProvider } from "@/components/theme-provider";
+import Providers from "./providers";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -55,14 +55,9 @@ export default function RootLayout({ children }) {
 
       </Script>
       <body className={poppins.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-        // disableTransitionOnChange
-        >
+        <Providers>
           {children}
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

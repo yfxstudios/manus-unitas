@@ -5,11 +5,10 @@ import React from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 
 import verifySignIn from '@/app/verifySignIn'
-import { Loader2 } from 'lucide-react'
 
 
 
-export default async function page({ params }) {
+export default async function page() {
   // const session = await getServerSession(options)
 
 
@@ -60,45 +59,13 @@ export default async function page({ params }) {
 
 
 
-  if (params.id === "15") {
-    // Starter monthly subscription
+  // Starter monthly subscription
 
-    const item = {
-      priceID: "price_1PCw8uRpYIAAAWYMsVwOWQJU",
-      name: "Starter",
-      description: "Best option for small nonprofits and organizations."
-    }
-
-    checkout(item)
-
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader2 />
-      </div>
-    )
-  } else if (params.id === "12") {
-    // Starter annual subscription
-    const item = {
-      priceID: "price_1PCw9XRpYIAAAWYMUiZNahtg",
-      name: "Starter",
-      description: "Best option for small nonprofits and organizations."
-    }
-
-    checkout(item)
-
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader2 />
-      </div>
-    )
+  const item = {
+    priceID: "price_1PJMm8RpYIAAAWYMtssSHc8q",
+    name: "Starter",
+    description: "Best option for small nonprofits and organizations."
   }
 
-  else {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <h1 className="text-3xl">Subscription not found. Please try again.</h1>
-      </div>
-    )
-  }
-
+  checkout(item)
 }

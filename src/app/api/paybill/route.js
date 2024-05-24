@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-04-10',
 });
 
-mongoose.connect(process.env.MONGODB_URI)
+// mongoose.connect(process.env.MONGODB_URI)
 
 export async function POST(req) {
   const session = await getServerSession(options)

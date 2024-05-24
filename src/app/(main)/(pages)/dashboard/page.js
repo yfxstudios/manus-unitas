@@ -26,9 +26,16 @@ export default async function page() {
 
   const user = await Users.findOne({ email: session.user.email }).lean()
 
+  // const [searchParams, setSearchParams] = useSearchParams() // does not work in server
+  if (typeof window === 'undefined') {
+    return
+  }
+
+
 
   let subscription
   let subscriptionName
+
 
 
   if (user.admin) {
