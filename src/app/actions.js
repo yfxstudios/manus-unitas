@@ -21,3 +21,22 @@ export async function getPrice(id) {
     console.error(error)
   }
 }
+
+export async function createPaymentIntent(id) {
+  try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2024-04-10",
+    });
+
+    const { unit_amount } = await getPrice(id)
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: unit_amount,
+      currency: "usd",
+    });
+
+    return paymentIntent
+  } catch (error) {
+    console.error(error)
+  }
+}

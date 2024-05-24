@@ -3,29 +3,67 @@
 import React from 'react'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { getPrice } from '@/app/actions'
+import { createPaymentIntent, getPrice } from '@/app/actions'
 import { useQuery } from '@tanstack/react-query'
 import { Skeleton } from '@/components/ui/skeleton'
 
+
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+
 // import {}
 
-const checkout = () => {
+const Checkout = () => {
+  const stripe = useStripe()
+  const elements = useElements()
+
+
   const pathname = usePathname()
   const id = pathname.split('/')[2]
-  console.log(id)
+  // console.log(id)
 
   const { data, error, isFetched } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getPrice(id)
   })
 
-  if (error) return <div>Error: {error.message}</div>
+
+  // wait for the data to be fetched
+  // then useQuery to get the paymentIntent
 
 
+  const { data: paymentIntent, error: paymentError, isFetched: paymentFetched } = useQuery({
+    queryKey: ['paymentIntent', id],
+    queryFn: () => createPaymentIntent(id)
+  })
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const cardElement = elements?.getElement("card");
+
+  //   try {
+  //     if (!stripe || !cardElement) return null;
+
+
+  //     if (paymentFetched) {
+
+  //       console.log(paymentIntent.client_secret)
+
+  //       await stripe?.confirmCardPayment(paymentIntent.client_secret, {
+  //         payment_method: { card: cardElement },
+  //       });
+  //     }
+
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
 
   return (
@@ -40,7 +78,14 @@ const checkout = () => {
             <p>Manus Unitas</p>
           </div>
         </Link>
-        {!isFetched ? (
+        {error && (
+          <div>
+            <X className='h-96 w-96' />
+            <h1 className='text-2xl font-semibold'>An error occurred</h1>
+            <p className='text-sm'>Please try again later</p>
+          </div>
+        )}
+        {!isFetched && !error ? (
           <>
             <Skeleton className='h-6 w-2/3 rounded-lg mb-3' />
             <Skeleton className='h-24 w-full rounded-xl' />
@@ -71,9 +116,10 @@ const checkout = () => {
       </div>
 
       <div className='w-1/2 dark:bg-primary/50 p-16'>
-        <h1 className='text-3xl font-normal mb-4'>{ }</h1>
-        <p className='text-gray-500 mb-4'>You are purchasing an item with id: {id}</p>
-        <Button className=''>Purchase</Button>
+        {/* <form onSubmit={handleSubmit}>
+          <CardElement />
+          <Button type='submit' className='mt-4'>Pay</Button>
+        </form> */}
       </div>
     </div>
   )
