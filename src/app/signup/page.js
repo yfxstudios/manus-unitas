@@ -34,7 +34,6 @@ export default async function Page() {
 
   const orgs = organizations.map(org => org.displayName)
 
-  console.log(orgs)
 
 
 
