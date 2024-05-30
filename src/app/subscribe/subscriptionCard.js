@@ -3,7 +3,7 @@ import { Check } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
-const SubscriptionCard = ({ subscription, pricing }) => {
+const SubscriptionCard = ({ subscription, pricing, monthPriceId, annualPriceId }) => {
 
 
   return (
@@ -38,7 +38,7 @@ const SubscriptionCard = ({ subscription, pricing }) => {
       </ul>
 
       <Button variant={subscription.variant} asChild>
-        <Link href={pricing === "monthly" ? `/subscribe/${subscription.pricing.monthly}` : `/subscribe/${subscription.pricing.yearly}`}>{subscription.action}</Link>
+        <Link href={pricing === "monthly" ? `/checkout/${monthPriceId}` : `/checkout/${annualPriceId}`}>{subscription.action}</Link>
       </Button>
     </div>
   )

@@ -10,6 +10,7 @@ import Users from "@/lib/schemas/userSchema";
 import Events from "@/lib/schemas/eventSchema";
 import Stripe from "stripe";
 import Organization from "@/lib/schemas/organizationSchema";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -19,17 +20,13 @@ export const metadata = {
 
 
 export default async function page() {
+
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2024-04-10',
   });
   const session = await getServerSession(options)
 
   const user = await Users.findOne({ email: session.user.email }).lean()
-
-  // const [searchParams, setSearchParams] = useSearchParams() // does not work in server
-  if (typeof window === 'undefined') {
-    return
-  }
 
 
 
@@ -43,18 +40,14 @@ export default async function page() {
 
     subscriptionName = await stripe.products.retrieve(subscription.productId).then(product => product.name)
 
-
-
-
-
-    // console.log(subscription.status)
-
     if (subscription.status !== 'active') {
       return (
         <div className="flex flex-col items-center justify-center h-screen">
           <h1 className="text-3xl font-bold">Subscription Required</h1>
           <p className="text-lg">Please subscribe to access this page</p>
-          <a href="/subscribe" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Subscribe</a>
+          <Button className="mt-4" asChild>
+            <a href="/subscribe">Subscribe</a>
+          </Button>
         </div>
       )
     }

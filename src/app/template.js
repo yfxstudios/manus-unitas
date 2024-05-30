@@ -36,9 +36,6 @@ export default function Template({ children }) {
   } else if (pathname === "/dashboard") {
     return (
       <div>
-        <div className="min-h-screen w-screen bg-neutral-950 fixed top-0 left-0 z-[1000]" id="loading-screen">
-          <Loader2 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-        </div>
         {children}
       </div>
     );

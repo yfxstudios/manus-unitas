@@ -25,10 +25,13 @@ const InfoBar = async () => {
 		apiVersion: "2024-04-10",
 	});
 
-	// lookup priceId with stripe
-	const subscriptionName = stripe.products
-		.retrieve(subscription.productId)
-		.then(product => product.name);
+	let subscriptionName;
+	if (user.admin) {
+		// lookup priceId with stripe
+		subscriptionName = stripe.products
+			.retrieve(subscription.productId)
+			.then(product => product.name);
+	}
 
 	return (
 		<div className="flex flex-row justify-end gap-6 items-center px-4 py-4 w-full dark:bg-black ">

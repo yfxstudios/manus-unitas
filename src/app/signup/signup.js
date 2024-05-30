@@ -50,7 +50,7 @@ export default function VolunteerSignUp(props) {
 
     // console.log(organization.trim().toLowerCase().replace(/ /g, '-'))
 
-    if (!props.organizations.find(org => org === organization.trim().toLowerCase().replace(/ /g, '-'))) {
+    if (!props.organizations.includes(organization.trim())) {
       alert('Please select an organization from the list')
       return
     }

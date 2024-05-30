@@ -1,5 +1,7 @@
 'use server'
 
+import Users from "@/lib/schemas/userSchema";
+import { getServerSession } from "next-auth";
 import Stripe from "stripe"
 
 
@@ -24,16 +26,34 @@ export async function getPrice(id) {
 
 export async function createPaymentIntent(id) {
   try {
+    const session = await getServerSession()
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2024-04-10",
     });
 
     const { unit_amount } = await getPrice(id)
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: unit_amount,
-      currency: "usd",
+
+    const customer = await Users.findOne({ email: session.user.email })
+
+
+
+    const subscription = await stripe.subscriptions.create({
+      customer: customer.customerId,
+      items: [{
+        price: id,
+      }],
+      payment_behavior: "default_incomplete",
+      payment_settings: {
+        save_default_payment_method: 'on_subscription'
+      },
+      expand: ['latest_invoice.payment_intent'],
+      currency: 'usd',
     });
+
+    const paymentIntent = subscription.latest_invoice.payment_intent
+
+
 
     return paymentIntent
   } catch (error) {

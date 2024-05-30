@@ -38,24 +38,27 @@ export default function Subscriptions() {
           </div>
 
           <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-8 lg:space-y-0'>
-            <SubscriptionCard pricing={pricing} subscription={
-              {
-                name: "Starter",
-                description: "Best option for small nonprofits and organizations.",
-                pricing: {
-                  monthly: 15,
-                  yearly: 12
-                },
-                features: [
-                  "Up to 100 volunteers",
-                  "Basic features",
-                  "Email support",
-                  "Basic reporting"
-                ],
-                action: "Get started",
-                variant: ""
-              }
-            } />
+            <SubscriptionCard pricing={pricing}
+              monthPriceId="price_1PJMm8RpYIAAAWYMtssSHc8q"
+              annualPriceId="price_1PJMmVRpYIAAAWYMLUHHfeFn"
+              subscription={
+                {
+                  name: "Starter",
+                  description: "Best option for small nonprofits and organizations.",
+                  pricing: {
+                    monthly: 15,
+                    yearly: 12
+                  },
+                  features: [
+                    "Up to 100 volunteers",
+                    "Basic features",
+                    "Email support",
+                    "Basic reporting"
+                  ],
+                  action: "Get started",
+                  variant: ""
+                }
+              } />
             <SubscriptionCard pricing={pricing} subscription={
               {
                 name: "Pro",
