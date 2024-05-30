@@ -1,13 +1,10 @@
 "use client";
-import EventIcon from "@mui/icons-material/Event";
 import Link from "next/link";
 import {
   motion,
   useAnimation
 } from "framer-motion";
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { PeopleAlt } from "@mui/icons-material";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import TransitionLink from "./components/TransitionLink";
 import Footer from "./components/Footer";
 import Image from "next/image";
@@ -15,6 +12,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 
 import { useGSAP } from '@gsap/react'
+import { AreaChart, CalendarCheck2, UsersRound } from "lucide-react";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+import Subscriptions from "./subscribe/subscriptions";
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
 
@@ -220,55 +221,8 @@ export default function Home() {
         ref={backgroundImage}
         onLoad={() => setLoaded(true)}
       />
-      <div className="navbar bg-base-300 p-8 absolute top-0 z-[1] bg-opacity-0">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[2] p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li>
-                <Link href="/signin">Sign In</Link>
-              </li>
-              <li>
-                <Link href="/signup">Sign Up</Link>
-              </li>
-              <li>
-                <Link href="/contact">Contact</Link>
-              </li>
-            </ul>
-          </div>
-          <a className="btn btn-ghost text-2xl">Manus Unitas</a>
-        </div>
 
-        <div className="navbar-end hidden lg:flex">
-          <TransitionLink
-            className="px-10 cursor-pointer text-xl"
-            href="/signin"
-          >
-            Sign In
-          </TransitionLink>
-          <TransitionLink className="btn btn-lg btn-accent" href="/signup/admin">
-            Try Free
-          </TransitionLink>
-        </div>
-      </div >
+
 
 
       <div div className="min-h-screen bg-base-300 flex flex-col items-center justify-center bg-opacity-0" >
@@ -308,7 +262,7 @@ export default function Home() {
             className="flex flex-col items-center"
             ref={feature1}
           >
-            <PeopleAlt className="text-9xl text-accent" />
+            <UsersRound size={64} className="text-primary" />
             <h2 className="text-4xl font-bold text-center my-5">
               Volunteer Management
             </h2>
@@ -322,7 +276,7 @@ export default function Home() {
             className="flex flex-col items-center"
             ref={feature2}
           >
-            <EventIcon className="text-9xl text-accent" />
+            <CalendarCheck2 size={64} className="text-primary" />
             <h2 className="text-4xl font-bold text-center my-5">
               Scheduling and Events
             </h2>
@@ -338,7 +292,7 @@ export default function Home() {
             ref={feature3}
 
           >
-            <AnalyticsIcon className="text-9xl text-accent" />
+            <AreaChart size={64} className="text-primary" />
             <h2 className="text-4xl font-bold text-center my-5">
               Additional Features
             </h2>
@@ -358,7 +312,8 @@ export default function Home() {
           <p className="text-xl mb-10"
             ref={signUpText}
           >
-            Start streamlining your volunteer programs and driving social impact today.</p>
+            Start streamlining your volunteer programs and driving social impact today.
+          </p>
           <button className="btn btn-lg btn-secondary"
             ref={signUpBtn}
           >
@@ -368,147 +323,7 @@ export default function Home() {
       </div>
 
 
-      <section className="bg-base-300">
-        <div className="py-16 px-4 mx-auto max-w-screen-xl lg:py-32 lg:px-6">
-          <div className="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-base-content dark:text-white">Pricing Plans</h2>
-            <p className="mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400">{`Choose the plan that best fits your organization's needs.`}</p>
-            <div className="flex justify-center items-center space-x-4">
-              <label htmlFor="toggle" className="text-gray-500 dark:text-gray-400">Monthly</label>
-              <input type="checkbox" className="toggle toggle-lg" onChange={(e) => {
-                setPricing(e.target.checked ? "yearly" : "monthly")
-              }} />
-              <label htmlFor="toggle" className="text-gray-500 dark:text-gray-400">Yearly</label>
-            </div>
-          </div>
-          <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
-              <h3 className="mb-4 text-2xl font-semibold">Starter</h3>
-              <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best option for small nonprofits and organizations.</p>
-              {pricing === "monthly" &&
-                (
-                  <div className="flex flex-col my-8">
-                    <div className="flex justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$15</span>
-                      <span className="text-gray-500 dark:text-gray-400">/month</span>
-                    </div>
-                    <p className="text-sm  text-gray-500 dark:text-gray-400">&nbsp;</p>
-                  </div>
-                ) || (
-                  <div className="flex flex-col my-8">
-                    <div className="justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$12</span>
-                      <span className="text-gray-500 dark:text-gray-400">/month</span>
-                    </div>
-                    <p className="text-sm  text-gray-500 dark:text-gray-400">Billed annually</p>
-                  </div>
-                )}
-              <ul role="list" className="mb-8 space-y-4 text-left">
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Up to 100 volunteers</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Basic features</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Email support</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Basic reporting</span>
-                </li>
-              </ul>
-              <TransitionLink href="/signup/admin" className="btn btn-md btn-accent">Get started</TransitionLink>
-            </div>
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
-              <h3 className="mb-4 text-2xl font-semibold">Business</h3>
-              <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Relevant for medium-sized nonprofits and organizations.</p>
-              {pricing === "monthly" &&
-                (
-                  <div className="flex flex-col my-8">
-                    <div className="justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$99</span>
-                      <span className="text-gray-500 dark:text-gray-400">/month</span>
-                    </div>
-                    <p className="text-sm  text-gray-500 dark:text-gray-400">&nbsp;</p>
-                  </div>
-                ) || (
-                  <div className="flex flex-col my-8">
-                    <div className="justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$79</span>
-                      <span className="text-gray-500 dark:text-gray-400">/month</span>
-                    </div>
-                    <p className="text-sm  text-gray-500 dark:text-gray-400">Billed annually</p>
-                  </div>
-                )}
-              <ul role="list" className="mb-8 space-y-4 text-left">
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Up to 500 volunteers</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Advanced features</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Email and phone support</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Advanced reporting</span>
-                </li>
-              </ul>
-              <TransitionLink href="/signup" className="btn btn-md btn-accent btn-disabled">Coming Soon</TransitionLink>
-            </div>
-            <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-white bg-base-100 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8">
-              <h3 className="mb-4 text-2xl font-semibold">Enterprise</h3>
-              <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">Best for large nonprofits and organizations.</p>
-              {pricing === "monthly" &&
-                (
-                  <div className="flex flex-col my-8">
-                    <div className="flex justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$499</span>
-                      <span className="text-gray-500 dark:text-gray-400">/month</span>
-                    </div>
-                    <p className="text-sm  text-gray-500 dark:text-gray-400">&nbsp;</p>
-                  </div>
-                ) || (
-                  <div className="flex flex-col my-8">
-                    <div className="justify-center items-baseline">
-                      <span className="mr-2 text-5xl font-extrabold">$419</span>
-                      <span className="text-gray-500 dark:text-gray-400">/month</span>
-                    </div>
-                    <p className="text-sm  text-gray-500 dark:text-gray-400">Billed annually</p>
-                  </div>
-                )}
-
-              <ul role="list" className="mb-8 space-y-4 text-left">
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Unlimited volunteers</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>All features</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Priority support</span>
-                </li>
-                <li className="flex items-center space-x-3">
-                  <svg className="flex-shrink-0 w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7 293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                  <span>Advanced reporting</span>
-                </li>
-              </ul>
-              <TransitionLink href="/signup" className="btn btn-md btn-accent btn-disabled">Coming Soon</TransitionLink>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Subscriptions />
 
       <Footer />
     </div >
@@ -519,6 +334,7 @@ export default function Home() {
 
 const stopLoading = () => {
   const loadingScreen = document.getElementById('loading-screen');
+  if (!loadingScreen) return;
 
   const tl = gsap.timeline();
   tl.to(loadingScreen, {

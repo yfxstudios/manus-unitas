@@ -1,63 +1,182 @@
 'use client'
+
+import { formatPhoneNumber } from '@/lib/util/phoneNumber'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useState } from 'react'
-import phoneNumberFormatter from '@lib/util/phoneNumber'
+import { Loader2 } from 'lucide-react'
 
-export default function OrganizationForm({ handleSubmit }) {
+const schema = z.object({
+  organizationName: z.string().min(1, 'Organization Name is required'),
+  organizationType: z.string().min(1, 'Organization Type is required'),
+  organizationDescription: z.string().min(1, 'Organization Description is required'),
+  organizationWebsite: z.string().min(1, 'Organization Website is required'),
+  organizationAddress: z.string().min(1, 'Organization Address is required'),
+  organizationPhone: z.string().min(1, 'Organization Phone is required'),
+  organizationEmail: z.string().min(1, 'Organization Email is required')
+})
 
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [orgPhoneNumber, setOrgPhoneNumber] = useState('')
+
+export default function OrganizationForm(props) {
+  const [isLoading, setIsLoading] = useState(false)
+  const form = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(schema),
+    defaultValues: {
+      organizationName: '',
+      organizationType: '',
+      organizationDescription: '',
+      organizationWebsite: '',
+      organizationAddress: '',
+      organizationPhone: '',
+      organizationEmail: ''
+    }
+  })
+
+  const handleSubmit = async (data) => {
+    setIsLoading(true)
+    const response = await props.handleSubmit(data)
+    setIsLoading(false)
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen py-16">
       <h1 className='text-4xl font-bold mb-8'>Add Your Organization</h1>
-      <div className="flex flex-col items-center justify-center">
-        <p className="text-left w-96 mb-4">Basic Info</p>
-        <input type="text" placeholder="Organization Name" className="input w-96 mb-4" id='organization-name' />
-        <input type="text" placeholder="Type (Nonprofit, school, etc.)" className="input w-96 mb-4" id='organization-type' />
-        <input type="text" placeholder="Website" className="input w-96 mb-4" id='organization-website' />
-        <textarea placeholder="Brief description of your organization" className="input w-96 mb-4 p-4 h-24 resize-none" id='organization-description' />
 
 
-        <p className="text-left w-96 mb-4">Contact Info</p>
-        <input type="text" placeholder="(800) 867-5309" className="input w-96 mb-4" id='organization-phone' onChange={(e) => setOrgPhoneNumber(phoneNumberFormatter(e))} value={orgPhoneNumber} />
-        <input type="text" placeholder="info@yourorganization.com" className="input w-96 mb-4" id='organization-email' />
-        <input type="text" placeholder="9763 Mill St., Piedmont, CA 94620" className="input w-96 mb-4" id='organization-address' />
+      <Form {...form}>
+        <form className="flex flex-col items-center justify-center p-2 w-full max-w-sm" onSubmit={form.handleSubmit(handleSubmit)}>
+          <FormField
+            control={form.control}
+            name='organizationName'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Organization Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Organization Name'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <p className="text-left w-96 mb-4">Contact Person</p>
-        <input type="text" placeholder="Tommy Tutone" className="input w-96 mb-4" id='organization-contact-name' />
-        <input type="text" placeholder="(800) 867-5309" className="input w-96 mb-4" id='organization-contact-phone' onChange={(e) => setPhoneNumber(phoneNumberFormatter(e))} value={phoneNumber} />
-        <input type="text" placeholder="ttutone@jen.com" className="input w-96 mb-4" id='organization-contact-email' />
-        <button className="btn w-96" onClick={() => {
-          const organizationName = document.getElementById('organization-name').value
-          const organizationType = document.getElementById('organization-type').value
-          const organizationDescription = document.getElementById('organization-description').value
-          const organizationWebsite = document.getElementById('organization-website').value
-          const organizationAddress = document.getElementById('organization-address').value
-          const organizationPhone = document.getElementById('organization-phone').value
-          const organizationEmail = document.getElementById('organization-email').value
-          const organizationContactName = document.getElementById('organization-contact-name').value
-          const organizationContactPhone = document.getElementById('organization-contact-phone').value
-          const organizationContactEmail = document.getElementById('organization-contact-email').value
+          <FormField
+            control={form.control}
+            name='organizationType'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Organization Type</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Church, 501(c)(3), school, etc.'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-          if (organizationName === '' || organizationType === '' || organizationDescription === '' || organizationWebsite === '' || organizationAddress === '' || organizationPhone === '' || organizationEmail === '' || organizationContactName === '' || organizationContactPhone === '' || organizationContactEmail === '') {
-            alert('Please fill out all fields')
-            return
-          }
+          <FormField
+            control={form.control}
+            name='organizationDescription'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Description</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Description'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-          handleSubmit({
-            organizationName,
-            organizationType,
-            organizationDescription,
-            organizationWebsite,
-            organizationAddress,
-            organizationPhone,
-            organizationEmail,
-            organizationContactName,
-            organizationContactPhone,
-            organizationContactEmail
-          })
-        }}>Submit</button>
-      </div>
-    </div >
+          <FormField
+            control={form.control}
+            name='organizationWebsite'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Website</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Website'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='organizationAddress'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Address</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Address'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='organizationPhone'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Organization Phone</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Organization Phone'
+                    {...field}
+                    onChange={e => field.onChange(formatPhoneNumber(e.target.value))}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='organizationEmail'
+            render={({ field }) => (
+              <FormItem className="w-full m-3">
+                <FormLabel className="text-lg">Organization Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Organization Email'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type='submit'
+            disabled={isLoading || !form.formState.isValid}
+            className='w-full'
+          >
+            {isLoading ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            ) : (
+              'Submit'
+            )}
+          </Button>
+        </form>
+      </Form>
+
+    </div>
   )
 }

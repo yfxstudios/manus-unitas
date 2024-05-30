@@ -4,7 +4,7 @@ const phoneNumberFormatter = (e) => {
   return formatted;
 }
 
-const formatPhoneNumber = (input) => {
+export const formatPhoneNumber = (input) => {
   if (!input) return input;
   const phoneNumber = input.replace(/[^\d]/g, "");
   const phoneNumberLength = phoneNumber.length;

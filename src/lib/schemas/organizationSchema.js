@@ -12,10 +12,7 @@ const organizationSchema = new Schema({
   website: String,
   address: String,
   phone: String,
-  email: String,
-  contactName: String,
-  contactPhone: String,
-  contactEmail: String
+  email: String
 })
 
 let Organization

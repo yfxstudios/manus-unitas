@@ -1,7 +1,8 @@
 import React from 'react'
 import VolunteerSignUp from './signup'
-import { getOrganization, getOrganizations } from '@lib/mongo/organization'
+import { getOrganization, getOrganizations } from '@/lib/mongo/organization'
 import { createUser, getUsers } from '@/lib/mongo/users'
+import Organization from '@/lib/schemas/organizationSchema'
 
 
 export default async function Page() {
@@ -18,25 +19,25 @@ export default async function Page() {
 
     console.log("ORGANIZATION: " + data.organization)
 
+    const organization = await Organization.findOne({ databaseName: data.organization.displayName.trim().toLowerCase().replace(/ /g, '-') })
+
     createUser({
       ...data,
-      organizationId: getOrganization(data.organization.displayName.trim().toLowerCase().replace(/ /g, '-'))._id,
+      organizationId: organization._id,
     })
-    return response
-  }
 
-  const organizations = await getOrganizations()
-
-  const handleGetOrg = async (org) => {
-    'use server'
-    const organization = await getOrganization(org)
-    return organization
+    return "success"
   }
+  // need list of organization displayName
+
+  const organizations = await Organization.find()
+
+  const orgs = organizations.map(org => org.displayName)
 
 
 
 
   return (
-    <VolunteerSignUp handleSubmit={handleSubmit} organizations={organizations} getOrganization={handleGetOrg} />
+    <VolunteerSignUp handleSubmit={handleSubmit} organizations={orgs} />
   )
 }

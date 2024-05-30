@@ -2,10 +2,12 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 
 
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 
 import Script from "next/script";
+import Providers from "./providers";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -52,7 +54,11 @@ export default function RootLayout({ children }) {
         }
 
       </Script>
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
