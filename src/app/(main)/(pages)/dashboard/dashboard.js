@@ -78,7 +78,7 @@ export default function Dashboard(props) {
       setSelectedEvent(events.find(event => event._id === selectedEvent._id));
       setLoading(false);
     }
-  }, [events]);
+  }, [events, selectedEvent]);
 
   const [open, setOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -109,7 +109,12 @@ export default function Dashboard(props) {
                         Create a new event for your organization.
                       </DialogDescription>
                     </DialogHeader>
-                    <NewEventForm />
+                    <NewEventForm
+                      onSubmit={async e => {
+                        await props.createEvent(e);
+                        setOpen(false);
+                      }}
+                    />
                   </DialogContent>
                 </Dialog>
               ) : (
@@ -291,8 +296,8 @@ export default function Dashboard(props) {
                           <Avatar className="flex-shrink-0 h-12 w-12 hidden xs:flex">
                             <AvatarImage src="https://github.com/shadcn.png" />
                             <AvatarFallback>
-                              {volunteer.first_name.charAt(0)}
-                              {volunteer.last_name.charAt(0)}
+                              {volunteer.first_name[0]}
+                              {volunteer.last_name[0]}
                             </AvatarFallback>
                           </Avatar>
 

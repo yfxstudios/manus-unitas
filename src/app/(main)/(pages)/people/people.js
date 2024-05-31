@@ -19,10 +19,18 @@ import { Mail, MessageCircle, MessageSquareMore, Plus } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ScrollAreaHorizontal } from "@/components/ui/scroll-area-horizontal"
+import NewUserForm from "./_components/newUserForm"
+import { useMediaQuery } from "@uidotdev/usehooks"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { AvatarImage } from "@radix-ui/react-avatar"
+import { sendMail } from "@/app/mail"
 
 
 export default function People(props) {
   const [open, setOpen] = useState("") // user emails that's drawer is open
+
+  const [addUserMenuOpen, setAddUserMenuOpen] = useState(false)
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   return (
     <div className="flex flex-row">
@@ -40,42 +48,52 @@ export default function People(props) {
                   <div key={user._id} className="flex flex-row space-x-4 items-center">
                     <div className="flex flex-row w-full gap-6 items-center justify-between">
                       <div className="flex flex-row gap-6 items-center" >
-                        <Skeleton className="h-12 w-12 rounded-full" />
+                        <Avatar>
+                          <AvatarImage src={user.avatar} alt={user.first_name} />
+                          <AvatarFallback>
+                            {user.first_name[0]}
+                            {user.last_name[0]}
+                          </AvatarFallback>
+                        </Avatar>
                         <div className="flex flex-col mr-8">
                           <h1 className="text-lg font-semibold">{user.first_name} {user.last_name}</h1>
                           <p className="text-sm">{user.email}</p>
                         </div>
                       </div>
-                      <div className="flex flex-row gap-6 items-center">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <a href={`sms:${user.phone}`} className="flex flex-row gap-4 items-center">
-                                <MessageSquareMore className="cursor-pointer" />
-                              </a>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{user.phone}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                      {user.completedSignup ? (
+                        <div className="flex flex-row gap-6 items-center">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <a href={`sms:${user.phone}`} className="flex flex-row gap-4 items-center">
+                                  <MessageSquareMore className="cursor-pointer" />
+                                </a>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{user.phone}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
 
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <a href={`mailto:${user.email}`} className="flex flex-row gap-4 items-center">
-                                <Mail className="cursor-pointer" />
-                              </a>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{user.email}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <a href={`mailto:${user.email}`} className="flex flex-row gap-4 items-center">
+                                  <Mail className="cursor-pointer" />
+                                </a>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{user.email}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      ) : (
+                        <p>User has not completed signup</p>
+                      )}
                     </div>
 
-                    {props.user.admin && (
+                    {props.user.admin && user.completedSignup && (
                       <div className="flex flex-row space-x-4 items-center">
                         <Drawer open={open === user.email} onOpenChange={(isOpen) => {
                           if (isOpen) {
@@ -154,8 +172,57 @@ export default function People(props) {
                   </div>
                 ))}
                 {props.user.admin && (
-
-                  <Button variant="outline"><Plus /> Add Person</Button>
+                  <>
+                    {isDesktop ? (
+                      <Dialog open={addUserMenuOpen} onOpenChange={setAddUserMenuOpen}>
+                        <DialogTrigger asChild>
+                          <Button variant="outline"><Plus /> Add Person</Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Add a person</DialogTitle>
+                            <DialogDescription>
+                              Add a new person to your organization.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <NewUserForm
+                            handleSubmit={async e => {
+                              const res = await props.createPartialUser(e)
+                              return res
+                            }}
+                          />
+                        </DialogContent>
+                      </Dialog>
+                    ) : (
+                      <Drawer open={addUserMenuOpen} onOpenChange={setAddUserMenuOpen}>
+                        <DrawerTrigger asChild>
+                          <Button variant="outline"><Plus /> Add Person</Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                          <DrawerHeader className="text-left">
+                            <DrawerTitle>Add a person</DrawerTitle>
+                            <DrawerDescription>
+                              Add a new person to your organization.
+                            </DrawerDescription>
+                          </DrawerHeader>
+                          <NewUserForm className="px-4"
+                            handleSubmit={async e => {
+                              const res = await props.createPartialUser(e)
+                              if (res) {
+                                return res
+                              }
+                              setAddUserMenuOpen(false)
+                            }}
+                          />
+                          <DrawerFooter className="pt-2">
+                            <DrawerClose asChild>
+                              <Button variant="outline">Cancel</Button>
+                            </DrawerClose>
+                          </DrawerFooter>
+                        </DrawerContent>
+                      </Drawer>
+                    )}
+                  </>
                 )}
               </div>
             </ScrollAreaHorizontal>
