@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import PasswordForm from "./passwordForm"
 import Users from "@/lib/schemas/userSchema"
 
@@ -5,7 +6,7 @@ const SetPassword = async () => {
   const users = await Users.find().lean()
 
   return (
-    <div>
+    <Suspense>
       <PasswordForm
         users={users.map(user => {
           return {
@@ -30,7 +31,7 @@ const SetPassword = async () => {
 
           await user.save()
         }} />
-    </div>
+    </Suspense>
   )
 }
 export default SetPassword

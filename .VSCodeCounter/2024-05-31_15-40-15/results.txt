@@ -1,0 +1,205 @@
+Date : 2024-05-31 15:40:15
+Directory : c:\Users\aaron\Documents\GitHub\manus-unitas
+Total : 110 files,  10508 codes, 214 comments, 993 blanks, all 11715 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          3 |      4,848 |          0 |          3 |      4,851 |
+| JavaScript         |         69 |      3,824 |        120 |        710 |      4,654 |
+| JavaScript JSX     |         29 |      1,742 |         19 |        250 |      2,011 |
+| CSS                |          1 |         56 |         75 |         14 |        145 |
+| Markdown           |          1 |         23 |          0 |         14 |         37 |
+| JSON with Comments |          2 |         10 |          0 |          2 |         12 |
+| XML                |          5 |          5 |          0 |          0 |          5 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                         |        110 |     10,508 |        214 |        993 |     11,715 |
+| . (Files)                                                                                                 |          9 |      4,980 |          3 |         23 |      5,006 |
+| public                                                                                                    |          5 |          5 |          0 |          0 |          5 |
+| src                                                                                                       |         96 |      5,523 |        211 |        970 |      6,704 |
+| src (Files)                                                                                               |          1 |          9 |          0 |          2 |         11 |
+| src\app                                                                                                   |         54 |      3,797 |        176 |        633 |      4,606 |
+| src\app (Files)                                                                                           |          8 |        515 |        107 |        129 |        751 |
+| src\app\(main)                                                                                            |         11 |      1,456 |         28 |        189 |      1,673 |
+| src\app\(main) (Files)                                                                                    |          1 |         15 |          0 |          3 |         18 |
+| src\app\(main)\(pages)                                                                                    |         10 |      1,441 |         28 |        186 |      1,655 |
+| src\app\(main)\(pages) (Files)                                                                            |          1 |          9 |          0 |          3 |         12 |
+| src\app\(main)\(pages)\dashboard                                                                          |          3 |        603 |         10 |         87 |        700 |
+| src\app\(main)\(pages)\dashboard (Files)                                                                  |          2 |        442 |          7 |         78 |        527 |
+| src\app\(main)\(pages)\dashboard\_components                                                              |          1 |        161 |          3 |          9 |        173 |
+| src\app\(main)\(pages)\people                                                                             |          4 |        639 |         18 |         74 |        731 |
+| src\app\(main)\(pages)\people (Files)                                                                     |          2 |        283 |          1 |         39 |        323 |
+| src\app\(main)\(pages)\people\_components                                                                 |          2 |        356 |         17 |         35 |        408 |
+| src\app\(main)\(pages)\settings                                                                           |          2 |        190 |          0 |         22 |        212 |
+| src\app\(main)\(pages)\settings (Files)                                                                   |          1 |         24 |          0 |          7 |         31 |
+| src\app\(main)\(pages)\settings\_components                                                               |          1 |        166 |          0 |         15 |        181 |
+| src\app\api                                                                                               |         12 |        246 |         19 |         72 |        337 |
+| src\app\api\auth                                                                                          |          2 |         34 |          4 |          4 |         42 |
+| src\app\api\auth\[...nextauth]                                                                            |          2 |         34 |          4 |          4 |         42 |
+| src\app\api\createPaymentIntent                                                                           |          1 |         22 |          0 |          4 |         26 |
+| src\app\api\endTutorial                                                                                   |          1 |         15 |          0 |          6 |         21 |
+| src\app\api\events                                                                                        |          2 |         16 |          0 |          5 |         21 |
+| src\app\api\events (Files)                                                                                |          1 |          6 |          0 |          2 |          8 |
+| src\app\api\events\[id]                                                                                   |          1 |         10 |          0 |          3 |         13 |
+| src\app\api\getOrgMembers                                                                                 |          1 |          9 |          0 |          2 |         11 |
+| src\app\api\paybill                                                                                       |          1 |         47 |          6 |         14 |         67 |
+| src\app\api\roles                                                                                         |          2 |         23 |          2 |         11 |         36 |
+| src\app\api\roles (Files)                                                                                 |          1 |         15 |          2 |          7 |         24 |
+| src\app\api\roles\all                                                                                     |          1 |          8 |          0 |          4 |         12 |
+| src\app\api\users                                                                                         |          1 |          8 |          3 |          2 |         13 |
+| src\app\api\users\[...id]                                                                                 |          1 |          8 |          3 |          2 |         13 |
+| src\app\api\webhooks                                                                                      |          1 |         72 |          4 |         24 |        100 |
+| src\app\api\webhooks\stripe                                                                               |          1 |         72 |          4 |         24 |        100 |
+| src\app\checkout                                                                                          |          2 |        148 |          2 |         39 |        189 |
+| src\app\checkout\[id]                                                                                     |          2 |        148 |          2 |         39 |        189 |
+| src\app\completion                                                                                        |          2 |         43 |          0 |         12 |         55 |
+| src\app\components                                                                                        |          2 |         38 |          6 |         10 |         54 |
+| src\app\contact                                                                                           |          1 |         50 |          7 |         10 |         67 |
+| src\app\organization-details                                                                              |          2 |        208 |          0 |         27 |        235 |
+| src\app\privacy-policy                                                                                    |          1 |        199 |          0 |          2 |        201 |
+| src\app\set-password                                                                                      |          2 |         94 |          0 |         20 |        114 |
+| src\app\signin                                                                                            |          1 |         95 |          2 |         20 |        117 |
+| src\app\signup                                                                                            |          4 |        391 |          4 |         74 |        469 |
+| src\app\signup (Files)                                                                                    |          2 |        143 |          3 |         43 |        189 |
+| src\app\signup\admin                                                                                      |          2 |        248 |          1 |         31 |        280 |
+| src\app\subscribe                                                                                         |          5 |        173 |          1 |         27 |        201 |
+| src\app\subscribe (Files)                                                                                 |          3 |        150 |          1 |         17 |        168 |
+| src\app\subscribe\success                                                                                 |          2 |         23 |          0 |         10 |         33 |
+| src\app\terms-and-conditions                                                                              |          1 |        141 |          0 |          2 |        143 |
+| src\components                                                                                            |         26 |      1,220 |          2 |        200 |      1,422 |
+| src\components (Files)                                                                                    |          1 |          5 |          0 |          3 |          8 |
+| src\components\infobar                                                                                    |          1 |        102 |          2 |         10 |        114 |
+| src\components\sidebar                                                                                    |          1 |         60 |          0 |          4 |         64 |
+| src\components\theme-toggle                                                                               |          1 |         36 |          0 |          5 |         41 |
+| src\components\ui                                                                                         |         22 |      1,017 |          0 |        178 |      1,195 |
+| src\lib                                                                                                   |         14 |        444 |         33 |        126 |        603 |
+| src\lib (Files)                                                                                           |          2 |         11 |          0 |          4 |         15 |
+| src\lib\mongo                                                                                             |          4 |        279 |         18 |         87 |        384 |
+| src\lib\schemas                                                                                           |          4 |        108 |          2 |         30 |        140 |
+| src\lib\stripe                                                                                            |          1 |         14 |         11 |          3 |         28 |
+| src\lib\util                                                                                              |          3 |         32 |          2 |          2 |         36 |
+| src\utils                                                                                                 |          1 |         53 |          0 |          9 |         62 |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                  | language           | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| c:\Users\aaron\Documents\GitHub\manus-unitas\.eslintrc.json                                               | JSON with Comments |          3 |          0 |          1 |          4 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\README.md                                                    | Markdown           |         23 |          0 |         14 |         37 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\components.json                                              | JSON               |         17 |          0 |          1 |         18 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\jsconfig.json                                                | JSON with Comments |          7 |          0 |          1 |          8 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\next.config.mjs                                              | JavaScript         |          2 |          1 |          2 |          5 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\package-lock.json                                            | JSON               |      4,761 |          0 |          1 |      4,762 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\package.json                                                 | JSON               |         70 |          0 |          1 |         71 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\postcss.config.mjs                                           | JavaScript         |          6 |          1 |          2 |          9 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\public\logo grayscale simple.svg                             | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\public\logo grayscale.svg                                    | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\public\logo.svg                                              | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\public\next.svg                                              | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\public\vercel.svg                                            | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\dashboard\_components\newEventForm.js | JavaScript         |        161 |          3 |          9 |        173 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\dashboard\dashboard.js                | JavaScript         |        333 |          4 |         25 |        362 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\dashboard\page.js                     | JavaScript         |        109 |          3 |         53 |        165 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\layout.js                             | JavaScript         |          9 |          0 |          3 |         12 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\people\_components\editUserForm.jsx   | JavaScript JSX     |        166 |          0 |         15 |        181 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\people\_components\newUserForm.jsx    | JavaScript JSX     |        190 |         17 |         20 |        227 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\people\page.js                        | JavaScript         |         66 |          0 |         23 |         89 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\people\people.js                      | JavaScript         |        217 |          1 |         16 |        234 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\settings\_components\editUserForm.jsx | JavaScript JSX     |        166 |          0 |         15 |        181 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\(pages)\settings\page.js                      | JavaScript         |         24 |          0 |          7 |         31 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\(main)\layout.js                                     | JavaScript         |         15 |          0 |          3 |         18 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\actions.js                                           | JavaScript         |         44 |          0 |         18 |         62 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\auth\[...nextauth]\options.js                    | JavaScript         |         30 |          4 |          1 |         35 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\auth\[...nextauth]\route.js                      | JavaScript         |          4 |          0 |          3 |          7 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\createPaymentIntent\route.js                     | JavaScript         |         22 |          0 |          4 |         26 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\endTutorial\route.js                             | JavaScript         |         15 |          0 |          6 |         21 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\events\[id]\route.js                             | JavaScript         |         10 |          0 |          3 |         13 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\events\route.js                                  | JavaScript         |          6 |          0 |          2 |          8 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\getOrgMembers\route.js                           | JavaScript         |          9 |          0 |          2 |         11 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\paybill\route.js                                 | JavaScript         |         47 |          6 |         14 |         67 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\roles\all\route.js                               | JavaScript         |          8 |          0 |          4 |         12 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\roles\route.js                                   | JavaScript         |         15 |          2 |          7 |         24 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\users\[...id]\route.js                           | JavaScript         |          8 |          3 |          2 |         13 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\api\webhooks\stripe\route.js                         | JavaScript         |         72 |          4 |         24 |        100 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\checkout\[id]\checkoutForm.js                        | JavaScript         |         98 |          2 |         25 |        125 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\checkout\[id]\page.js                                | JavaScript         |         50 |          0 |         14 |         64 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\completion\completion.js                             | JavaScript         |         33 |          0 |          9 |         42 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\completion\page.js                                   | JavaScript         |         10 |          0 |          3 |         13 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\components\Footer.js                                 | JavaScript         |         21 |          6 |          2 |         29 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\components\TransitionLink.js                         | JavaScript         |         17 |          0 |          8 |         25 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\contact\page.js                                      | JavaScript         |         50 |          7 |         10 |         67 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\globals.css                                          | CSS                |         56 |         75 |         14 |        145 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\layout.js                                            | JavaScript         |         45 |          6 |         14 |         65 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\mail.js                                              | JavaScript         |         30 |          1 |          6 |         37 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\organization-details\OrganizationForm.js             | JavaScript         |        166 |          0 |         16 |        182 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\organization-details\page.js                         | JavaScript         |         42 |          0 |         11 |         53 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\page.js                                              | JavaScript         |        263 |         24 |         60 |        347 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\privacy-policy\page.js                               | JavaScript         |        199 |          0 |          2 |        201 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\providers.js                                         | JavaScript         |         21 |          1 |          4 |         26 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\set-password\page.js                                 | JavaScript         |         30 |          0 |          7 |         37 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\set-password\passwordForm.js                         | JavaScript         |         64 |          0 |         13 |         77 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\signin\page.js                                       | JavaScript         |         95 |          2 |         20 |        117 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\signup\admin\adminSignUp.js                          | JavaScript         |        221 |          0 |         22 |        243 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\signup\admin\page.js                                 | JavaScript         |         27 |          1 |          9 |         37 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\signup\page.js                                       | JavaScript         |         28 |          2 |         14 |         44 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\signup\signup.js                                     | JavaScript         |        115 |          1 |         29 |        145 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\subscribe\page.js                                    | JavaScript         |         12 |          0 |          3 |         15 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\subscribe\subscriptionCard.js                        | JavaScript         |         42 |          0 |          6 |         48 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\subscribe\subscriptions.js                           | JavaScript         |         96 |          1 |          8 |        105 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\subscribe\success\page.js                            | JavaScript         |          9 |          0 |          2 |         11 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\subscribe\success\success.js                         | JavaScript         |         14 |          0 |          8 |         22 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\template.js                                          | JavaScript         |         39 |          0 |          9 |         48 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\terms-and-conditions\page.js                         | JavaScript         |        141 |          0 |          2 |        143 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\app\verifySignIn.js                                      | JavaScript         |         17 |          0 |          4 |         21 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\infobar\index.jsx                             | JavaScript JSX     |        102 |          2 |         10 |        114 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\sidebar\index.jsx                             | JavaScript JSX     |         60 |          0 |          4 |         64 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\theme-provider.jsx                            | JavaScript JSX     |          5 |          0 |          3 |          8 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\theme-toggle\index.jsx                        | JavaScript JSX     |         36 |          0 |          5 |         41 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\accordion.jsx                              | JavaScript JSX     |         35 |          0 |          9 |         44 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\avatar.jsx                                 | JavaScript JSX     |         29 |          0 |          7 |         36 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\button.jsx                                 | JavaScript JSX     |         43 |          0 |          5 |         48 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\calendar.jsx                               | JavaScript JSX     |         59 |          0 |          4 |         63 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\card.jsx                                   | JavaScript JSX     |         42 |          0 |          9 |         51 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\checkbox.jsx                               | JavaScript JSX     |         20 |          0 |          5 |         25 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\dialog.jsx                                 | JavaScript JSX     |         83 |          0 |         14 |         97 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\drawer.jsx                                 | JavaScript JSX     |         79 |          0 |         14 |         93 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\dropdown-menu.jsx                          | JavaScript JSX     |        139 |          0 |         19 |        158 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\form.jsx                                   | JavaScript JSX     |        111 |          0 |         23 |        134 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\infinite-moving-cards.jsx                  | JavaScript JSX     |        106 |          0 |          6 |        112 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\input.jsx                                  | JavaScript JSX     |         16 |          0 |          4 |         20 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\label.jsx                                  | JavaScript JSX     |         13 |          0 |          6 |         19 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\navigation-menu.jsx                        | JavaScript JSX     |         93 |          0 |         12 |        105 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\popover.jsx                                | JavaScript JSX     |         21 |          0 |          7 |         28 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\scroll-area-horizontal.jsx                 | JavaScript JSX     |         10 |          0 |          3 |         13 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\scroll-area.jsx                            | JavaScript JSX     |         35 |          0 |          6 |         41 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\separator.jsx                              | JavaScript JSX     |         21 |          0 |          5 |         26 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\skeleton.jsx                               | JavaScript JSX     |          8 |          0 |          3 |         11 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\switch.jsx                                 | JavaScript JSX     |         20 |          0 |          5 |         25 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\textarea.jsx                               | JavaScript JSX     |         15 |          0 |          4 |         19 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\components\ui\tooltip.jsx                                | JavaScript JSX     |         19 |          0 |          8 |         27 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\contant.js                                           | JavaScript         |          6 |          0 |          2 |          8 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\mongo\events.js                                      | JavaScript         |         62 |          6 |         20 |         88 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\mongo\index.js                                       | JavaScript         |          7 |          0 |          4 |         11 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\mongo\organization.js                                | JavaScript         |         97 |          7 |         36 |        140 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\mongo\users.js                                       | JavaScript         |        113 |          5 |         27 |        145 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\schemas\eventSchema.js                               | JavaScript         |         40 |          0 |          7 |         47 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\schemas\organizationSchema.js                        | JavaScript         |         20 |          0 |          8 |         28 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\schemas\subscriptionSchema.js                        | JavaScript         |         23 |          0 |          6 |         29 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\schemas\userSchema.js                                | JavaScript         |         25 |          2 |          9 |         36 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\stripe\stripe.js                                     | JavaScript         |         14 |         11 |          3 |         28 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\util\date.js                                         | JavaScript         |          8 |          0 |          0 |          8 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\util\phoneNumber.js                                  | JavaScript         |         16 |          0 |          2 |         18 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\util\time.js                                         | JavaScript         |          8 |          2 |          0 |         10 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\lib\utils.js                                             | JavaScript         |          5 |          0 |          2 |          7 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\middleware.js                                            | JavaScript         |          9 |          0 |          2 |         11 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\src\utils\animations.js                                      | JavaScript         |         53 |          0 |          9 |         62 |
+| c:\Users\aaron\Documents\GitHub\manus-unitas\tailwind.config.js                                           | JavaScript         |         91 |          1 |          0 |         92 |
+| Total                                                                                                     |                    |     10,508 |        214 |        993 |     11,715 |
++-----------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
