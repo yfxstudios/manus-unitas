@@ -34,14 +34,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import NewEventForm from "./_components/newEventForm";
 import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function Dashboard(props) {
   const events = props.events;
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    console.log("Rendered");
-  }, []);
 
   // console.log(events)
 
@@ -78,50 +80,114 @@ export default function Dashboard(props) {
     }
   }, [events]);
 
+  const [open, setOpen] = useState(false)
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+
+
+
   return (
     <div className="flex flex-row">
       {/* <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1 /6 h - screen z - 5 px - 4 py - 8">
         <Separator />
       </div > */}
-      <div className="flex flex-col lg:flex-row justify-center gap-8 w-full px-8 py-16 lg:px-36 lg:pt-48">
+      <div className="flex flex-col lg:flex-row justify-center gap-8 w-full px-4 xs:px-8 py-16 lg:px-36 lg:pt-48">
         <div className="flex flex-col lg:w-1/2 space-y-4">
           <div className="flex flex-row space-x-4 items-center">
             <h1 className="text-2xl font-semibold">Events</h1>
           </div>
           {props.user.admin && (
-            <Accordion
-              type="single"
-              collapsible
-              defaultValue={events.length === 0 ? "item-1" : ""}
-              value={accordionOpen}
-              onValueChange={setAccordionOpen}
-            >
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Create Event</AccordionTrigger>
-                <AccordionContent>
-                  <NewEventForm
-                    onSubmit={async e => {
-                      await props.createEvent(e);
-                      setAccordionOpen(false);
-                    }}
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <>
+              {isDesktop ? (
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">New Event</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>New Event</DialogTitle>
+                      <DialogDescription>
+                        Create a new event for your organization.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <NewEventForm />
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Drawer open={open} onOpenChange={setOpen}>
+                  <DrawerTrigger asChild>
+                    <Button variant="outline">New Event</Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerHeader className="text-left">
+                      <DrawerTitle>New Event</DrawerTitle>
+                      <DrawerDescription>
+                        Create a new event for your organization.
+                      </DrawerDescription>
+                    </DrawerHeader>
+                    <NewEventForm className="px-4"
+                      onSubmit={async e => {
+                        await props.createEvent(e);
+                        setOpen(false);
+                      }}
+                    />
+                    <DrawerFooter className="pt-2">
+                      <DrawerClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </>
           )}
-          <ScrollArea className="max-h-[calc(100vh-400px)] w-full p-3">
+
+          <ScrollArea className="max-h-[calc(100vh-400px)] w-full">
             {events.map(event => (
               <Card key={event._id} className="mb-4">
                 <CardHeader>
-                  <CardTitle>{event.title}</CardTitle>
-                  <CardDescription>{event.description}</CardDescription>
+                  <CardTitle
+                    className="flex flex-row justify-between items-center"
+                  >
+                    <span className="text-wrap break-words hyphens-auto">{event.title}</span>
+                    <div className="hidden xs:flex">
+                      {event.accepted.includes(props.user._id) && (
+                        <div className="flex flex-row items-center gap-2">
+                          <p className="text-green-600 font-normal">Accepted</p>
+                          <Check className="text-green-600" />
+                        </div>
+                      )}
+                      {event.rejected.includes(props.user._id) && (
+                        <div className="flex flex-row items-center gap-2">
+                          <p className="text-red-600 font-normal">Declined</p>
+                          <X className="text-red-600" />
+                        </div>
+                      )}
+                    </div>
+                  </CardTitle>
+                  <CardDescription>
+                    {event.description}
+                  </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="text-wrap break-words hyphens-auto">
                   <p>{longDate(event.date)}</p>
                   <p>
                     {standardTime(event.startTime)} to{" "}
                     {standardTime(event.endTime)}
                   </p>
+                  <div className="flex xs:hidden">
+                    {event.accepted.includes(props.user._id) && (
+                      <div className="flex flex-row items-center gap-2">
+                        <p className="text-green-600 font-normal">Accepted</p>
+                        <Check className="text-green-600" />
+                      </div>
+                    )}
+                    {event.rejected.includes(props.user._id) && (
+                      <div className="flex flex-row items-center gap-2">
+                        <p className="text-red-600 font-normal">Declined</p>
+                        <X className="text-red-600" />
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
                 <CardFooter className="flex flex-row justify-between">
                   <Button
@@ -132,24 +198,60 @@ export default function Dashboard(props) {
                   >
                     View
                   </Button>
-                  {event.accepted.includes(props.user._id) && (
-                    <div className="flex flex-row items-center gap-2">
-                      <p className="text-green-600">Accepted</p>
-                      <Check className="text-green-600" />
-                    </div>
-                  )}
-                  {event.rejected.includes(props.user._id) && (
-                    <div className="flex flex-row items-center gap-2">
-                      <p className="text-red-600">Declined</p>
-                      <X className="text-red-600" />
-                    </div>
-                  )}
+                  <div className="flex flex-col justify-center gap-4 ml-2">
+
+                    {props.user.admin && (
+                      <div className="flex flex-row flex-wrap items-center gap-4 text-lg">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <div className="flex flex-row items-center gap-2">
+                                <UserRound />
+                                <p>{props.users.length}</p>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Total Volunteers</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <div className="flex flex-row items-center gap-2">
+                                <UserRoundCheck />
+                                <p>{event.accepted.length}</p>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Accepted</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <div className="flex flex-row items-center gap-2">
+                                <UserRoundX />
+                                <p>{event.rejected.length}</p>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Declined</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    )}
+
+                  </div>
                 </CardFooter>
               </Card>
             ))}
           </ScrollArea>
         </div>
-        <div className="divider divider-horizontal h-1/2"></div>
         <div className="flex flex-col lg:w-1/2 space-y-4">
           <div className="flex flex-col space-y-4 rounded-xl">
             {/* more information about event */}
@@ -164,59 +266,16 @@ export default function Dashboard(props) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex flex-row justify-between items-center">
-                      {selectedEvent.title}
-                      {props.user.admin && (
-                        <div className="flex flex-row items-center gap-4 text-lg">
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <div className="flex flex-row items-center gap-2">
-                                  <UserRound />
-                                  <p>{selectedEvent.volunteers.length}</p>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Total Volunteers</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                      <div className="flex-1 text-wrap break-words hyphens-auto">
+                        {selectedEvent.title}
+                      </div>
 
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <div className="flex flex-row items-center gap-2">
-                                  <UserRoundCheck />
-                                  <p>{selectedEvent.accepted.length}</p>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Accepted Volunteers</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <div className="flex flex-row items-center gap-2">
-                                  <UserRoundX />
-                                  <p>{selectedEvent.rejected.length}</p>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Declined Volunteers</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-
-                        </div>
-                      )}
                     </CardTitle>
                     <CardDescription>
                       {selectedEvent.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="text-wrap break-words hyphens-auto text-sm xs:text-base">
                     <p>{longDate(selectedEvent.date)}</p>
                     <p>
                       {standardTime(selectedEvent.startTime)} to{" "}
@@ -224,53 +283,31 @@ export default function Dashboard(props) {
                     </p>
                     <br />
                     <div className="flex flex-col space-y-4">
-                      {selectedEvent.volunteers.map(volunteer => (
+                      {props.users.map(volunteer => (
                         <div
                           key={volunteer._id}
-                          className="flex flex-row space-x-4 items-center"
+                          className="flex flex-row gap-4 items-center"
                         >
-                          <div className="h-12 w-12 bg-secondary rounded-full">
-                            {/* TODO: add profile image */}
-                          </div>
+                          <Avatar className="flex-shrink-0 h-12 w-12 hidden xs:flex">
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>
+                              {volunteer.first_name.charAt(0)}
+                              {volunteer.last_name.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
+
                           <div className="flex flex-col">
-                            <h1 className="text-lg font-semibold">
+                            <h1 className="text-sm xs:text-lg font-semibold">
                               {volunteer.first_name} {volunteer.last_name}
                             </h1>
-                            <p className="text-sm">{volunteer.email}</p>
+                            <p className="text-xs">{volunteer.email}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   </CardContent>
                   <CardFooter className="flex flex-row justify-end">
-                    <div className="2xl:hidden gap-4 flex flex-row justify-end">
-                      <Check
-                        className={`cursor-pointer transition-colors hover:text-green-600 ${selectedEvent.accepted.includes(props.user._id) &&
-                          "text-green-700"
-                          }`}
-                        onClick={e => {
-                          handleAccept(selectedEvent._id);
-                        }}
-                      />
-                      <X
-                        className={`cursor-pointer transition-colors hover:text-red-500 ${selectedEvent.rejected.includes(props.user._id) &&
-                          "text-red-600"
-                          }`}
-                        onClick={e => {
-                          handleDecline(selectedEvent._id);
-                        }}
-                      />
-                      {props.user.admin && (
-                        <Trash
-                          className="cursor-pointer transition-colors hover:text-red-600"
-                          onClick={e => {
-                            props.deleteEvent(selectedEvent._id);
-                            setSelectedEvent(null);
-                          }}
-                        />
-                      )}
-                    </div>
-                    <div className="hidden 2xl:flex gap-4">
+                    <div className="flex flex-row flex-wrap gap-4">
                       <Button
                         disabled={selectedEvent.accepted.includes(
                           props.user._id
@@ -314,6 +351,6 @@ export default function Dashboard(props) {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

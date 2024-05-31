@@ -5,13 +5,25 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "../ui/tooltip";
-import { Book, Headphones, Search } from "lucide-react";
+import { Book, Headphones, Menu, Search, X } from "lucide-react";
 import { Input } from "../ui/input";
 
 import Subscription from "@/lib/schemas/subscriptionSchema";
 import Users from "@/lib/schemas/userSchema";
 import Stripe from "stripe";
 import { getServerSession } from "next-auth";
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "../ui/drawer";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const InfoBar = async () => {
 	const session = await getServerSession();
@@ -34,38 +46,66 @@ const InfoBar = async () => {
 	}
 
 	return (
-		<div className="flex flex-row justify-end gap-6 items-center px-4 py-4 w-full dark:bg-black ">
-			<span className="flex items-center gap-2 font-bold">
-				<p className="text-sm font-light">{subscriptionName}</p>
-			</span>
-			<span className="flex items-center rounded-full bg-muted px-4">
-				<Search />
-				<Input
-					placeholder="Quick Search"
-					className="border-none bg-transparent"
-				/>
-			</span>
-			<TooltipProvider>
-				<Tooltip delayDuration={0}>
-					<TooltipTrigger>
-						<Headphones />
-					</TooltipTrigger>
-					<TooltipContent>
-						<p>Contact Support</p>
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
-			<TooltipProvider>
-				<Tooltip delayDuration={0}>
-					<TooltipTrigger>
-						<Book />
-					</TooltipTrigger>
-					<TooltipContent>
-						<p>Guide</p>
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
-			{/* <UserButton /> */}
+		<div className="">
+			<div className="hidden sm:flex flex-row justify-end gap-6 items-center px-4 py-4 w-full dark:bg-black ">
+				<span className="flex items-center gap-2 font-bold">
+					<p className="text-sm font-light">{subscriptionName}</p>
+				</span>
+				<span className="flex items-center rounded-full bg-muted px-4">
+					<Search />
+					<Input
+						placeholder="Quick Search"
+						className="border-none bg-transparent"
+					/>
+				</span>
+				<TooltipProvider>
+					<Tooltip delayDuration={0}>
+						<TooltipTrigger>
+							<Headphones />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Contact Support</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+				<TooltipProvider>
+					<Tooltip delayDuration={0}>
+						<TooltipTrigger>
+							<Book />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Guide</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+				{/* <UserButton /> */}
+			</div>
+			<div className="sm:hidden flex flex-row justify-end gap-6 items-center p-4 w-full dark:bg-black ">
+				<Drawer>
+					<DrawerTrigger>
+						<Menu />
+					</DrawerTrigger>
+					<DrawerContent>
+						<DrawerHeader className="px-8">
+							<DrawerTitle>Plan</DrawerTitle>
+							<DrawerDescription>{subscriptionName}</DrawerDescription>
+						</DrawerHeader>
+						<DrawerFooter className="flex flex-row items-center gap-2 px-8">
+							<span className="flex items-center rounded-full bg-muted px-4 w-full flex-1">
+								<Search />
+								<Input
+									placeholder="Quick Search"
+									className="border-none bg-transparent"
+								/>
+							</span>
+
+							<Headphones />
+
+							<Book />
+						</DrawerFooter>
+					</DrawerContent>
+				</Drawer>
+			</div>
 		</div>
 	);
 };

@@ -154,8 +154,11 @@ export default async function page() {
   const userOrg = await Organization.findById(user.organizationId)
 
 
+  const users = await Users.find({
+    organizationId: user.organizationId
+  }).lean()
 
   return (
-    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEvent={createEvent} deleteEvent={deleteEventHandler} user={user} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} />
+    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEvent={createEvent} deleteEvent={deleteEventHandler} user={user} users={users} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} />
   )
 }

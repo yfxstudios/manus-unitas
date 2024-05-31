@@ -15,14 +15,14 @@ import {
 import EditUserForm from "./_components/editUserForm"
 import { useState } from "react"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Mail, MessageCircle, MessageSquareMore } from "lucide-react"
+import { Mail, MessageCircle, MessageSquareMore, Plus } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ScrollAreaHorizontal } from "@/components/ui/scroll-area-horizontal"
 
 
 export default function People(props) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [open, setOpen] = useState("") // user emails that's drawer is open
 
   return (
     <div className="flex flex-row">
@@ -30,9 +30,7 @@ export default function People(props) {
         <div className="flex flex-col space-y-4 w-full max-w-2xl">
           <div className="flex flex-row space-x-4  items-center justify-between">
             <h1 className="text-2xl font-semibold">People</h1>
-            {props.user.admin && (
-              <Button className="btn btn-primary">Add Person</Button>
-            )}
+
           </div>
 
           <div className="flex flex-col bg-base-300 rounded-xl relative">
@@ -76,10 +74,16 @@ export default function People(props) {
                         </TooltipProvider>
                       </div>
                     </div>
-                    {props.user.admin && (
 
+                    {props.user.admin && (
                       <div className="flex flex-row space-x-4 items-center">
-                        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+                        <Drawer open={open === user.email} onOpenChange={(isOpen) => {
+                          if (isOpen) {
+                            setOpen(user.email)
+                          } else {
+                            setOpen("")
+                          }
+                        }}>
                           <DrawerTrigger asChild>
                             <Button variant="outline">Edit</Button>
                           </DrawerTrigger>
@@ -98,7 +102,7 @@ export default function People(props) {
                                 <EditUserForm user={user} handleSubmit={async (data, uid) => {
                                   await props.onEditUser(data, uid)
                                   // close drawer
-                                  setIsOpen(false)
+                                  setOpen("")
                                 }} />
                               </div>
 
@@ -149,6 +153,10 @@ export default function People(props) {
                     )}
                   </div>
                 ))}
+                {props.user.admin && (
+
+                  <Button variant="outline"><Plus /> Add Person</Button>
+                )}
               </div>
             </ScrollAreaHorizontal>
           </div>

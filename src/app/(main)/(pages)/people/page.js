@@ -18,7 +18,6 @@ export default async function page() {
 
   const org = await Organization.findOne({ _id: user.organizationId }).lean()
 
-  console.log(users)
 
   const onEditUser = async (data, uid) => {
     'use server'
