@@ -30,7 +30,7 @@ const InfoBar = async () => {
 	const user = await Users.findOne({ email: session.user.email }).lean();
 
 	const subscription = await Subscription.findOne({
-		customerId: user.customerId,
+		organizationId: user.organizationId,
 	});
 
 	const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {

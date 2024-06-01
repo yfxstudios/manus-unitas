@@ -36,7 +36,7 @@ export default async function page() {
 
 
   if (user.admin) {
-    subscription = await Subscription.findOne({ customerId: user.customerId }).lean()
+    subscription = await Subscription.findOne({ organizationId: user.organizationId }).lean()
 
     subscriptionName = await stripe.products.retrieve(subscription.productId).then(product => product.name)
 

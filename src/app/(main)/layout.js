@@ -56,7 +56,7 @@ const Layout = async ({ children }) => {
           <Button variant="link" className="absolute bottom-0 right-0" asChild>
             <Link href="/contact">Need help?</Link>
           </Button>
-        </div >
+        </div>
       )
     }
   }
