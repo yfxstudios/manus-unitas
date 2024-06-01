@@ -24,7 +24,6 @@ const userSchema = new Schema({
   completedTutorial: { type: Boolean, default: false },
   customerId: String,
   twoFactorAuth: {
-    token: String,
     secret: String,
     verified: Boolean,
   },

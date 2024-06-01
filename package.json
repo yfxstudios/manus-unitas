@@ -42,6 +42,7 @@
     "firebase": "^10.11.1",
     "framer-motion": "^11.2.4",
     "gsap": "^3.12.5",
+    "input-otp": "^1.2.4",
     "locomotive-scroll": "^5.0.0-beta.11",
     "lucide-react": "^0.378.0",
     "mongodb": "^6.5.0",

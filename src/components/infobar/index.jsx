@@ -24,6 +24,7 @@ import {
 } from "../ui/drawer";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const InfoBar = async () => {
 	const session = await getServerSession();
@@ -90,6 +91,26 @@ const InfoBar = async () => {
 							<DrawerTitle>Plan</DrawerTitle>
 							<DrawerDescription>{subscriptionName}</DrawerDescription>
 						</DrawerHeader>
+						<div className="flex flex-col items-center gap-3 px-8 text-center">
+							<Avatar className="w-48 h-48 ">
+								<AvatarImage src={user.image} />
+								<AvatarFallback className="text-2xl font-bold">
+									{user.first_name[0]}
+									{user.last_name[0]}
+								</AvatarFallback>
+							</Avatar>
+							<div className="flex flex-col items-center gap-1">
+								<span className="text-2xl font-bold">
+									{user.first_name} {user.last_name}
+								</span>
+								<span className="text-sm font-light">{user.email}</span>
+							</div>
+							<Link href="/settings/profile" asChild>
+								<Button className="w-full" variant="link" size="sm">
+									Profile
+								</Button>
+							</Link>
+						</div>
 						<DrawerFooter className="flex flex-row items-center gap-2 px-8">
 							<span className="flex items-center rounded-full bg-muted px-4 w-full flex-1">
 								<Search />
@@ -98,7 +119,6 @@ const InfoBar = async () => {
 									className="border-none bg-transparent"
 								/>
 							</span>
-
 							<Headphones />
 
 							<Book />
