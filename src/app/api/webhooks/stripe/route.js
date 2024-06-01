@@ -49,6 +49,7 @@ export async function POST(req) {
           subscriptionId: session.items.data[0].subscription,
           productId: session.items.data[0].price.product,
           customerId: session.customer,
+          organizationId: session.metadata.organizationId,
           priceId: session.items.data[0].price.id,
           status: session.status,
           startDate: new Date(session.current_period_start * 1000),

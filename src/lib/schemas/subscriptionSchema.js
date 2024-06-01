@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { string } from 'zod'
 
 mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
 
@@ -8,6 +9,7 @@ const subscriptionSchema = new Schema({
   subscriptionId: String,
   productId: String,
   customerId: String,
+  organizationId: String,
   priceId: String,
   status: String,
   startDate: Date,

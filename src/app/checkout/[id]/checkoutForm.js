@@ -105,7 +105,7 @@ const Checkout = (props) => {
         )}
       </div>
 
-      <div className='w-screen h-3/4 lg:h-screen lg:w-1/2 dark:bg-primary/50 flex flex-col items-center justify-center p-16'>
+      <div className='w-screen h-3/4 lg:h-screen lg:w-1/2 bg-primary-foreground flex flex-col items-center justify-center p-16'>
         <form id="payment-form" onSubmit={handleSubmit} className='w-full max-w-lg'>
           <PaymentElement />
           <Button

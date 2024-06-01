@@ -1,5 +1,6 @@
 'use server'
 
+import Organization from "@/lib/schemas/organizationSchema";
 import Users from "@/lib/schemas/userSchema";
 import { getServerSession } from "next-auth";
 import Stripe from "stripe"
@@ -49,6 +50,9 @@ export async function createPaymentIntent(id) {
       },
       expand: ['latest_invoice.payment_intent'],
       currency: 'usd',
+      metadata: {
+        organizationId: customer.organizationId.toString()
+      }
     });
 
     const paymentIntent = subscription.latest_invoice.payment_intent

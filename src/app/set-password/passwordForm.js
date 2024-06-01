@@ -15,6 +15,7 @@ const PasswordForm = ({ onSubmit, users }) => {
   const id = params.get('id')
   const email = params.get('email')
 
+  console.log(users, id, email)
 
   if (!users.find(user => user.id === id && user.email === email)) {
     return (
