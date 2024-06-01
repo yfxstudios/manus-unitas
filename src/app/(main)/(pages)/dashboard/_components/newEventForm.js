@@ -14,11 +14,24 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 
 const schema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().min(1, 'Description is required'),
+  title: z.string().min(3, 'Title is required').max(50, 'Must be less than 50 characters'),
+  description: z.string().min(10, 'Must be at least 10 characters').max(500, 'Must be less than 500 characters'),
   date: z.date().min(new Date(), 'Date is required'),
   startTime: z.string().min(1, 'Start Time is required'),
   endTime: z.string().min(1, 'End Time is required'),
+}).refine(data => {
+  const start = new Date(`${data.date} ${data.startTime}`)
+  const end = new Date(`${data.date} ${data.endTime}`)
+  return start < end
+}, {
+  message: 'End time must be after start time',
+  path: ['endTime']
+}).refine(data => {
+  const start = new Date(`${data.date} ${data.startTime}`)
+  return start > new Date()
+}, {
+  message: 'Start time must be in the future',
+  path: ['startTime']
 })
 
 const NewEventForm = (props) => {

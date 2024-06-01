@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 
 import { Loader2, RotateCcw } from "lucide-react";
 import { formatPhoneNumber } from "@/lib/util/phoneNumber";
+import { cn } from "@/lib/utils";
 
 const schema = z.object({
 	first_name: z.string().min(1, "First Name is required"),
@@ -51,13 +52,13 @@ const EditUserForm = props => {
 		setIsLoading(true);
 		await props.handleSubmit(data, props.user._id);
 		setIsLoading(false);
-		form.reset();
+		// form.reset();
 	};
 
 	return (
 		<Form {...form}>
 			<form
-				className="flex flex-col gap-6 p-2"
+				className={cn("flex flex-col gap-4", props.className)}
 				onSubmit={form.handleSubmit(handleSubmit)}
 			>
 				<FormField
@@ -68,15 +69,7 @@ const EditUserForm = props => {
 						<FormItem>
 							<FormLabel className="text-lg">First Name</FormLabel>
 							<FormControl>
-								<div className="flex flex-row gap-4 items-center">
-									<Input {...field} placeholder="John" />
-									<RotateCcw
-										onClick={e =>
-											field.onChange(props.user.first_name) && e.target.focus()
-										}
-										className="cursor-pointer"
-									/>
-								</div>
+								<Input {...field} placeholder="John" />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -91,15 +84,7 @@ const EditUserForm = props => {
 						<FormItem>
 							<FormLabel className="text-lg">Last Name</FormLabel>
 							<FormControl>
-								<div className="flex flex-row gap-4 items-center">
-									<Input {...field} placeholder="Doe" />
-									<RotateCcw
-										onClick={e =>
-											field.onChange(props.user.last_name) && e.target.focus()
-										}
-										className="cursor-pointer"
-									/>
-								</div>
+								<Input {...field} placeholder="Doe" />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -114,15 +99,7 @@ const EditUserForm = props => {
 						<FormItem>
 							<FormLabel className="text-lg">Email</FormLabel>
 							<FormControl>
-								<div className="flex flex-row gap-4 items-center">
-									<Input {...field} placeholder="Doe" />
-									<RotateCcw
-										onClick={e =>
-											field.onChange(props.user.email) && e.target.focus()
-										}
-										className="cursor-pointer"
-									/>
-								</div>
+								<Input {...field} placeholder="Doe" />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -137,24 +114,15 @@ const EditUserForm = props => {
 						<FormItem>
 							<FormLabel className="text-lg">Phone</FormLabel>
 							<FormControl>
-								<div className="flex flex-row gap-4 items-center">
-									<Input
-										{...field}
-										placeholder="(555) 555-5555"
-										value={phone}
-										onChange={e => {
-											const formatted = handleChange(e);
-											field.onChange(formatted);
-										}}
-									/>
-									<RotateCcw
-										onClick={e => {
-											field.onChange(props.user.phone);
-											e.target.focus();
-										}}
-										className="cursor-pointer"
-									/>
-								</div>
+								<Input
+									{...field}
+									placeholder="(555) 555-5555"
+									value={phone}
+									onChange={e => {
+										const formatted = handleChange(e);
+										field.onChange(formatted);
+									}}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -169,7 +137,7 @@ const EditUserForm = props => {
 					{isLoading ? (
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 					) : (
-						"Submit"
+						"Update"
 					)}
 				</Button>
 			</form>

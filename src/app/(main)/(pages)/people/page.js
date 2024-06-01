@@ -26,7 +26,7 @@ export default async function page() {
     'use server'
     console.log(data, uid)
 
-    const user = await Users.findOneAndUpdate({ _id: uid }, data, { new: true }).lean()
+    const user = await Users.findOneAndUpdate({ _id: uid }, data).lean()
 
     revalidatePath('/people')
   }
