@@ -22,7 +22,12 @@ const userSchema = new Schema({
   accepted: { type: Number, default: 0, min: 0, max: 2 },
   completedSignup: { type: Boolean, default: false },
   completedTutorial: { type: Boolean, default: false },
-  customerId: String
+  customerId: String,
+  twoFactorAuth: {
+    token: String,
+    secret: String,
+    verified: Boolean,
+  },
 })
 
 let Users
