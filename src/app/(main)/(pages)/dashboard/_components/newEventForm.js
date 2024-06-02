@@ -19,19 +19,6 @@ const schema = z.object({
   date: z.date().min(new Date(), 'Date is required'),
   startTime: z.string().min(1, 'Start Time is required'),
   endTime: z.string().min(1, 'End Time is required'),
-}).refine(data => {
-  const start = new Date(`${data.date} ${data.startTime}`)
-  const end = new Date(`${data.date} ${data.endTime}`)
-  return start < end
-}, {
-  message: 'End time must be after start time',
-  path: ['endTime']
-}).refine(data => {
-  const start = new Date(`${data.date} ${data.startTime}`)
-  return start > new Date()
-}, {
-  message: 'Start time must be in the future',
-  path: ['startTime']
 })
 
 const NewEventForm = (props) => {

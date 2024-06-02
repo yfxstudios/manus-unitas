@@ -11,6 +11,8 @@ import Events from "@/lib/schemas/eventSchema";
 import Stripe from "stripe";
 import Organization from "@/lib/schemas/organizationSchema";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { getEvents } from "@/app/actions";
 
 
 
@@ -20,25 +22,23 @@ export const metadata = {
 
 
 export default async function page() {
-
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2024-04-10',
   });
+
   const session = await getServerSession(options)
 
-  const user = await Users.findOne({ email: session.user.email }).lean()
+  const user = await Users.findOne({ email: session.user.email }, { _id: 1, organizationId: 1, admin: 1 }).lean()
 
 
 
-  let subscription
-  let subscriptionName
 
 
 
   if (user.admin) {
-    subscription = await Subscription.findOne({ organizationId: user.organizationId }).lean()
+    const subscription = await Subscription.findOne({ organizationId: user.organizationId }).lean()
 
-    subscriptionName = await stripe.products.retrieve(subscription.productId).then(product => product.name)
+    const subscriptionName = await stripe.products.retrieve(subscription.productId).then(product => product.name)
 
     if (subscription.status !== 'active') {
       return (
@@ -54,9 +54,6 @@ export default async function page() {
   }
 
 
-  let events = await Events.find({}).populate('volunteers').sort({ date: 1, startTime: 1 }).lean()
-
-
 
 
   const update = async () => {
@@ -64,22 +61,12 @@ export default async function page() {
     revalidatePath('/dashboard')
   }
 
-  if (!events) {
-    return
-  }
-
-
-  if (typeof events !== 'object') {
-    // Handle the case where events is not an object (maybe it's undefined, null, or another type)
-    console.error('Events is not an object:', events);
-    // Return or handle the error appropriately
-    return;
-  }
-
   // console.log(events);
 
   const handleAccept = async (id) => {
     'use server'
+
+    console.log('Accepting event')
 
     const event = await Events.findById(id)
 
@@ -92,12 +79,12 @@ export default async function page() {
     }
 
     await event.save()
-
-    revalidatePath('/dashboard')
   }
 
   const handleDecline = async (id) => {
     'use server'
+
+    console.log('Declining event')
 
     const event = await Events.findById(id)
 
@@ -113,7 +100,7 @@ export default async function page() {
 
     await event.save()
 
-    revalidatePath('/dashboard')
+    // mutate key "events"
   }
 
   const handleLogout = async () => {
@@ -159,6 +146,6 @@ export default async function page() {
   }).lean()
 
   return (
-    <Dashboard events={events} unfilteredEvents={events} handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEvent={createEvent} deleteEvent={deleteEventHandler} user={user} users={users} update={update} session={session} subscriptionName={subscriptionName} userOrg={userOrg} />
+    <Dashboard handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEvent={createEvent} deleteEvent={deleteEventHandler} user={user} update={update} />
   )
 }

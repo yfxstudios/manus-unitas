@@ -1,5 +1,6 @@
 'use server'
 
+import Events from "@/lib/schemas/eventSchema";
 import Organization from "@/lib/schemas/organizationSchema";
 import Users from "@/lib/schemas/userSchema";
 import { getServerSession } from "next-auth";
@@ -63,4 +64,71 @@ export async function createPaymentIntent(id) {
   } catch (error) {
     console.error(error)
   }
+}
+
+export async function getCurrentUser() {
+  try {
+    const session = await getServerSession()
+
+    const user = await Users.findOne({ email: session.user.email }).lean()
+    return user
+  }
+  catch (error) {
+    console.error(error)
+  }
+
+}
+
+export async function getEvents() {
+  const session = await getServerSession()
+  const user = await Users.findOne({ email: session.user.email }, { organizationId: 1 }).lean()
+  const events = await Events.find({ organizationId: user.organizationId }).populate('volunteers').sort({ date: 1, startTime: 1 }).lean()
+
+  return events
+}
+
+export async function getUsers() {
+  const session = await getServerSession()
+  const user = await Users.findOne({ email: session.user.email }, { organizationId: 1 }).lean()
+  const users = await Users.find({ organizationId: user.organizationId }).lean()
+
+  return users
+}
+
+export async function getEvent(id) {
+  const event = await Events.findById(id).populate('volunteers').lean()
+  console.log(event)
+  return event
+}
+
+export async function handleAccept(id) {
+  const session = await getServerSession()
+  const user = await Users.findOne({ email: session.user.email }).lean()
+  const event = await Events.findById(id)
+
+  if (event.rejected.includes(user._id)) {
+    event.rejected.pull(user._id)
+  }
+
+  if (!event.accepted.includes(user._id)) {
+    event.accepted.push(user._id)
+  }
+
+  await event.save()
+}
+
+export async function handleDecline(id) {
+  const session = await getServerSession()
+  const user = await Users.findOne({ email: session.user.email }).lean()
+  const event = await Events.findById(id)
+
+  if (event.accepted.includes(user._id)) {
+    event.accepted.pull(user._id)
+  }
+
+  if (!event.rejected.includes(user._id)) {
+    event.rejected.push(user._id)
+  }
+
+  await event.save()
 }

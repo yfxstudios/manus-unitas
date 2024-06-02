@@ -33,7 +33,7 @@ const eventSchema = new Schema({
       ref: Users,
     }
   ],
-  organization: String
+  organizationId: String
 })
 
 let Events
