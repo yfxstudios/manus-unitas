@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import EventList from "./_components/eventList";
 import NewEventForm from "./_components/newEventForm";
 import SelectedEvent from "./_components/selectedEvent";
+import Loading from "../loading";
 
 export default function Dashboard(props) {
   const router = useRouter()
@@ -123,9 +124,10 @@ export default function Dashboard(props) {
 
           <ScrollArea className="max-h-[calc(100vh-400px)] w-full">
             <Suspense fallback={
-              <p className="text-lg">Loading events...</p>
+              <Loading />
             }>
               <EventList
+                selectedEvent={selectedEvent}
                 setSelectedEvent={setSelectedEvent}
               />
             </Suspense>

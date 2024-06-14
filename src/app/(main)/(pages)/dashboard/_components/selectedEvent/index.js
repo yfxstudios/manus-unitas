@@ -17,11 +17,12 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
 
   const { data, isSuccess, mutate } = useMutation({
     mutationKey: 'event',
-    mutationFn: () => getEvent(selectedEvent._id),
+    mutationFn: () => getEvent(selectedEvent._id)
   })
 
   useEffect(() => {
     mutate()
+
   }, [selectedEvent])
 
 
@@ -40,11 +41,20 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
 
   const onAccept = async (id) => {
     await handleAccept(id)
+    setSelectedEvent({
+      ...selectedEvent,
+      accepted: [...selectedEvent.accepted, user._id]
+    })
+
     mutate()
   }
 
   const onDecline = async (id) => {
     await handleDecline(id)
+    setSelectedEvent({
+      ...selectedEvent,
+      rejected: [...selectedEvent.rejected, user._id]
+    })
     mutate()
   }
 
