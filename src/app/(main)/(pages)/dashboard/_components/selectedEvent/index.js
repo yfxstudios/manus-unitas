@@ -8,7 +8,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 
 const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
-  if (!selectedEvent) return <p>Select an event to view more information</p>
 
   // const { data, isFetched } = useQuery({
   //   queryKey: ['event', selectedEvent._id],
@@ -57,6 +56,8 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
     })
     mutate()
   }
+
+  if (!selectedEvent) return <p>Select an event to view more information</p>
 
   if (isSuccess && usersFetched && userFetched) {
     return (
