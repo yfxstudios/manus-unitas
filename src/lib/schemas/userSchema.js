@@ -24,9 +24,11 @@ const userSchema = new Schema({
   completedTutorial: { type: Boolean, default: false },
   customerId: String,
   twoFactorAuth: {
-    secret: String,
-    verified: Boolean,
+    secret: { type: String, default: '' },
+    verified: { type: Boolean, default: false },
   },
+  timeActive: { type: Number, default: 0 },
+  joined: { type: Date, default: Date.now },
 })
 
 let Users

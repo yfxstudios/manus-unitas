@@ -15,6 +15,7 @@ const Layout = async ({ children }) => {
   const user = await Users.findOne({ email: session.user.email }).lean()
   const subscription = await Subscription.findOne({ organizationId: user.organizationId }).lean()
 
+
   if (!user) {
     signOut({
       callbackUrl: "/signin",
