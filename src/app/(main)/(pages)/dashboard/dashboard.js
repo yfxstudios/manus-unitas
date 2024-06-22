@@ -27,7 +27,7 @@ export default function Dashboard(props) {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleAccept = async id => {
-    console.log(id);
+
     setLoading(true);
     setSelectedEvent({
       _id: selectedEvent._id,

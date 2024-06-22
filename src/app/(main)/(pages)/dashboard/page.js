@@ -1,4 +1,3 @@
-
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
@@ -14,33 +13,32 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { getEvents } from "@/app/actions";
 
-
-
 export const metadata = {
   title: "Dashboard | Manus Unitas",
-}
-
+};
 
 export default async function page() {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2024-04-10',
+    apiVersion: "2024-04-10",
   });
 
-  const session = await getServerSession(options)
+  const session = await getServerSession(options);
 
-  const user = await Users.findOne({ email: session.user.email }, { _id: 1, organizationId: 1, admin: 1 }).lean()
-
-
-
-
-
+  const user = await Users.findOne(
+    { email: session.user.email },
+    { _id: 1, organizationId: 1, admin: 1 }
+  ).lean();
 
   if (user.admin) {
-    const subscription = await Subscription.findOne({ organizationId: user.organizationId }).lean()
+    const subscription = await Subscription.findOne({
+      organizationId: user.organizationId,
+    }).lean();
 
-    const subscriptionName = await stripe.products.retrieve(subscription.productId).then(product => product.name)
+    const subscriptionName = await stripe.products
+      .retrieve(subscription.productId)
+      .then(product => product.name);
 
-    if (subscription.status !== 'active') {
+    if (subscription.status !== "active") {
       return (
         <div className="flex flex-col items-center justify-center h-screen">
           <h1 className="text-3xl font-bold">Subscription Required</h1>
@@ -49,68 +47,70 @@ export default async function page() {
             <a href="/subscribe">Subscribe</a>
           </Button>
         </div>
-      )
+      );
     }
   }
 
-
-
-
   const update = async () => {
-    "use server"
-    revalidatePath('/dashboard')
-  }
+    "use server";
+    revalidatePath("/dashboard");
+  };
 
   // console.log(events);
 
-  const handleAccept = async (id) => {
-    'use server'
-
-    console.log('Accepting event')
-
-    const event = await Events.findById(id)
+  const handleAccept = async id => {
+    "use server";
+    const event = await Events.findById(id);
 
     if (event.rejected.includes(user._id)) {
-      event.rejected.pull(user._id)
+      event.rejected.pull(user._id);
     }
 
     if (!event.accepted.includes(user._id)) {
-      event.accepted.push(user._id)
+      event.accepted.push(user._id);
     }
 
-    await event.save()
-  }
+    const user = await Users.findByIdAndUpdate(user._id, {
+      $inc: {
+        time: event.endTime - event.startTime,
+      },
+    });
 
-  const handleDecline = async (id) => {
-    'use server'
+    await event.save();
+  };
 
-    console.log('Declining event')
-
-    const event = await Events.findById(id)
-
+  const handleDecline = async id => {
+    "use server";
+    const event = await Events.findById(id);
 
     if (event.accepted.includes(user._id)) {
-      event.accepted.pull(user._id)
+      event.accepted.pull(user._id);
     }
 
     if (!event.rejected.includes(user._id)) {
-      event.rejected.push(user._id)
+      event.rejected.push(user._id);
     }
 
+    const user = await Users.findByIdAndUpdate(user._id, {
+      $inc: {
+        time: event.endTime - event.startTime,
+      },
+    });
 
-    await event.save()
+
+    await event.save();
 
     // mutate key "events"
-  }
+  };
 
   const handleLogout = async () => {
-    "use server"
-    console.log('Logging out')
-  }
+    "use server";
+    console.log("Logging out");
+  };
 
-  const createEvent = async (e) => {
-    'use server'
-    console.log('Create event handler')
+  const createEvent = async e => {
+    "use server";
+    console.log("Create event handler");
     const event = new Events({
       title: e.title,
       description: e.description,
@@ -118,34 +118,38 @@ export default async function page() {
       startTime: e.startTime,
       endTime: e.endTime,
       organizationId: user.organizationId,
-      volunteers: [
-        user._id
-      ],
+      volunteers: [user._id],
       accepted: [],
-      rejected: []
-    })
+      rejected: [],
+    });
 
     await event.save();
 
     update();
-    return
-  }
+    return;
+  };
 
-  const deleteEventHandler = async (id) => {
-    'use server'
+  const deleteEventHandler = async id => {
+    "use server";
     await Events.findByIdAndDelete(id);
     update();
-  }
+  };
 
-
-  const userOrg = await Organization.findById(user.organizationId)
-
+  const userOrg = await Organization.findById(user.organizationId);
 
   const users = await Users.find({
-    organizationId: user.organizationId
-  }).lean()
+    organizationId: user.organizationId,
+  }).lean();
 
   return (
-    <Dashboard handleAccept={handleAccept} handleDecline={handleDecline} logoutHandler={handleLogout} createEvent={createEvent} deleteEvent={deleteEventHandler} user={user} update={update} />
-  )
+    <Dashboard
+      handleAccept={handleAccept}
+      handleDecline={handleDecline}
+      logoutHandler={handleLogout}
+      createEvent={createEvent}
+      deleteEvent={deleteEventHandler}
+      user={user}
+      update={update}
+    />
+  );
 }

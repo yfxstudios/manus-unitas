@@ -29,6 +29,10 @@ const userSchema = new Schema({
   },
   timeActive: { type: Number, default: 0 },
   joined: { type: Date, default: Date.now },
+  lastActive: { type: Date, default: Date.now },
+  lastLogin: { type: Date, default: Date.now },
+  lastLogout: { type: Date, default: Date.now },
+  time: { type: Number, default: 0 }, // total volunteer time in minutes
 })
 
 let Users

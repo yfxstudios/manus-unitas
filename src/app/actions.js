@@ -132,3 +132,38 @@ export async function handleDecline(id) {
 
   await event.save()
 }
+
+export async function incrementTime(userId, eventId, incrementTime) {
+  const event = await Events.findById(eventId)
+
+
+  const endTime = {
+    hours: event.endTime.split(":")[0],
+    minutes: event.endTime.split(":")[1]
+  }
+
+  const startTime = {
+    hours: event.startTime.split(":")[0],
+    minutes: event.startTime.split(":")[1]
+  }
+
+  event.endTime = new Date(0).setHours(endTime.hours, endTime.minutes)
+  event.startTime = new Date(0).setHours(startTime.hours, startTime.minutes)
+
+  const difference = (event.endTime - event.startTime) / 1000 / 60
+
+
+  if (incrementTime) {
+    await Users.findByIdAndUpdate(userId, {
+      $inc: {
+        time: difference
+      }
+    })
+  } else {
+    await Users.findByIdAndUpdate(userId, {
+      $inc: {
+        time: -(difference)
+      }
+    })
+  }
+}

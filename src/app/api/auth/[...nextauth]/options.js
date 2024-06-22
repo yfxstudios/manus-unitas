@@ -1,7 +1,6 @@
-import GoogleProvider from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import Users from "@/lib/schemas/userSchema"
 import { verify } from '@/app/2fa/verify'
+import Users from "@/lib/schemas/userSchema"
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const options = {
   providers: [
@@ -46,5 +45,23 @@ export const options = {
   pages: {
     signIn: '/signin',
     error: '/signin',
+  },
+  events: {
+    async signIn(message) {
+      console.log("SIGN IN: ", message.user.email)
+      await Users.findOneAndUpdate({
+        email: message.user.email
+      }, {
+        $currentDate: { lastLogin: true }
+      })
+    },
+    async signOut(message) {
+      console.log("SIGN OUT: ", message)
+      await Users.findOneAndUpdate({
+        email: message.token.email
+      }, {
+        $currentDate: { lastLogout: true }
+      })
+    }
   }
 }

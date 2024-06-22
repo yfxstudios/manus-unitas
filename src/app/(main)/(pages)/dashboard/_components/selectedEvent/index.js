@@ -1,19 +1,13 @@
-import { getCurrentUser, getEvent, getUsers, handleAccept, handleDecline } from '@/app/actions'
+import { getCurrentUser, getEvent, getUsers, handleAccept, handleDecline, incrementTime } from '@/app/actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { longDate } from '@/lib/util/date'
 import { standardTime } from '@/lib/util/time'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
-
-  // const { data, isFetched } = useQuery({
-  //   queryKey: ['event', selectedEvent._id],
-  //   queryFn: () => getEvent(selectedEvent._id)
-  // })
-
   const { data, isSuccess, mutate } = useMutation({
     mutationKey: 'event',
     mutationFn: () => getEvent(selectedEvent._id)
@@ -40,6 +34,9 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
 
   const onAccept = async (id) => {
     await handleAccept(id)
+
+    incrementTime(user._id, id, true)
+
     setSelectedEvent({
       ...selectedEvent,
       accepted: [...selectedEvent.accepted, user._id]
@@ -50,10 +47,14 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
 
   const onDecline = async (id) => {
     await handleDecline(id)
+
+    incrementTime(user._id, id, false)
+
     setSelectedEvent({
       ...selectedEvent,
       rejected: [...selectedEvent.rejected, user._id]
     })
+
     mutate()
   }
 
