@@ -29,3 +29,5 @@ const Analytics = async () => {
 }
 
 export default Analytics
+
+export const dynamic = "force-dynamic"
