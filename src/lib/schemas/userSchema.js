@@ -32,7 +32,11 @@ const userSchema = new Schema({
   lastActive: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now },
   lastLogout: { type: Date, default: Date.now },
-  time: { type: Number, default: 0 }, // total volunteer time in minutes
+  time: { type: Number, default: 0 },
+  notifications: {
+    newEvents: { type: Boolean, default: true },
+    reminders: { type: Boolean, default: true },
+  }
 })
 
 let Users

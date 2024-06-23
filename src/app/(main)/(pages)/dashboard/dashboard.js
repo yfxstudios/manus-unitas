@@ -27,7 +27,6 @@ export default function Dashboard(props) {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleAccept = async id => {
-
     setLoading(true);
     setSelectedEvent({
       _id: selectedEvent._id,
@@ -43,17 +42,6 @@ export default function Dashboard(props) {
     setSelectedEvent(...selectedEvent, { volunteers: selectedEvent.volunteers.filter(volunteer => volunteer !== props.user._id) });
     await props.handleDecline(id);
     setLoading(false);
-  };
-
-  const logoutHandler = async () => {
-    setLoading(true);
-
-    await signOut({
-      callbackUrl: "/",
-    });
-    await props.logoutHandler().then(() => {
-      setLoading(false);
-    });
   };
 
   const [open, setOpen] = useState(false)

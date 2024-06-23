@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { longDate } from '@/lib/util/date'
 import { standardTime } from '@/lib/util/time'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
@@ -17,6 +18,16 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
     mutate()
 
   }, [selectedEvent])
+
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
+
+
+  useEffect(() => {
+    if (id && !selectedEvent) {
+      setSelectedEvent({ _id: id })
+    }
+  }, [id])
 
 
 
@@ -54,6 +65,20 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
       ...selectedEvent,
       rejected: [...selectedEvent.rejected, user._id]
     })
+
+    mutate()
+  }
+
+  const onDelete = async (id) => {
+    users.forEach(volunteer => {
+      if (selectedEvent.accepted.includes(volunteer._id)) incrementTime(volunteer._id, id, false)
+      if (selectedEvent.rejected.includes(volunteer._id)) incrementTime(volunteer._id, id, true)
+    })
+
+    await deleteEvent(id)
+
+
+    setSelectedEvent(null)
 
     mutate()
   }
@@ -135,8 +160,7 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
                       <Button
                         variant="destructive"
                         onClick={e => {
-                          deleteEvent(data._id);
-                          setSelectedEvent(null);
+                          onDelete(data._id);
                         }}
                       >
                         Delete Event
