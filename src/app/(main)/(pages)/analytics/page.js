@@ -11,6 +11,7 @@ const Analytics = async () => {
   const users = await Users.find({
     organizationId: organizationId
   }, { first_name: 1, last_name: 1, email: 1, joined: 1, time: 1 }).lean()
+  
   return (
     <div className="p-8 space-y-8">
       <h1 className="text-2xl font-semibold ">Analytics</h1>
