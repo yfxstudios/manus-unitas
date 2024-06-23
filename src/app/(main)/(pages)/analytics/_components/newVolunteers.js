@@ -2,15 +2,13 @@
 
 import { format } from "date-fns";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Line,
   LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
