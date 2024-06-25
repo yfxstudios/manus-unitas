@@ -60,15 +60,15 @@ const Notifications = () => {
   return (
     <div className="flex flex-col items-center">
       <Toaster />
-      <div className="flex flex-col gap-4 px-16 max-w-xl w-full py-8">
+      <div className="flex flex-col gap-4 px-4 xs:px-16 max-w-xl w-full py-8">
         <h1 className="text-2xl font-semibold">Notifications</h1>
         {notificationCategories.map(category => (
           <div
             key={category.eventName}
-            className="flex items-center justify-between p-4 rounded-lg"
+            className="flex items-center justify-between space-x-4 p-4 rounded-lg"
           >
             <div className="flex items-center">
-              <category.component className="h-8 w-8" />
+              <category.component className="h-8 w-8 hidden xs:flex" />
               <h2 className="text-lg font-semibold ml-4">{category.name}</h2>
             </div>
             <Switch

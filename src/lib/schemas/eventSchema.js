@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Users from "./userSchema";
+import Organization from "./organizationSchema";
 
 
 mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
@@ -33,7 +34,10 @@ const eventSchema = new Schema({
       ref: Users,
     }
   ],
-  organizationId: String
+  organizationId: {
+    type: mongoose.Types.ObjectId,
+    ref: Organization
+  }
 })
 
 let Events
