@@ -5,7 +5,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "../ui/tooltip";
-import { Book, Headphones, Menu, Search, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { Input } from "../ui/input";
 
 import Subscription from "@/lib/schemas/subscriptionSchema";
@@ -58,27 +58,14 @@ const InfoBar = async () => {
 						placeholder="Quick Search"
 						className="border-none bg-transparent"
 					/>
-				</span>
-				<TooltipProvider>
-					<Tooltip delayDuration={0}>
-						<TooltipTrigger>
-							<Headphones />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Contact Support</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-				<TooltipProvider>
-					<Tooltip delayDuration={0}>
-						<TooltipTrigger>
-							<Book />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Guide</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
+        </span>
+				<Avatar>
+					<AvatarImage src={user.image} />
+					<AvatarFallback className="text-2xl font-bold">
+						{user.first_name[0]}
+						{user.last_name[0]}
+					</AvatarFallback>
+				</Avatar>
 				{/* <UserButton /> */}
 			</div>
 			<div className="sm:hidden flex flex-row justify-end gap-6 items-center p-4 w-full dark:bg-black ">
@@ -119,9 +106,14 @@ const InfoBar = async () => {
 									className="border-none bg-transparent"
 								/>
 							</span>
-							<Headphones />
 
-							<Book />
+							<Avatar>
+								<AvatarImage src={user.image} />
+								<AvatarFallback className="text-2xl font-bold">
+									{user.first_name[0]}
+									{user.last_name[0]}
+								</AvatarFallback>
+							</Avatar>
 						</DrawerFooter>
 					</DrawerContent>
 				</Drawer>

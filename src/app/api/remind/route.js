@@ -3,6 +3,8 @@ import Events from "@/lib/schemas/eventSchema";
 import { format } from "date-fns";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic"
+
 
 export async function GET(request) {
   // will be executed at 4pm every day
