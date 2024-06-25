@@ -1,30 +1,30 @@
-import React from "react";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "../ui/tooltip";
-import { Menu, Search, X } from "lucide-react";
-import { Input } from "../ui/input";
+import { Menu } from "lucide-react";
 
 import Subscription from "@/lib/schemas/subscriptionSchema";
 import Users from "@/lib/schemas/userSchema";
-import Stripe from "stripe";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
+import Stripe from "stripe";
+import SignOutButton from "../sign-out-button";
+import SignOutWrapper from "../signOutWrapper";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import {
 	Drawer,
-	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
-	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
 } from "../ui/drawer";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const InfoBar = async () => {
 	const session = await getServerSession();
@@ -52,20 +52,29 @@ const InfoBar = async () => {
 				<span className="flex items-center gap-2 font-bold">
 					<p className="text-sm font-light">{subscriptionName}</p>
 				</span>
-				<span className="flex items-center rounded-full bg-muted px-4">
-					<Search />
-					<Input
-						placeholder="Quick Search"
-						className="border-none bg-transparent"
-					/>
-        </span>
-				<Avatar>
-					<AvatarImage src={user.image} />
-					<AvatarFallback className="text-2xl font-bold">
-						{user.first_name[0]}
-						{user.last_name[0]}
-					</AvatarFallback>
-				</Avatar>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Avatar className="cursor-pointer">
+							<AvatarImage src={user.image} />
+							<AvatarFallback>
+								{user.first_name[0]}
+								{user.last_name[0]}
+							</AvatarFallback>
+						</Avatar>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent>
+						<DropdownMenuLabel>My Account</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem asChild>
+							<Link href="/settings">Settings</Link>
+						</DropdownMenuItem>
+						{/* logout */}
+						<DropdownMenuItem>
+							<SignOutWrapper>Logout</SignOutWrapper>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+
 				{/* <UserButton /> */}
 			</div>
 			<div className="sm:hidden flex flex-row justify-end gap-6 items-center p-4 w-full dark:bg-black ">
@@ -78,7 +87,7 @@ const InfoBar = async () => {
 							<DrawerTitle>Plan</DrawerTitle>
 							<DrawerDescription>{subscriptionName}</DrawerDescription>
 						</DrawerHeader>
-						<div className="flex flex-col items-center gap-3 px-8 text-center">
+						<div className="flex flex-col items-center gap-3 px-8 py-4 text-center">
 							<Avatar className="w-48 h-48 ">
 								<AvatarImage src={user.image} />
 								<AvatarFallback className="text-2xl font-bold">
@@ -92,29 +101,13 @@ const InfoBar = async () => {
 								</span>
 								<span className="text-sm font-light">{user.email}</span>
 							</div>
-							<Link href="/settings/profile" asChild>
-								<Button className="w-full" variant="link" size="sm">
-									Profile
+							<Link href="/settings" className="w-full" asChild>
+								<Button variant="outline" className="w-full">
+									Settings
 								</Button>
 							</Link>
+							<SignOutButton className="w-full">Logout</SignOutButton>
 						</div>
-						<DrawerFooter className="flex flex-row items-center gap-2 px-8">
-							<span className="flex items-center rounded-full bg-muted px-4 w-full flex-1">
-								<Search />
-								<Input
-									placeholder="Quick Search"
-									className="border-none bg-transparent"
-								/>
-							</span>
-
-							<Avatar>
-								<AvatarImage src={user.image} />
-								<AvatarFallback className="text-2xl font-bold">
-									{user.first_name[0]}
-									{user.last_name[0]}
-								</AvatarFallback>
-							</Avatar>
-						</DrawerFooter>
 					</DrawerContent>
 				</Drawer>
 			</div>

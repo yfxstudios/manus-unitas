@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 
 const SignOutButton = ({ children }, ...props) => {
   return (
-    <Button onClick={() => signOut()} {...props}>
+    <Button onClick={() => signOut()} {...props} className="w-full">
       {children}
     </Button>
   )

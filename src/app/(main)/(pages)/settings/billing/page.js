@@ -7,7 +7,7 @@ import { getCurrentUser } from '@/app/actions'
 import { useRouter } from 'next/navigation'
 import { ExternalLink } from 'lucide-react'
 
-const page = () => {
+const Page = () => {
   const router = useRouter()
   const clickHandler = async () => {
     const user = await getCurrentUser()
@@ -34,4 +34,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
