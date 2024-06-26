@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 import mongoose from 'mongoose'
+import Organization from './organizationSchema'
 
 mongoose.connect(process.env.MONGODB_URI + 'manus-unitas')
 
@@ -16,7 +17,11 @@ const userSchema = new Schema({
   phone: String,
   password: String,
   // new ObjectId('5f9b3b3b3b3b3b3b3b3b3b3b'),
-  organizationId: {},
+  organizationId: {
+    type: Schema.Types.ObjectId,
+    ref: Organization,
+  },
+  organizationOwner: { type: Boolean, default: false },
   admin: { type: Boolean, default: false },
   // 0 - not accepted, 1 - accepted, 2 - declined
   accepted: { type: Number, default: 0, min: 0, max: 2 },
