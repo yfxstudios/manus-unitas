@@ -1,19 +1,19 @@
-import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
 
-import Dashboard from "./dashboard";
 import { revalidatePath } from "next/cache";
+import Dashboard from "./dashboard";
 
+import { getUsers } from "@/app/actions";
+import { sendBulkMail } from "@/app/mail";
+import { Button } from "@/components/ui/button";
+import Events from "@/lib/schemas/eventSchema";
+import Organization from "@/lib/schemas/organizationSchema";
 import Subscription from "@/lib/schemas/subscriptionSchema";
 import Users from "@/lib/schemas/userSchema";
-import Events from "@/lib/schemas/eventSchema";
-import Stripe from "stripe";
-import Organization from "@/lib/schemas/organizationSchema";
-import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { getEvents, getUsers } from "@/app/actions";
-import { sendBulkMail, sendMail } from "@/app/mail";
 import { format } from "date-fns";
+import Stripe from "stripe";
+import Roles from "@/lib/schemas/roleSchema";
 
 export const metadata = {
   title: "Dashboard | Manus Unitas",
@@ -31,16 +31,13 @@ export default async function page() {
     { _id: 1, organizationId: 1, admin: 1 }
   ).lean();
 
+
   const userOrg = await Organization.findById(user.organizationId);
 
   if (user.admin) {
     const subscription = await Subscription.findOne({
       organizationId: user.organizationId,
     }).lean();
-
-    const subscriptionName = await stripe.products
-      .retrieve(subscription.productId)
-      .then(product => product.name);
 
     if (subscription.status !== "active") {
       return (
@@ -97,9 +94,11 @@ export default async function page() {
     console.log("Logging out");
   };
 
-  const createEvent = async e => {
+  const createEvent = async (e, roles, volunteers) => {
     "use server";
     console.log("Create event handler");
+
+
     const event = new Events({
       title: e.title,
       description: e.description,
@@ -107,7 +106,8 @@ export default async function page() {
       startTime: e.startTime,
       endTime: e.endTime,
       organizationId: user.organizationId,
-      volunteers: [user._id],
+      volunteers: volunteers,
+      roles: roles,
       accepted: [],
       rejected: [],
     });
@@ -702,6 +702,14 @@ export default async function page() {
     organizationId: user.organizationId,
   }).lean();
 
+  let roles = await Roles.find({
+    organizationId: user.organizationId,
+    parent: { $exists: false },
+  }).populate("parent").populate("subRoles").lean()
+
+  console.log("ROLES", roles);
+
+
   return (
     <Dashboard
       handleAccept={handleAccept}
@@ -710,7 +718,9 @@ export default async function page() {
       createEvent={createEvent}
       deleteEvent={deleteEventHandler}
       user={user}
+      users={users}
       update={update}
+      roles={roles}
     />
   );
 }

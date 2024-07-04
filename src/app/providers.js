@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React, { useState } from 'react'
 
+import { NextUIProvider } from "@nextui-org/react";
+
+
 import { store } from './store'
 import { Provider } from 'react-redux'
 
@@ -18,9 +21,11 @@ const Providers = ({ children }) => {
         defaultTheme="light"
         enableSystem
       >
-        <Provider store={store}>
-          {children}
-        </Provider>
+        <NextUIProvider>
+          <Provider store={store}>
+            {children}
+          </Provider>
+        </NextUIProvider>
       </ThemeProvider>
     </QueryClientProvider>
   )

@@ -2,6 +2,7 @@
 
 import Events from "@/lib/schemas/eventSchema";
 import Organization from "@/lib/schemas/organizationSchema";
+import Roles from "@/lib/schemas/roleSchema";
 import Users from "@/lib/schemas/userSchema";
 import { getServerSession } from "next-auth";
 import Stripe from "stripe";
@@ -119,15 +120,20 @@ export async function getUsers() {
 }
 
 export async function getEvent(id) {
-  const event = await Events.findById(id).populate("volunteers").lean();
-  console.log(event);
-  return event;
+  const event = await Events.findById(id).populate("volunteers.user").populate("roles.parent").populate("roles.subRoles.child").populate("roles.subRoles.volunteers").lean();
+  const roleDocument = await Roles.findOne({
+    subRoles: { $elemMatch: { _id: event.volunteers[0].role } },
+  }).lean()
+
+  return { event, roleDocument };
 }
 
 export async function handleAccept(id) {
   const session = await getServerSession();
   const user = await Users.findOne({ email: session.user.email }).lean();
   const event = await Events.findById(id);
+
+  console.log(id, user._id, event.accepted, event.rejected)
 
   if (event.rejected.includes(user._id)) {
     event.rejected.pull(user._id);

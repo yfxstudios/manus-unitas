@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Users from "./userSchema";
+import Roles from "./roleSchema";
 import Organization from "./organizationSchema";
 
 
@@ -15,22 +16,42 @@ const eventSchema = new Schema({
   description: String,
   volunteers: [
     {
-      type: mongoose.Types.ObjectId,
-      default: [],
-      ref: Users,
+        type: mongoose.Types.ObjectId,
+        ref: Users,
     }
   ],
-  accepted: [
+  roles: [
     {
-      type: mongoose.Types.ObjectId,
-      default: [],
-      ref: Users,
+      parent: {
+        type: mongoose.Types.ObjectId,
+        ref: Roles,
+      },
+      subRoles: [
+        {
+          child: {
+            type: mongoose.Types.ObjectId,
+            ref: Roles,
+          },
+          volunteers: [
+            {
+              type: mongoose.Types.ObjectId,
+              ref: Users,
+            }
+          ]
+        }
+      ]
     }
   ],
+  accepted:
+    [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: Users,
+      }
+    ],
   rejected: [
     {
       type: mongoose.Types.ObjectId,
-      default: [],
       ref: Users,
     }
   ],

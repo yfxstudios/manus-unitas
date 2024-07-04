@@ -1,0 +1,258 @@
+Date : 2024-07-04 10:01:38
+Directory : f:\manus-unitas
+Total : 148 files,  10056 codes, 472 comments, 1592 blanks, all 12120 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JavaScript         |         95 |      7,082 |        408 |      1,191 |      8,681 |
+| JavaScript JSX     |         40 |      2,774 |         35 |        369 |      3,178 |
+| JSON               |          4 |        111 |          0 |          4 |        115 |
+| CSS                |          1 |         53 |         29 |         13 |         95 |
+| Markdown           |          1 |         23 |          0 |         14 |         37 |
+| JSON with Comments |          1 |          7 |          0 |          1 |          8 |
+| XML                |          6 |          6 |          0 |          0 |          6 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                              | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                 |        148 |     10,056 |        472 |      1,592 |     12,120 |
+| . (Files)                                                                                         |          9 |        245 |          3 |         23 |        271 |
+| public                                                                                            |          5 |          5 |          0 |          0 |          5 |
+| src                                                                                               |        134 |      9,806 |        469 |      1,569 |     11,844 |
+| src (Files)                                                                                       |          1 |         69 |          1 |          4 |         74 |
+| src\app                                                                                           |         79 |      7,115 |        416 |      1,105 |      8,636 |
+| src\app (Files)                                                                                   |         11 |        698 |         72 |        167 |        937 |
+| src\app\(main)                                                                                    |         31 |      3,929 |        192 |        535 |      4,656 |
+| src\app\(main) (Files)                                                                            |          2 |         77 |          0 |          8 |         85 |
+| src\app\(main)\(pages)                                                                            |         29 |      3,852 |        192 |        527 |      4,571 |
+| src\app\(main)\(pages) (Files)                                                                    |          2 |         30 |          0 |          8 |         38 |
+| src\app\(main)\(pages)\analytics                                                                  |          3 |        194 |          2 |         39 |        235 |
+| src\app\(main)\(pages)\analytics (Files)                                                          |          1 |         27 |          0 |          7 |         34 |
+| src\app\(main)\(pages)\analytics\_components                                                      |          2 |        167 |          2 |         32 |        201 |
+| src\app\(main)\(pages)\dashboard                                                                  |          5 |      1,345 |        157 |        211 |      1,713 |
+| src\app\(main)\(pages)\dashboard (Files)                                                          |          2 |        831 |        144 |        154 |      1,129 |
+| src\app\(main)\(pages)\dashboard\_components                                                      |          3 |        514 |         13 |         57 |        584 |
+| src\app\(main)\(pages)\dashboard\_components (Files)                                              |          1 |        161 |          3 |          9 |        173 |
+| src\app\(main)\(pages)\dashboard\_components\eventList                                            |          1 |        167 |          3 |         14 |        184 |
+| src\app\(main)\(pages)\dashboard\_components\selectedEvent                                        |          1 |        186 |          7 |         34 |        227 |
+| src\app\(main)\(pages)\people                                                                     |          4 |      1,100 |         30 |        134 |      1,264 |
+| src\app\(main)\(pages)\people (Files)                                                             |          2 |        722 |         13 |         98 |        833 |
+| src\app\(main)\(pages)\people\_components                                                         |          2 |        378 |         17 |         36 |        431 |
+| src\app\(main)\(pages)\settings                                                                   |         15 |      1,183 |          3 |        135 |      1,321 |
+| src\app\(main)\(pages)\settings (Files)                                                           |          1 |         80 |          0 |         11 |         91 |
+| src\app\(main)\(pages)\settings\billing                                                           |          2 |         44 |          0 |          8 |         52 |
+| src\app\(main)\(pages)\settings\notifications                                                     |          1 |         87 |          0 |         12 |         99 |
+| src\app\(main)\(pages)\settings\organization                                                      |          3 |        309 |          1 |         33 |        343 |
+| src\app\(main)\(pages)\settings\organization (Files)                                              |          2 |         58 |          0 |         14 |         72 |
+| src\app\(main)\(pages)\settings\organization\_components                                          |          1 |        251 |          1 |         19 |        271 |
+| src\app\(main)\(pages)\settings\profile                                                           |          4 |        358 |          2 |         44 |        404 |
+| src\app\(main)\(pages)\settings\profile (Files)                                                   |          2 |        103 |          0 |         17 |        120 |
+| src\app\(main)\(pages)\settings\profile\_components                                               |          2 |        255 |          2 |         27 |        284 |
+| src\app\(main)\(pages)\settings\roles                                                             |          2 |         88 |          0 |         12 |        100 |
+| src\app\(main)\(pages)\settings\security                                                          |          2 |        217 |          0 |         15 |        232 |
+| src\app\2fa                                                                                       |          3 |         45 |          1 |         16 |         62 |
+| src\app\api                                                                                       |         10 |        801 |        128 |        132 |      1,061 |
+| src\app\api\auth                                                                                  |          2 |         86 |          4 |          5 |         95 |
+| src\app\api\auth\[...nextauth]                                                                    |          2 |         86 |          4 |          5 |         95 |
+| src\app\api\createPaymentIntent                                                                   |          1 |         22 |          0 |          4 |         26 |
+| src\app\api\endTutorial                                                                           |          1 |         15 |          0 |          6 |         21 |
+| src\app\api\events                                                                                |          2 |         16 |          0 |          5 |         21 |
+| src\app\api\events (Files)                                                                        |          1 |          6 |          0 |          2 |          8 |
+| src\app\api\events\[id]                                                                           |          1 |         10 |          0 |          3 |         13 |
+| src\app\api\getOrgMembers                                                                         |          1 |          9 |          0 |          2 |         11 |
+| src\app\api\remind                                                                                |          1 |        502 |         20 |         84 |        606 |
+| src\app\api\users                                                                                 |          1 |          8 |          3 |          2 |         13 |
+| src\app\api\users\[...id]                                                                         |          1 |          8 |          3 |          2 |         13 |
+| src\app\api\webhooks                                                                              |          1 |        143 |        101 |         24 |        268 |
+| src\app\api\webhooks\stripe                                                                       |          1 |        143 |        101 |         24 |        268 |
+| src\app\checkout                                                                                  |          2 |        148 |          2 |         39 |        189 |
+| src\app\checkout\[id]                                                                             |          2 |        148 |          2 |         39 |        189 |
+| src\app\completion                                                                                |          2 |         43 |          0 |         12 |         55 |
+| src\app\components                                                                                |          2 |         38 |          6 |         10 |         54 |
+| src\app\contact                                                                                   |          1 |         50 |          7 |         10 |         67 |
+| src\app\organization-details                                                                      |          2 |        208 |          0 |         27 |        235 |
+| src\app\privacy-policy                                                                            |          1 |        199 |          0 |          2 |        201 |
+| src\app\set-password                                                                              |          2 |         95 |          0 |         20 |        115 |
+| src\app\signin                                                                                    |          2 |        156 |          3 |         32 |        191 |
+| src\app\signup                                                                                    |          4 |        391 |          4 |         74 |        469 |
+| src\app\signup (Files)                                                                            |          2 |        143 |          3 |         43 |        189 |
+| src\app\signup\admin                                                                              |          2 |        248 |          1 |         31 |        280 |
+| src\app\subscribe                                                                                 |          5 |        173 |          1 |         27 |        201 |
+| src\app\subscribe (Files)                                                                         |          3 |        150 |          1 |         17 |        168 |
+| src\app\subscribe\success                                                                         |          2 |         23 |          0 |         10 |         33 |
+| src\app\terms-and-conditions                                                                      |          1 |        141 |          0 |          2 |        143 |
+| src\components                                                                                    |         37 |      2,029 |         18 |        314 |      2,361 |
+| src\components (Files)                                                                            |          2 |         12 |          0 |          7 |         19 |
+| src\components\infobar                                                                            |          1 |        107 |          3 |          9 |        119 |
+| src\components\sidebar                                                                            |          1 |        106 |          0 |          5 |        111 |
+| src\components\sign-out-button                                                                    |          1 |         11 |          0 |          2 |         13 |
+| src\components\theme-toggle                                                                       |          1 |         36 |          0 |          5 |         41 |
+| src\components\ui                                                                                 |         31 |      1,757 |         15 |        286 |      2,058 |
+| src\lib                                                                                           |         16 |        540 |         34 |        137 |        711 |
+| src\lib (Files)                                                                                   |          2 |         12 |          0 |          4 |         16 |
+| src\lib\mongo                                                                                     |          4 |        279 |         18 |         87 |        384 |
+| src\lib\schemas                                                                                   |          5 |        178 |          2 |         36 |        216 |
+| src\lib\store                                                                                     |          1 |         25 |          1 |          5 |         31 |
+| src\lib\stripe                                                                                    |          1 |         14 |         11 |          3 |         28 |
+| src\lib\util                                                                                      |          3 |         32 |          2 |          2 |         36 |
+| src\utils                                                                                         |          1 |         53 |          0 |          9 |         62 |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                          | language           | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| f:\manus-unitas\.eslintrc.json                                                                    | JSON               |          3 |          0 |          1 |          4 |
+| f:\manus-unitas\README.md                                                                         | Markdown           |         23 |          0 |         14 |         37 |
+| f:\manus-unitas\components.json                                                                   | JSON               |         17 |          0 |          1 |         18 |
+| f:\manus-unitas\jsconfig.json                                                                     | JSON with Comments |          7 |          0 |          1 |          8 |
+| f:\manus-unitas\next.config.mjs                                                                   | JavaScript         |          2 |          1 |          2 |          5 |
+| f:\manus-unitas\package.json                                                                      | JSON               |         83 |          0 |          1 |         84 |
+| f:\manus-unitas\postcss.config.mjs                                                                | JavaScript         |          6 |          1 |          2 |          9 |
+| f:\manus-unitas\public\logo grayscale simple.svg                                                  | XML                |          1 |          0 |          0 |          1 |
+| f:\manus-unitas\public\logo grayscale.svg                                                         | XML                |          1 |          0 |          0 |          1 |
+| f:\manus-unitas\public\logo.svg                                                                   | XML                |          1 |          0 |          0 |          1 |
+| f:\manus-unitas\public\next.svg                                                                   | XML                |          1 |          0 |          0 |          1 |
+| f:\manus-unitas\public\vercel.svg                                                                 | XML                |          1 |          0 |          0 |          1 |
+| f:\manus-unitas\src\app\(main)\(pages)\analytics\_components\newVolunteers.js                     | JavaScript         |        111 |          2 |         29 |        142 |
+| f:\manus-unitas\src\app\(main)\(pages)\analytics\_components\topVolunteers.js                     | JavaScript         |         56 |          0 |          3 |         59 |
+| f:\manus-unitas\src\app\(main)\(pages)\analytics\page.js                                          | JavaScript         |         27 |          0 |          7 |         34 |
+| f:\manus-unitas\src\app\(main)\(pages)\dashboard\_components\eventList\index.js                   | JavaScript         |        167 |          3 |         14 |        184 |
+| f:\manus-unitas\src\app\(main)\(pages)\dashboard\_components\newEventForm.js                      | JavaScript         |        161 |          3 |          9 |        173 |
+| f:\manus-unitas\src\app\(main)\(pages)\dashboard\_components\selectedEvent\index.js               | JavaScript         |        186 |          7 |         34 |        227 |
+| f:\manus-unitas\src\app\(main)\(pages)\dashboard\dashboard.js                                     | JavaScript         |        236 |        126 |         44 |        406 |
+| f:\manus-unitas\src\app\(main)\(pages)\dashboard\page.js                                          | JavaScript         |        595 |         18 |        110 |        723 |
+| f:\manus-unitas\src\app\(main)\(pages)\layout.js                                                  | JavaScript         |         19 |          0 |          5 |         24 |
+| f:\manus-unitas\src\app\(main)\(pages)\loading.js                                                 | JavaScript         |         11 |          0 |          3 |         14 |
+| f:\manus-unitas\src\app\(main)\(pages)\people\_components\editUserForm.jsx                        | JavaScript JSX     |        188 |          0 |         16 |        204 |
+| f:\manus-unitas\src\app\(main)\(pages)\people\_components\newUserForm.jsx                         | JavaScript JSX     |        190 |         17 |         20 |        227 |
+| f:\manus-unitas\src\app\(main)\(pages)\people\page.js                                             | JavaScript         |        505 |         12 |         82 |        599 |
+| f:\manus-unitas\src\app\(main)\(pages)\people\people.js                                           | JavaScript         |        217 |          1 |         16 |        234 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\billing\billingPortal.js                          | JavaScript         |         10 |          0 |          4 |         14 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\billing\page.js                                   | JavaScript         |         34 |          0 |          4 |         38 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\notifications\page.js                             | JavaScript         |         87 |          0 |         12 |         99 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\organization\_components\editOrganizationForm.jsx | JavaScript JSX     |        251 |          1 |         19 |        271 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\organization\organization.js                      | JavaScript         |         36 |          0 |         11 |         47 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\organization\page.js                              | JavaScript         |         22 |          0 |          3 |         25 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\page.js                                           | JavaScript         |         80 |          0 |         11 |         91 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\profile\_components\editUserForm.jsx              | JavaScript JSX     |        133 |          1 |         15 |        149 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\profile\_components\updatePasswordForm.jsx        | JavaScript JSX     |        122 |          1 |         12 |        135 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\profile\page.js                                   | JavaScript         |         41 |          0 |         10 |         51 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\profile\profile.js                                | JavaScript         |         62 |          0 |          7 |         69 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\roles\newRoleBtn.js                               | JavaScript         |         13 |          0 |          3 |         16 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\roles\page.js                                     | JavaScript         |         75 |          0 |          9 |         84 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\security\page.js                                  | JavaScript         |         11 |          0 |          1 |         12 |
+| f:\manus-unitas\src\app\(main)\(pages)\settings\security\security.js                              | JavaScript         |        206 |          0 |         14 |        220 |
+| f:\manus-unitas\src\app\(main)\incrementTime.js                                                   | JavaScript         |          8 |          0 |          2 |         10 |
+| f:\manus-unitas\src\app\(main)\layout.js                                                          | JavaScript         |         69 |          0 |          6 |         75 |
+| f:\manus-unitas\src\app\2fa\disable.js                                                            | JavaScript         |         10 |          0 |          4 |         14 |
+| f:\manus-unitas\src\app\2fa\qrcode.js                                                             | JavaScript         |         13 |          0 |          2 |         15 |
+| f:\manus-unitas\src\app\2fa\verify.js                                                             | JavaScript         |         22 |          1 |         10 |         33 |
+| f:\manus-unitas\src\app\actions.js                                                                | JavaScript         |        158 |          0 |         39 |        197 |
+| f:\manus-unitas\src\app\api\auth\[...nextauth]\options.js                                         | JavaScript         |         82 |          4 |          2 |         88 |
+| f:\manus-unitas\src\app\api\auth\[...nextauth]\route.js                                           | JavaScript         |          4 |          0 |          3 |          7 |
+| f:\manus-unitas\src\app\api\createPaymentIntent\route.js                                          | JavaScript         |         22 |          0 |          4 |         26 |
+| f:\manus-unitas\src\app\api\endTutorial\route.js                                                  | JavaScript         |         15 |          0 |          6 |         21 |
+| f:\manus-unitas\src\app\api\events\[id]\route.js                                                  | JavaScript         |         10 |          0 |          3 |         13 |
+| f:\manus-unitas\src\app\api\events\route.js                                                       | JavaScript         |          6 |          0 |          2 |          8 |
+| f:\manus-unitas\src\app\api\getOrgMembers\route.js                                                | JavaScript         |          9 |          0 |          2 |         11 |
+| f:\manus-unitas\src\app\api\remind\route.js                                                       | JavaScript         |        502 |         20 |         84 |        606 |
+| f:\manus-unitas\src\app\api\users\[...id]\route.js                                                | JavaScript         |          8 |          3 |          2 |         13 |
+| f:\manus-unitas\src\app\api\webhooks\stripe\route.js                                              | JavaScript         |        143 |        101 |         24 |        268 |
+| f:\manus-unitas\src\app\checkout\[id]\checkoutForm.js                                             | JavaScript         |         98 |          2 |         25 |        125 |
+| f:\manus-unitas\src\app\checkout\[id]\page.js                                                     | JavaScript         |         50 |          0 |         14 |         64 |
+| f:\manus-unitas\src\app\completion\completion.js                                                  | JavaScript         |         33 |          0 |          9 |         42 |
+| f:\manus-unitas\src\app\completion\page.js                                                        | JavaScript         |         10 |          0 |          3 |         13 |
+| f:\manus-unitas\src\app\components\Footer.js                                                      | JavaScript         |         21 |          6 |          2 |         29 |
+| f:\manus-unitas\src\app\components\TransitionLink.js                                              | JavaScript         |         17 |          0 |          8 |         25 |
+| f:\manus-unitas\src\app\contact\page.js                                                           | JavaScript         |         50 |          7 |         10 |         67 |
+| f:\manus-unitas\src\app\globals.css                                                               | CSS                |         53 |         29 |         13 |         95 |
+| f:\manus-unitas\src\app\icon.svg                                                                  | XML                |          1 |          0 |          0 |          1 |
+| f:\manus-unitas\src\app\layout.js                                                                 | JavaScript         |         45 |          6 |         14 |         65 |
+| f:\manus-unitas\src\app\loading.js                                                                | JavaScript         |          8 |          0 |          4 |         12 |
+| f:\manus-unitas\src\app\mail.js                                                                   | JavaScript         |         75 |          2 |         11 |         88 |
+| f:\manus-unitas\src\app\organization-details\OrganizationForm.js                                  | JavaScript         |        166 |          0 |         16 |        182 |
+| f:\manus-unitas\src\app\organization-details\page.js                                              | JavaScript         |         42 |          0 |         11 |         53 |
+| f:\manus-unitas\src\app\page.js                                                                   | JavaScript         |        270 |         35 |         66 |        371 |
+| f:\manus-unitas\src\app\privacy-policy\page.js                                                    | JavaScript         |        199 |          0 |          2 |        201 |
+| f:\manus-unitas\src\app\providers.js                                                              | JavaScript         |         25 |          0 |          5 |         30 |
+| f:\manus-unitas\src\app\set-password\page.js                                                      | JavaScript         |         30 |          0 |          7 |         37 |
+| f:\manus-unitas\src\app\set-password\passwordForm.js                                              | JavaScript         |         65 |          0 |         13 |         78 |
+| f:\manus-unitas\src\app\signin\getUser.js                                                         | JavaScript         |          6 |          0 |          2 |          8 |
+| f:\manus-unitas\src\app\signin\page.js                                                            | JavaScript         |        150 |          3 |         30 |        183 |
+| f:\manus-unitas\src\app\signup\admin\adminSignUp.js                                               | JavaScript         |        221 |          0 |         22 |        243 |
+| f:\manus-unitas\src\app\signup\admin\page.js                                                      | JavaScript         |         27 |          1 |          9 |         37 |
+| f:\manus-unitas\src\app\signup\page.js                                                            | JavaScript         |         28 |          2 |         14 |         44 |
+| f:\manus-unitas\src\app\signup\signup.js                                                          | JavaScript         |        115 |          1 |         29 |        145 |
+| f:\manus-unitas\src\app\store.js                                                                  | JavaScript         |          7 |          0 |          2 |          9 |
+| f:\manus-unitas\src\app\subscribe\page.js                                                         | JavaScript         |         12 |          0 |          3 |         15 |
+| f:\manus-unitas\src\app\subscribe\subscriptionCard.js                                             | JavaScript         |         42 |          0 |          6 |         48 |
+| f:\manus-unitas\src\app\subscribe\subscriptions.js                                                | JavaScript         |         96 |          1 |          8 |        105 |
+| f:\manus-unitas\src\app\subscribe\success\page.js                                                 | JavaScript         |          9 |          0 |          2 |         11 |
+| f:\manus-unitas\src\app\subscribe\success\success.js                                              | JavaScript         |         14 |          0 |          8 |         22 |
+| f:\manus-unitas\src\app\template.js                                                               | JavaScript         |         39 |          0 |          9 |         48 |
+| f:\manus-unitas\src\app\terms-and-conditions\page.js                                              | JavaScript         |        141 |          0 |          2 |        143 |
+| f:\manus-unitas\src\app\verifySignIn.js                                                           | JavaScript         |         17 |          0 |          4 |         21 |
+| f:\manus-unitas\src\components\infobar\index.jsx                                                  | JavaScript JSX     |        107 |          3 |          9 |        119 |
+| f:\manus-unitas\src\components\sidebar\index.jsx                                                  | JavaScript JSX     |        106 |          0 |          5 |        111 |
+| f:\manus-unitas\src\components\sign-out-button\index.js                                           | JavaScript         |         11 |          0 |          2 |         13 |
+| f:\manus-unitas\src\components\signOutWrapper.jsx                                                 | JavaScript JSX     |          7 |          0 |          4 |         11 |
+| f:\manus-unitas\src\components\theme-provider.jsx                                                 | JavaScript JSX     |          5 |          0 |          3 |          8 |
+| f:\manus-unitas\src\components\theme-toggle\index.jsx                                             | JavaScript JSX     |         36 |          0 |          5 |         41 |
+| f:\manus-unitas\src\components\ui\accordion.jsx                                                   | JavaScript JSX     |         35 |          0 |          9 |         44 |
+| f:\manus-unitas\src\components\ui\avatar.jsx                                                      | JavaScript JSX     |         29 |          0 |          7 |         36 |
+| f:\manus-unitas\src\components\ui\badge.jsx                                                       | JavaScript JSX     |         30 |          0 |          5 |         35 |
+| f:\manus-unitas\src\components\ui\button.jsx                                                      | JavaScript JSX     |         43 |          0 |          5 |         48 |
+| f:\manus-unitas\src\components\ui\calendar.jsx                                                    | JavaScript JSX     |         59 |          0 |          4 |         63 |
+| f:\manus-unitas\src\components\ui\card.jsx                                                        | JavaScript JSX     |         42 |          0 |          9 |         51 |
+| f:\manus-unitas\src\components\ui\checkbox.jsx                                                    | JavaScript JSX     |         20 |          0 |          5 |         25 |
+| f:\manus-unitas\src\components\ui\command.jsx                                                     | JavaScript JSX     |        101 |          0 |         17 |        118 |
+| f:\manus-unitas\src\components\ui\dialog.jsx                                                      | JavaScript JSX     |         83 |          0 |         14 |         97 |
+| f:\manus-unitas\src\components\ui\drawer.jsx                                                      | JavaScript JSX     |         79 |          0 |         14 |         93 |
+| f:\manus-unitas\src\components\ui\dropdown-menu.jsx                                               | JavaScript JSX     |        139 |          0 |         19 |        158 |
+| f:\manus-unitas\src\components\ui\form.jsx                                                        | JavaScript JSX     |        111 |          0 |         23 |        134 |
+| f:\manus-unitas\src\components\ui\infinite-moving-cards.jsx                                       | JavaScript JSX     |        106 |          0 |          6 |        112 |
+| f:\manus-unitas\src\components\ui\input-otp.jsx                                                   | JavaScript JSX     |         47 |          0 |          9 |         56 |
+| f:\manus-unitas\src\components\ui\input.jsx                                                       | JavaScript JSX     |         16 |          0 |          4 |         20 |
+| f:\manus-unitas\src\components\ui\label.jsx                                                       | JavaScript JSX     |         13 |          0 |          6 |         19 |
+| f:\manus-unitas\src\components\ui\multi-select.jsx                                                | JavaScript JSX     |        148 |         12 |         11 |        171 |
+| f:\manus-unitas\src\components\ui\navigation-menu.jsx                                             | JavaScript JSX     |         93 |          0 |         12 |        105 |
+| f:\manus-unitas\src\components\ui\popover.jsx                                                     | JavaScript JSX     |         21 |          0 |          7 |         28 |
+| f:\manus-unitas\src\components\ui\scroll-area-horizontal.jsx                                      | JavaScript JSX     |         10 |          0 |          3 |         13 |
+| f:\manus-unitas\src\components\ui\scroll-area.jsx                                                 | JavaScript JSX     |         35 |          0 |          6 |         41 |
+| f:\manus-unitas\src\components\ui\select.jsx                                                      | JavaScript JSX     |        108 |          0 |         15 |        123 |
+| f:\manus-unitas\src\components\ui\separator.jsx                                                   | JavaScript JSX     |         21 |          0 |          5 |         26 |
+| f:\manus-unitas\src\components\ui\skeleton.jsx                                                    | JavaScript JSX     |          8 |          0 |          3 |         11 |
+| f:\manus-unitas\src\components\ui\switch.jsx                                                      | JavaScript JSX     |         20 |          0 |          5 |         25 |
+| f:\manus-unitas\src\components\ui\table.jsx                                                       | JavaScript JSX     |         73 |          0 |         11 |         84 |
+| f:\manus-unitas\src\components\ui\textarea.jsx                                                    | JavaScript JSX     |         15 |          0 |          4 |         19 |
+| f:\manus-unitas\src\components\ui\toast.jsx                                                       | JavaScript JSX     |         73 |          0 |         11 |         84 |
+| f:\manus-unitas\src\components\ui\toaster.jsx                                                     | JavaScript JSX     |         32 |          0 |          4 |         36 |
+| f:\manus-unitas\src\components\ui\tooltip.jsx                                                     | JavaScript JSX     |         19 |          0 |          8 |         27 |
+| f:\manus-unitas\src\components\ui\use-toast.js                                                    | JavaScript         |        128 |          3 |         25 |        156 |
+| f:\manus-unitas\src\lib\contant.js                                                                | JavaScript         |          7 |          0 |          2 |          9 |
+| f:\manus-unitas\src\lib\mongo\events.js                                                           | JavaScript         |         62 |          6 |         20 |         88 |
+| f:\manus-unitas\src\lib\mongo\index.js                                                            | JavaScript         |          7 |          0 |          4 |         11 |
+| f:\manus-unitas\src\lib\mongo\organization.js                                                     | JavaScript         |         97 |          7 |         36 |        140 |
+| f:\manus-unitas\src\lib\mongo\users.js                                                            | JavaScript         |        113 |          5 |         27 |        145 |
+| f:\manus-unitas\src\lib\schemas\eventSchema.js                                                    | JavaScript         |         67 |          0 |          7 |         74 |
+| f:\manus-unitas\src\lib\schemas\organizationSchema.js                                             | JavaScript         |         20 |          0 |          8 |         28 |
+| f:\manus-unitas\src\lib\schemas\roleSchema.js                                                     | JavaScript         |         22 |          0 |          6 |         28 |
+| f:\manus-unitas\src\lib\schemas\subscriptionSchema.js                                             | JavaScript         |         25 |          0 |          6 |         31 |
+| f:\manus-unitas\src\lib\schemas\userSchema.js                                                     | JavaScript         |         44 |          2 |          9 |         55 |
+| f:\manus-unitas\src\lib\store\analyticsStore.js                                                   | JavaScript         |         25 |          1 |          5 |         31 |
+| f:\manus-unitas\src\lib\stripe\stripe.js                                                          | JavaScript         |         14 |         11 |          3 |         28 |
+| f:\manus-unitas\src\lib\util\date.js                                                              | JavaScript         |          8 |          0 |          0 |          8 |
+| f:\manus-unitas\src\lib\util\phoneNumber.js                                                       | JavaScript         |         16 |          0 |          2 |         18 |
+| f:\manus-unitas\src\lib\util\time.js                                                              | JavaScript         |          8 |          2 |          0 |         10 |
+| f:\manus-unitas\src\lib\utils.js                                                                  | JavaScript         |          5 |          0 |          2 |          7 |
+| f:\manus-unitas\src\middleware.js                                                                 | JavaScript         |         69 |          1 |          4 |         74 |
+| f:\manus-unitas\src\utils\animations.js                                                           | JavaScript         |         53 |          0 |          9 |         62 |
+| f:\manus-unitas\tailwind.config.js                                                                | JavaScript         |         96 |          1 |          0 |         97 |
+| f:\manus-unitas\vercel.json                                                                       | JSON               |          8 |          0 |          1 |          9 |
+| Total                                                                                             |                    |     10,056 |        472 |      1,592 |     12,120 |
++---------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

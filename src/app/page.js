@@ -16,6 +16,7 @@ import { AreaChart, CalendarCheck2, UsersRound } from "lucide-react";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import Subscriptions from "./subscribe/subscriptions";
+import { Button } from "@/components/ui/button";
 
 // There's a definite need for robust volunteer management software for nonprofits. Here are some features you can consider including in your SaaS to make it stand out:
 
@@ -211,45 +212,51 @@ export default function Home() {
 
 
   return (
-    <div className="overflow-x-hidden">
-      <Image
-        src="/images/AdobeStock_275873051.jpeg"
-        fill
-        objectFit="cover"
-        alt="Background"
-        className="absolute top-0 left-0 z-[-1] h-[140vw] w-full filter brightness-[.4]"
-        ref={backgroundImage}
-        onLoad={() => setLoaded(true)}
-      />
+    <div className="overflow-x-hidden bg-primary-foreground">
+      <div>
+        <Button variant="ghost" className="absolute top-5 right-5 z-50 text-lg" asChild>
+          <Link href="/signin">
+            Login
+          </Link>
+        </Button>
+      </div>
+      <div className="bg-primary">
+        <Image
+          src="/images/AdobeStock_275873051.jpeg"
+          fill
+          objectFit="cover"
+          alt="Background"
+          className="absolute top-0 left-0 z-[1] h-[140vw] w-full filter brightness-[.4] border-primary"
+          ref={backgroundImage}
+          onLoad={() => setLoaded(true)}
+        />
+      </div>
 
 
 
 
       <div div className="min-h-screen bg-base-300 flex flex-col items-center justify-center bg-opacity-0" >
         <motion.div
-          className="items-center flex flex-col text-center relative "
-          animate={controls}
-          initial={{ opacity: 0 }}
-          transition={{ duration: 1 }}
+          className="items-center flex flex-col text-center relative"
         >
-          <div className="relative max-w-xl mb-5 z-[1]" data-scroll data-scroll-speed=".3">
+          <div className="relative max-w-xl mb-5 z-[10]" data-scroll data-scroll-speed=".3">
             <h1 className="mb-5 text-5xl font-bold text-white md:text-7xl">
               Drive Change.
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-t from-primary to-accent">
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#ff0f7b] to-[#f89b29]">
                 Effortlessly
               </span>
             </h1>
           </div>
-          <div className="relative max-w-xl z-[1]" data-scroll data-scroll-speed=".1">
+          <div className="relative max-w-xl z-[10]" data-scroll data-scroll-speed=".1">
             <p className="mb-5 text-xl text-white font-light md:text-2xl px-5">
               Manus Unitas is a volunteer management software designed to help
               nonprofits streamline their volunteer programs and drive social
               impact.
             </p>
-            <button className="btn btn-lg btn-accent btn-outline">
-              <TransitionLink href="/signup">Get Started for Free</TransitionLink>
-            </button>
+            <Button variant="outline">
+              <TransitionLink href="/signup/admin">Get Started for Free</TransitionLink>
+            </Button>
           </div>
         </motion.div>
       </div>
@@ -303,9 +310,9 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="min-h-[40rem] w-full bg-gradient-to-br from-primary to-accent items-center justify-center flex flex-col">
+      <div className="min-h-[40rem] w-full bg-gradient-to-br from-[#ff0f7b] to-[#f89b29] items-center justify-center flex flex-col">
         {/* Call to Action */}
-        <div className="flex flex-col items-center justify-center text-center text-white" ref={getStarted}>
+        <div className="flex flex-col items-center justify-center text-center text-white z-10" ref={getStarted}>
           <h2 className="text-5xl font-bold mb-10"
             ref={signUpHeading}
           >Ready to get started?</h2>
@@ -314,11 +321,11 @@ export default function Home() {
           >
             Start streamlining your volunteer programs and driving social impact today.
           </p>
-          <button className="btn btn-lg btn-secondary"
+          <Button
             ref={signUpBtn}
           >
-            <TransitionLink href="/signup">Sign Up Now</TransitionLink>
-          </button>
+            <TransitionLink href="/signup/admin">Sign Up Now</TransitionLink>
+          </Button>
         </div >
       </div>
 
@@ -345,3 +352,19 @@ const stopLoading = () => {
     }
   })
 }
+
+// Manus Unitas is a volunteer management software designed to help nonprofits streamline their volunteer programs and drive social impact. With features like volunteer sign-up and database, volunteer matching, communication tools, onboarding and training materials, and volunteer hour tracking, Manus Unitas makes it easy for nonprofits to manage their volunteers and make a difference in their communities. Sign up now to start streamlining your volunteer programs and driving social impact today.
+
+// Volunteer Management:
+// P Volunteer sign-up and database: Allow easy online volunteer registration with profiles, skills, and availability.
+// N Communication tools: Facilitate communication between volunteers and staff through email, messaging, and discussion boards.
+// N Onboarding and training materials: Provide a central location for onboarding documents, training videos, and resources for volunteers.
+// Y Volunteer hour tracking: Track volunteer hours for reporting, recognition programs, and volunteer impact measurement.
+
+// Y Event creation and promotion: Post volunteer opportunities(both one-time and ongoing) with descriptions, signup links, and location details.
+// Y Volunteer scheduling for events: Allow volunteers to sign up for specific shifts or events that match their availability and skills.
+// N Task management: Assign specific tasks to volunteers within events or projects.
+// Y Email reminders: Send automated reminders to volunteers about upcoming shifts and events.
+
+// P Reporting and analytics: Generate reports on volunteer activity, demographics, and program impact.
+

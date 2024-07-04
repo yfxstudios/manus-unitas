@@ -1,0 +1,150 @@
+"filename", "language", "JavaScript", "JSON", "XML", "Markdown", "JavaScript JSX", "JSON with Comments", "CSS", "comment", "blank", "total"
+"f:\manus-unitas\.eslintrc.json", "JSON", 0, 3, 0, 0, 0, 0, 0, 0, 1, 4
+"f:\manus-unitas\README.md", "Markdown", 0, 0, 0, 23, 0, 0, 0, 0, 14, 37
+"f:\manus-unitas\components.json", "JSON", 0, 17, 0, 0, 0, 0, 0, 0, 1, 18
+"f:\manus-unitas\jsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 7, 0, 0, 1, 8
+"f:\manus-unitas\next.config.mjs", "JavaScript", 2, 0, 0, 0, 0, 0, 0, 1, 2, 5
+"f:\manus-unitas\package.json", "JSON", 0, 83, 0, 0, 0, 0, 0, 0, 1, 84
+"f:\manus-unitas\postcss.config.mjs", "JavaScript", 6, 0, 0, 0, 0, 0, 0, 1, 2, 9
+"f:\manus-unitas\public\logo grayscale simple.svg", "XML", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"f:\manus-unitas\public\logo grayscale.svg", "XML", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"f:\manus-unitas\public\logo.svg", "XML", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"f:\manus-unitas\public\next.svg", "XML", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"f:\manus-unitas\public\vercel.svg", "XML", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"f:\manus-unitas\src\app\(main)\(pages)\analytics\_components\newVolunteers.js", "JavaScript", 111, 0, 0, 0, 0, 0, 0, 2, 29, 142
+"f:\manus-unitas\src\app\(main)\(pages)\analytics\_components\topVolunteers.js", "JavaScript", 56, 0, 0, 0, 0, 0, 0, 0, 3, 59
+"f:\manus-unitas\src\app\(main)\(pages)\analytics\page.js", "JavaScript", 27, 0, 0, 0, 0, 0, 0, 0, 7, 34
+"f:\manus-unitas\src\app\(main)\(pages)\dashboard\_components\eventList\index.js", "JavaScript", 167, 0, 0, 0, 0, 0, 0, 3, 14, 184
+"f:\manus-unitas\src\app\(main)\(pages)\dashboard\_components\newEventForm.js", "JavaScript", 161, 0, 0, 0, 0, 0, 0, 3, 9, 173
+"f:\manus-unitas\src\app\(main)\(pages)\dashboard\_components\selectedEvent\index.js", "JavaScript", 186, 0, 0, 0, 0, 0, 0, 7, 34, 227
+"f:\manus-unitas\src\app\(main)\(pages)\dashboard\dashboard.js", "JavaScript", 236, 0, 0, 0, 0, 0, 0, 126, 44, 406
+"f:\manus-unitas\src\app\(main)\(pages)\dashboard\page.js", "JavaScript", 595, 0, 0, 0, 0, 0, 0, 18, 110, 723
+"f:\manus-unitas\src\app\(main)\(pages)\layout.js", "JavaScript", 19, 0, 0, 0, 0, 0, 0, 0, 5, 24
+"f:\manus-unitas\src\app\(main)\(pages)\loading.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"f:\manus-unitas\src\app\(main)\(pages)\people\_components\editUserForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 188, 0, 0, 0, 16, 204
+"f:\manus-unitas\src\app\(main)\(pages)\people\_components\newUserForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 190, 0, 0, 17, 20, 227
+"f:\manus-unitas\src\app\(main)\(pages)\people\page.js", "JavaScript", 505, 0, 0, 0, 0, 0, 0, 12, 82, 599
+"f:\manus-unitas\src\app\(main)\(pages)\people\people.js", "JavaScript", 217, 0, 0, 0, 0, 0, 0, 1, 16, 234
+"f:\manus-unitas\src\app\(main)\(pages)\settings\billing\billingPortal.js", "JavaScript", 10, 0, 0, 0, 0, 0, 0, 0, 4, 14
+"f:\manus-unitas\src\app\(main)\(pages)\settings\billing\page.js", "JavaScript", 34, 0, 0, 0, 0, 0, 0, 0, 4, 38
+"f:\manus-unitas\src\app\(main)\(pages)\settings\notifications\page.js", "JavaScript", 87, 0, 0, 0, 0, 0, 0, 0, 12, 99
+"f:\manus-unitas\src\app\(main)\(pages)\settings\organization\_components\editOrganizationForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 251, 0, 0, 1, 19, 271
+"f:\manus-unitas\src\app\(main)\(pages)\settings\organization\organization.js", "JavaScript", 36, 0, 0, 0, 0, 0, 0, 0, 11, 47
+"f:\manus-unitas\src\app\(main)\(pages)\settings\organization\page.js", "JavaScript", 22, 0, 0, 0, 0, 0, 0, 0, 3, 25
+"f:\manus-unitas\src\app\(main)\(pages)\settings\page.js", "JavaScript", 80, 0, 0, 0, 0, 0, 0, 0, 11, 91
+"f:\manus-unitas\src\app\(main)\(pages)\settings\profile\_components\editUserForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 133, 0, 0, 1, 15, 149
+"f:\manus-unitas\src\app\(main)\(pages)\settings\profile\_components\updatePasswordForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 122, 0, 0, 1, 12, 135
+"f:\manus-unitas\src\app\(main)\(pages)\settings\profile\page.js", "JavaScript", 41, 0, 0, 0, 0, 0, 0, 0, 10, 51
+"f:\manus-unitas\src\app\(main)\(pages)\settings\profile\profile.js", "JavaScript", 62, 0, 0, 0, 0, 0, 0, 0, 7, 69
+"f:\manus-unitas\src\app\(main)\(pages)\settings\roles\newRoleBtn.js", "JavaScript", 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+"f:\manus-unitas\src\app\(main)\(pages)\settings\roles\page.js", "JavaScript", 75, 0, 0, 0, 0, 0, 0, 0, 9, 84
+"f:\manus-unitas\src\app\(main)\(pages)\settings\security\page.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"f:\manus-unitas\src\app\(main)\(pages)\settings\security\security.js", "JavaScript", 206, 0, 0, 0, 0, 0, 0, 0, 14, 220
+"f:\manus-unitas\src\app\(main)\incrementTime.js", "JavaScript", 8, 0, 0, 0, 0, 0, 0, 0, 2, 10
+"f:\manus-unitas\src\app\(main)\layout.js", "JavaScript", 69, 0, 0, 0, 0, 0, 0, 0, 6, 75
+"f:\manus-unitas\src\app\2fa\disable.js", "JavaScript", 10, 0, 0, 0, 0, 0, 0, 0, 4, 14
+"f:\manus-unitas\src\app\2fa\qrcode.js", "JavaScript", 13, 0, 0, 0, 0, 0, 0, 0, 2, 15
+"f:\manus-unitas\src\app\2fa\verify.js", "JavaScript", 22, 0, 0, 0, 0, 0, 0, 1, 10, 33
+"f:\manus-unitas\src\app\actions.js", "JavaScript", 158, 0, 0, 0, 0, 0, 0, 0, 39, 197
+"f:\manus-unitas\src\app\api\auth\[...nextauth]\options.js", "JavaScript", 82, 0, 0, 0, 0, 0, 0, 4, 2, 88
+"f:\manus-unitas\src\app\api\auth\[...nextauth]\route.js", "JavaScript", 4, 0, 0, 0, 0, 0, 0, 0, 3, 7
+"f:\manus-unitas\src\app\api\createPaymentIntent\route.js", "JavaScript", 22, 0, 0, 0, 0, 0, 0, 0, 4, 26
+"f:\manus-unitas\src\app\api\endTutorial\route.js", "JavaScript", 15, 0, 0, 0, 0, 0, 0, 0, 6, 21
+"f:\manus-unitas\src\app\api\events\[id]\route.js", "JavaScript", 10, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"f:\manus-unitas\src\app\api\events\route.js", "JavaScript", 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"f:\manus-unitas\src\app\api\getOrgMembers\route.js", "JavaScript", 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"f:\manus-unitas\src\app\api\remind\route.js", "JavaScript", 502, 0, 0, 0, 0, 0, 0, 20, 84, 606
+"f:\manus-unitas\src\app\api\users\[...id]\route.js", "JavaScript", 8, 0, 0, 0, 0, 0, 0, 3, 2, 13
+"f:\manus-unitas\src\app\api\webhooks\stripe\route.js", "JavaScript", 143, 0, 0, 0, 0, 0, 0, 101, 24, 268
+"f:\manus-unitas\src\app\checkout\[id]\checkoutForm.js", "JavaScript", 98, 0, 0, 0, 0, 0, 0, 2, 25, 125
+"f:\manus-unitas\src\app\checkout\[id]\page.js", "JavaScript", 50, 0, 0, 0, 0, 0, 0, 0, 14, 64
+"f:\manus-unitas\src\app\completion\completion.js", "JavaScript", 33, 0, 0, 0, 0, 0, 0, 0, 9, 42
+"f:\manus-unitas\src\app\completion\page.js", "JavaScript", 10, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"f:\manus-unitas\src\app\components\Footer.js", "JavaScript", 21, 0, 0, 0, 0, 0, 0, 6, 2, 29
+"f:\manus-unitas\src\app\components\TransitionLink.js", "JavaScript", 17, 0, 0, 0, 0, 0, 0, 0, 8, 25
+"f:\manus-unitas\src\app\contact\page.js", "JavaScript", 50, 0, 0, 0, 0, 0, 0, 7, 10, 67
+"f:\manus-unitas\src\app\globals.css", "CSS", 0, 0, 0, 0, 0, 0, 53, 29, 13, 95
+"f:\manus-unitas\src\app\icon.svg", "XML", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1
+"f:\manus-unitas\src\app\layout.js", "JavaScript", 45, 0, 0, 0, 0, 0, 0, 6, 14, 65
+"f:\manus-unitas\src\app\loading.js", "JavaScript", 8, 0, 0, 0, 0, 0, 0, 0, 4, 12
+"f:\manus-unitas\src\app\mail.js", "JavaScript", 75, 0, 0, 0, 0, 0, 0, 2, 11, 88
+"f:\manus-unitas\src\app\organization-details\OrganizationForm.js", "JavaScript", 166, 0, 0, 0, 0, 0, 0, 0, 16, 182
+"f:\manus-unitas\src\app\organization-details\page.js", "JavaScript", 42, 0, 0, 0, 0, 0, 0, 0, 11, 53
+"f:\manus-unitas\src\app\page.js", "JavaScript", 270, 0, 0, 0, 0, 0, 0, 35, 66, 371
+"f:\manus-unitas\src\app\privacy-policy\page.js", "JavaScript", 199, 0, 0, 0, 0, 0, 0, 0, 2, 201
+"f:\manus-unitas\src\app\providers.js", "JavaScript", 25, 0, 0, 0, 0, 0, 0, 0, 5, 30
+"f:\manus-unitas\src\app\set-password\page.js", "JavaScript", 30, 0, 0, 0, 0, 0, 0, 0, 7, 37
+"f:\manus-unitas\src\app\set-password\passwordForm.js", "JavaScript", 65, 0, 0, 0, 0, 0, 0, 0, 13, 78
+"f:\manus-unitas\src\app\signin\getUser.js", "JavaScript", 6, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"f:\manus-unitas\src\app\signin\page.js", "JavaScript", 150, 0, 0, 0, 0, 0, 0, 3, 30, 183
+"f:\manus-unitas\src\app\signup\admin\adminSignUp.js", "JavaScript", 221, 0, 0, 0, 0, 0, 0, 0, 22, 243
+"f:\manus-unitas\src\app\signup\admin\page.js", "JavaScript", 27, 0, 0, 0, 0, 0, 0, 1, 9, 37
+"f:\manus-unitas\src\app\signup\page.js", "JavaScript", 28, 0, 0, 0, 0, 0, 0, 2, 14, 44
+"f:\manus-unitas\src\app\signup\signup.js", "JavaScript", 115, 0, 0, 0, 0, 0, 0, 1, 29, 145
+"f:\manus-unitas\src\app\store.js", "JavaScript", 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+"f:\manus-unitas\src\app\subscribe\page.js", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"f:\manus-unitas\src\app\subscribe\subscriptionCard.js", "JavaScript", 42, 0, 0, 0, 0, 0, 0, 0, 6, 48
+"f:\manus-unitas\src\app\subscribe\subscriptions.js", "JavaScript", 96, 0, 0, 0, 0, 0, 0, 1, 8, 105
+"f:\manus-unitas\src\app\subscribe\success\page.js", "JavaScript", 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"f:\manus-unitas\src\app\subscribe\success\success.js", "JavaScript", 14, 0, 0, 0, 0, 0, 0, 0, 8, 22
+"f:\manus-unitas\src\app\template.js", "JavaScript", 39, 0, 0, 0, 0, 0, 0, 0, 9, 48
+"f:\manus-unitas\src\app\terms-and-conditions\page.js", "JavaScript", 141, 0, 0, 0, 0, 0, 0, 0, 2, 143
+"f:\manus-unitas\src\app\verifySignIn.js", "JavaScript", 17, 0, 0, 0, 0, 0, 0, 0, 4, 21
+"f:\manus-unitas\src\components\infobar\index.jsx", "JavaScript JSX", 0, 0, 0, 0, 107, 0, 0, 3, 9, 119
+"f:\manus-unitas\src\components\sidebar\index.jsx", "JavaScript JSX", 0, 0, 0, 0, 106, 0, 0, 0, 5, 111
+"f:\manus-unitas\src\components\sign-out-button\index.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 2, 13
+"f:\manus-unitas\src\components\signOutWrapper.jsx", "JavaScript JSX", 0, 0, 0, 0, 7, 0, 0, 0, 4, 11
+"f:\manus-unitas\src\components\theme-provider.jsx", "JavaScript JSX", 0, 0, 0, 0, 5, 0, 0, 0, 3, 8
+"f:\manus-unitas\src\components\theme-toggle\index.jsx", "JavaScript JSX", 0, 0, 0, 0, 36, 0, 0, 0, 5, 41
+"f:\manus-unitas\src\components\ui\accordion.jsx", "JavaScript JSX", 0, 0, 0, 0, 35, 0, 0, 0, 9, 44
+"f:\manus-unitas\src\components\ui\avatar.jsx", "JavaScript JSX", 0, 0, 0, 0, 29, 0, 0, 0, 7, 36
+"f:\manus-unitas\src\components\ui\badge.jsx", "JavaScript JSX", 0, 0, 0, 0, 30, 0, 0, 0, 5, 35
+"f:\manus-unitas\src\components\ui\button.jsx", "JavaScript JSX", 0, 0, 0, 0, 43, 0, 0, 0, 5, 48
+"f:\manus-unitas\src\components\ui\calendar.jsx", "JavaScript JSX", 0, 0, 0, 0, 59, 0, 0, 0, 4, 63
+"f:\manus-unitas\src\components\ui\card.jsx", "JavaScript JSX", 0, 0, 0, 0, 42, 0, 0, 0, 9, 51
+"f:\manus-unitas\src\components\ui\checkbox.jsx", "JavaScript JSX", 0, 0, 0, 0, 20, 0, 0, 0, 5, 25
+"f:\manus-unitas\src\components\ui\command.jsx", "JavaScript JSX", 0, 0, 0, 0, 101, 0, 0, 0, 17, 118
+"f:\manus-unitas\src\components\ui\dialog.jsx", "JavaScript JSX", 0, 0, 0, 0, 83, 0, 0, 0, 14, 97
+"f:\manus-unitas\src\components\ui\drawer.jsx", "JavaScript JSX", 0, 0, 0, 0, 79, 0, 0, 0, 14, 93
+"f:\manus-unitas\src\components\ui\dropdown-menu.jsx", "JavaScript JSX", 0, 0, 0, 0, 139, 0, 0, 0, 19, 158
+"f:\manus-unitas\src\components\ui\form.jsx", "JavaScript JSX", 0, 0, 0, 0, 111, 0, 0, 0, 23, 134
+"f:\manus-unitas\src\components\ui\infinite-moving-cards.jsx", "JavaScript JSX", 0, 0, 0, 0, 106, 0, 0, 0, 6, 112
+"f:\manus-unitas\src\components\ui\input-otp.jsx", "JavaScript JSX", 0, 0, 0, 0, 47, 0, 0, 0, 9, 56
+"f:\manus-unitas\src\components\ui\input.jsx", "JavaScript JSX", 0, 0, 0, 0, 16, 0, 0, 0, 4, 20
+"f:\manus-unitas\src\components\ui\label.jsx", "JavaScript JSX", 0, 0, 0, 0, 13, 0, 0, 0, 6, 19
+"f:\manus-unitas\src\components\ui\multi-select.jsx", "JavaScript JSX", 0, 0, 0, 0, 148, 0, 0, 12, 11, 171
+"f:\manus-unitas\src\components\ui\navigation-menu.jsx", "JavaScript JSX", 0, 0, 0, 0, 93, 0, 0, 0, 12, 105
+"f:\manus-unitas\src\components\ui\popover.jsx", "JavaScript JSX", 0, 0, 0, 0, 21, 0, 0, 0, 7, 28
+"f:\manus-unitas\src\components\ui\scroll-area-horizontal.jsx", "JavaScript JSX", 0, 0, 0, 0, 10, 0, 0, 0, 3, 13
+"f:\manus-unitas\src\components\ui\scroll-area.jsx", "JavaScript JSX", 0, 0, 0, 0, 35, 0, 0, 0, 6, 41
+"f:\manus-unitas\src\components\ui\select.jsx", "JavaScript JSX", 0, 0, 0, 0, 108, 0, 0, 0, 15, 123
+"f:\manus-unitas\src\components\ui\separator.jsx", "JavaScript JSX", 0, 0, 0, 0, 21, 0, 0, 0, 5, 26
+"f:\manus-unitas\src\components\ui\skeleton.jsx", "JavaScript JSX", 0, 0, 0, 0, 8, 0, 0, 0, 3, 11
+"f:\manus-unitas\src\components\ui\switch.jsx", "JavaScript JSX", 0, 0, 0, 0, 20, 0, 0, 0, 5, 25
+"f:\manus-unitas\src\components\ui\table.jsx", "JavaScript JSX", 0, 0, 0, 0, 73, 0, 0, 0, 11, 84
+"f:\manus-unitas\src\components\ui\textarea.jsx", "JavaScript JSX", 0, 0, 0, 0, 15, 0, 0, 0, 4, 19
+"f:\manus-unitas\src\components\ui\toast.jsx", "JavaScript JSX", 0, 0, 0, 0, 73, 0, 0, 0, 11, 84
+"f:\manus-unitas\src\components\ui\toaster.jsx", "JavaScript JSX", 0, 0, 0, 0, 32, 0, 0, 0, 4, 36
+"f:\manus-unitas\src\components\ui\tooltip.jsx", "JavaScript JSX", 0, 0, 0, 0, 19, 0, 0, 0, 8, 27
+"f:\manus-unitas\src\components\ui\use-toast.js", "JavaScript", 128, 0, 0, 0, 0, 0, 0, 3, 25, 156
+"f:\manus-unitas\src\lib\contant.js", "JavaScript", 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+"f:\manus-unitas\src\lib\mongo\events.js", "JavaScript", 62, 0, 0, 0, 0, 0, 0, 6, 20, 88
+"f:\manus-unitas\src\lib\mongo\index.js", "JavaScript", 7, 0, 0, 0, 0, 0, 0, 0, 4, 11
+"f:\manus-unitas\src\lib\mongo\organization.js", "JavaScript", 97, 0, 0, 0, 0, 0, 0, 7, 36, 140
+"f:\manus-unitas\src\lib\mongo\users.js", "JavaScript", 113, 0, 0, 0, 0, 0, 0, 5, 27, 145
+"f:\manus-unitas\src\lib\schemas\eventSchema.js", "JavaScript", 67, 0, 0, 0, 0, 0, 0, 0, 7, 74
+"f:\manus-unitas\src\lib\schemas\organizationSchema.js", "JavaScript", 20, 0, 0, 0, 0, 0, 0, 0, 8, 28
+"f:\manus-unitas\src\lib\schemas\roleSchema.js", "JavaScript", 22, 0, 0, 0, 0, 0, 0, 0, 6, 28
+"f:\manus-unitas\src\lib\schemas\subscriptionSchema.js", "JavaScript", 25, 0, 0, 0, 0, 0, 0, 0, 6, 31
+"f:\manus-unitas\src\lib\schemas\userSchema.js", "JavaScript", 44, 0, 0, 0, 0, 0, 0, 2, 9, 55
+"f:\manus-unitas\src\lib\store\analyticsStore.js", "JavaScript", 25, 0, 0, 0, 0, 0, 0, 1, 5, 31
+"f:\manus-unitas\src\lib\stripe\stripe.js", "JavaScript", 14, 0, 0, 0, 0, 0, 0, 11, 3, 28
+"f:\manus-unitas\src\lib\util\date.js", "JavaScript", 8, 0, 0, 0, 0, 0, 0, 0, 0, 8
+"f:\manus-unitas\src\lib\util\phoneNumber.js", "JavaScript", 16, 0, 0, 0, 0, 0, 0, 0, 2, 18
+"f:\manus-unitas\src\lib\util\time.js", "JavaScript", 8, 0, 0, 0, 0, 0, 0, 2, 0, 10
+"f:\manus-unitas\src\lib\utils.js", "JavaScript", 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"f:\manus-unitas\src\middleware.js", "JavaScript", 69, 0, 0, 0, 0, 0, 0, 1, 4, 74
+"f:\manus-unitas\src\utils\animations.js", "JavaScript", 53, 0, 0, 0, 0, 0, 0, 0, 9, 62
+"f:\manus-unitas\tailwind.config.js", "JavaScript", 96, 0, 0, 0, 0, 0, 0, 1, 0, 97
+"f:\manus-unitas\vercel.json", "JSON", 0, 8, 0, 0, 0, 0, 0, 0, 1, 9
+"Total", "-", 7082, 111, 6, 23, 2774, 7, 53, 472, 1592, 12120

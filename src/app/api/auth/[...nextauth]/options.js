@@ -46,9 +46,31 @@ export const options = {
     signIn: '/signin',
     error: '/signin',
   },
+  callbacks: {
+    async session({
+      session
+    }) {
+      const user = await Users.findOne({
+        email: session.user.email
+      })
+      session.user.role = user.admin ? 'admin' : 'user'
+      session.user.name = user.first_name + ' ' + user.last_name
+      return session
+    },
+    async jwt({
+      token
+    }) {
+      const user = await Users.findOne({
+        email: token.email
+      })
+      token.role = user.admin ? 'admin' : 'user'
+      token.name = user.first_name + ' ' + user.last_name
+
+      return token
+    }
+  },
   events: {
     async signIn(message) {
-      console.log("SIGN IN: ", message.user.email)
       await Users.findOneAndUpdate({
         email: message.user.email
       }, {
@@ -56,7 +78,6 @@ export const options = {
       })
     },
     async signOut(message) {
-      console.log("SIGN OUT: ", message)
       await Users.findOneAndUpdate({
         email: message.token.email
       }, {

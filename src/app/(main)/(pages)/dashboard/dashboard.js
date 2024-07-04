@@ -1,25 +1,44 @@
 "use client";
 
-import { signOut } from "next-auth/react";
-import { Suspense, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 
 // import { longDate } from "@/lib/util/date";
 import { Button } from "@/components/ui/button";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Label } from "@/components/ui/label";
+import FancyMultiSelect from "@/components/ui/multi-select";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
+import Loading from "../loading";
 import EventList from "./_components/eventList";
 import NewEventForm from "./_components/newEventForm";
 import SelectedEvent from "./_components/selectedEvent";
-import Loading from "../loading";
+
+import { createContext } from "react";
 
 export default function Dashboard(props) {
-  const router = useRouter()
-  const events = props.events;
+  const router = useRouter();
+  const roles = props.roles;
   const [loading, setLoading] = useState(false);
 
   // console.log(events)
@@ -30,29 +49,236 @@ export default function Dashboard(props) {
     setLoading(true);
     setSelectedEvent({
       _id: selectedEvent._id,
-    })
+    });
     await props.handleAccept(id);
     setLoading(false);
-    router.refresh()
+    router.refresh();
   };
 
   const handleDecline = async id => {
     console.log(id);
     setLoading(true);
-    setSelectedEvent(...selectedEvent, { volunteers: selectedEvent.volunteers.filter(volunteer => volunteer !== props.user._id) });
+    setSelectedEvent(...selectedEvent, {
+      volunteers: selectedEvent.volunteers.filter(
+        volunteer => volunteer !== props.user._id
+      ),
+    });
     await props.handleDecline(id);
     setLoading(false);
   };
 
-  const [open, setOpen] = useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const [selected, setSelected] = useState([]);
+
+  // combine duplicate volunteers
+  // get all volunteers from each role.volunteers
+
+  console.log("Selected", selected);
+
+  // selected = [
+  //     {
+  //         "parent": "66848563b8e35040862eb3c5",
+  //         "subRoles": [
+  //             {
+  //                 "child": "66848563b8e35040862eb3c6",
+  //                 "volunteers": [
+  //                     "66778b62759cf25fa81e677b"
+  //                 ]
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "parent": "66848563b8e35040862eb3c5",
+  //         "subRoles": [
+  //             {
+  //                 "child": "66848563b8e35040862eb3c6",
+  //                 "volunteers": [
+  //                     "66778e8b759cf25fa81e6848"
+  //                 ]
+  //             }
+  //         ]
+  //     }
+  // ]
+
+  // should be combined to one object
+
+  const combined = selected.reduce((acc, curr) => {
+    const existing = acc.find(item => item.parent === curr.parent);
+
+    if (existing) {
+      existing.subRoles = [...existing.subRoles, ...curr.subRoles];
+    } else {
+      acc.push(curr);
+    }
+
+    return acc;
+  }, []);
+
+  // combined = [
+  //   {
+  //     "parent": "66848563b8e35040862eb3c5",
+  //     "subRoles": [
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778b62759cf25fa81e677b"
+  //         ]
+  //       },
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       },
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       },
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       },
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       },
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       },
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ]
+
+  // combine duplicate volunteers
+  // eg. {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       }
+  // And
+  //       {
+  //         "child": "66848563b8e35040862eb3c6",
+  //         "volunteers": [
+  //           "66778e8b759cf25fa81e6848"
+  //         ]
+  //       }
+  // should be one because they have the same child id and volunteers
+  // const combineDuplicates = combined.subRoles.reduce((acc, curr) => {
+  //   const existing = acc.find(
+  //     item => item.child === curr.child
+  //   );
+
+  //   if (existing) {
+  //     existing.volunteers = [
+  //       ...existing.volunteers,
+  //       ...curr.volunteers,
+  //     ];
+  //   } else {
+  //     acc.push(curr);
+  //   }
+
+  // }, []);
+
+  const combineVolunteers = combined.map(item => {
+    const subRoles = item.subRoles.reduce((acc, curr) => {
+      const existing = acc.find(subRole => subRole.child === curr.child);
+
+      if (curr.volunteers.length === 0) {
+        return acc;
+      }
+
+      if (existing) {
+        // existing.volunteers = [...existing.volunteers, ...curr.volunteers]; // sometimes gives invalid array length
+        existing.volunteers = [...new Set([...existing.volunteers, ...curr.volunteers])];
+      } else {
+        acc.push(curr);
+      }
+
+      return acc;
+    }, []);
+
+    return {
+      parent: item.parent,
+      subRoles,
+    };
+  });
+
+  // finally,
+  // [
+  //   {
+  //     "parent": "66848563b8e35040862eb3c5",
+  //       "subRoles": [
+  //         {
+  //           "child": "66848563b8e35040862eb3c6",
+  //           "volunteers": [
+  //             "66778b62759cf25fa81e677b",
+  //             "66778e8b759cf25fa81e6848",
+  //             "66778e8b759cf25fa81e6848",
+  //             "66778e8b759cf25fa81e6848"
+  //           ]
+  //         }
+  //       ]
+  //   }
+  // ]
+
+  // the repeated volunteers should be removed: 66778e8b759cf25fa81e6848, 66778e8b759cf25fa81e6848, and 66778e8b759cf25fa81e6848
+  // should be one
+
+  const finalCombined = combineVolunteers.map(item => {
+    const subRoles = item.subRoles.map(subRole => {
+      const volunteers = [...new Set(subRole.volunteers)];
+      return {
+        child: subRole.child,
+        volunteers,
+      };
+    });
+
+    return {
+      parent: item.parent,
+      subRoles,
+    };
+  });
+
+  console.log("COMBINED", finalCombined, combineVolunteers, combined, selected);
+
+  let volunteers = []; // ["66778b62759cf25fa81e677b", "66778e8b759cf25fa81e6848"]
+
+  finalCombined.forEach(item => {
+    item.subRoles.forEach(subRole => {
+      subRole.volunteers.forEach(volunteer => {
+        volunteers.push(
+          volunteer,
+        );
+      });
+    });
+  });
+
+  // delete duplicates
+  volunteers = [...new Set(volunteers)];
+
+  console.log("VOLUNTEERS", volunteers);
 
 
   return (
     <div className="flex flex-row">
-      {/* <div className="flex flex-col space-y-4 bg-base-300 sticky left-0 top-0 w-1 /6 h - screen z - 5 px - 4 py - 8">
-        <Separator />
-      </div > */}
       <div className="flex flex-col lg:flex-row justify-center gap-8 w-full px-4 xs:px-8 py-16 lg:px-36 lg:pt-48">
         <div className="flex flex-col lg:w-1/2 space-y-4">
           <div className="flex flex-row space-x-4 items-center">
@@ -73,15 +299,66 @@ export default function Dashboard(props) {
                         Create a new event for your organization.
                       </DialogDescription>
                     </DialogHeader>
+                    <h1 className="text-2xl font-semibold">Roles</h1>
+                    {roles.map(role => (
+                      <table className="w-full">
+                        <tr>
+                          <td>{role.name}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {role.subRoles.map(subRole => (
+                              <div className="ml-4">
+                                <Label>{subRole.name}</Label>
+                                <FancyMultiSelect
+                                  data={props.users.map(user => ({
+                                    value: user._id,
+                                    label: `${user.first_name} ${user.last_name}`,
+                                  }))}
+                                  placeholder="Select volunteers"
+                                  value={selected}
+                                  setValue={setSelected}
+                                  parentId={role._id}
+                                  roleId={subRole._id}
+                                  onUnselect={framework => {
+                                    let filtered = []
+
+                                    selected.forEach(item => {
+                                      const subRoles = item.subRoles.map(subRole => {
+                                        if (subRole.volunteers.includes(framework.value)) {
+                                          subRole.volunteers = subRole.volunteers.filter(volunteer => volunteer !== framework.value);
+                                        }
+                                        return subRole;
+                                      });
+
+                                      filtered.push({
+                                        parent: item.parent,
+                                        subRoles
+                                      });
+                                    });
+
+
+
+                                    console.log("FILTERED", filtered);
+
+                                  }}
+                                />
+                              </div>
+                            ))}
+                          </td>
+                        </tr>
+                      </table>
+                    ))}
                     <NewEventForm
                       onSubmit={async e => {
-                        await props.createEvent(e);
+                        await props.createEvent(e, finalCombined, volunteers);
                         setOpen(false);
                       }}
                     />
                   </DialogContent>
                 </Dialog>
               ) : (
+                // TODO: FIX DRAWER
                 <Drawer open={open} onOpenChange={setOpen}>
                   <DrawerTrigger asChild>
                     <Button variant="outline">New Event</Button>
@@ -93,7 +370,9 @@ export default function Dashboard(props) {
                         Create a new event for your organization.
                       </DrawerDescription>
                     </DrawerHeader>
-                    <NewEventForm className="px-4"
+
+                    <NewEventForm
+                      className="px-4"
                       onSubmit={async e => {
                         await props.createEvent(e);
                         setOpen(false);
@@ -111,9 +390,7 @@ export default function Dashboard(props) {
           )}
 
           <ScrollArea className="max-h-[calc(100vh-400px)] w-full">
-            <Suspense fallback={
-              <Loading />
-            }>
+            <Suspense fallback={<Loading />}>
               <EventList
                 selectedEvent={selectedEvent}
                 setSelectedEvent={setSelectedEvent}
@@ -131,9 +408,13 @@ export default function Dashboard(props) {
                   <div className="loading loading-dots size-16 p-0 m-0" />
                 </div>
               )}
-              <Suspense fallback={
-                <p className="text-lg">Select an event to view more information.</p>
-              }>
+              <Suspense
+                fallback={
+                  <p className="text-lg">
+                    Select an event to view more information.
+                  </p>
+                }
+              >
                 <SelectedEvent
                   selectedEvent={selectedEvent}
                   setSelectedEvent={setSelectedEvent}

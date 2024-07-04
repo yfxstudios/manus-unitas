@@ -8,6 +8,7 @@ import { initializeApp } from "firebase/app";
 
 import Script from "next/script";
 import Providers from "./providers";
+import { cn } from "@/lib/utils";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -54,11 +55,11 @@ export default function RootLayout({ children }) {
         }
 
       </Script>
-      <body className={poppins.className}>
+      <body className={cn(poppins.className, "light")}>
         <Providers>
           {children}
         </Providers>
       </body>
-    </html>
+    </html >
   );
 }
