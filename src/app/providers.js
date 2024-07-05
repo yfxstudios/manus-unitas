@@ -21,13 +21,11 @@ const Providers = ({ children }) => {
         defaultTheme="light"
         enableSystem
       >
-        <NextUIProvider>
-          <Provider store={store}>
-            {children}
-          </Provider>
-        </NextUIProvider>
+        <Provider store={store}>
+          {children}
+        </Provider>
       </ThemeProvider>
-    </QueryClientProvider>
+    </QueryClientProvider >
   )
 }
 

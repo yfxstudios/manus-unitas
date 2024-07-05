@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
         }
 
       </Script>
-      <body className={cn(poppins.className, "light")}>
+      <body className={poppins.className}>
         <Providers>
           {children}
         </Providers>

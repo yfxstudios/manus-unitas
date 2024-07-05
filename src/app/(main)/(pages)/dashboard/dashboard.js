@@ -9,8 +9,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -34,12 +36,13 @@ import EventList from "./_components/eventList";
 import NewEventForm from "./_components/newEventForm";
 import SelectedEvent from "./_components/selectedEvent";
 
-import { createContext } from "react";
 
 export default function Dashboard(props) {
   const router = useRouter();
   const roles = props.roles;
   const [loading, setLoading] = useState(false);
+
+  const [e, setE] = useState()
 
   // console.log(events)
 
@@ -292,69 +295,94 @@ export default function Dashboard(props) {
                   <DialogTrigger asChild>
                     <Button variant="outline">New Event</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>New Event</DialogTitle>
-                      <DialogDescription>
-                        Create a new event for your organization.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <h1 className="text-2xl font-semibold">Roles</h1>
-                    {roles.map(role => (
-                      <table className="w-full">
-                        <tr>
-                          <td>{role.name}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {role.subRoles.map(subRole => (
-                              <div className="ml-4">
-                                <Label>{subRole.name}</Label>
-                                <FancyMultiSelect
-                                  data={props.users.map(user => ({
-                                    value: user._id,
-                                    label: `${user.first_name} ${user.last_name}`,
-                                  }))}
-                                  placeholder="Select volunteers"
-                                  value={selected}
-                                  setValue={setSelected}
-                                  parentId={role._id}
-                                  roleId={subRole._id}
-                                  onUnselect={framework => {
-                                    let filtered = []
+                  <DialogContent className="flex flex-row w-full max-w-3xl">
+                    <div
+                      className="w-1/2"
+                    >
+                      <DialogHeader>
+                        <DialogTitle>New Event</DialogTitle>
+                        <DialogDescription>
+                          Create a new event for your organization.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <NewEventForm
+                        onSubmit={async e => {
+                          await props.createEvent(e, finalCombined, volunteers);
+                          setOpen(false)
+                        }}
+                      />
+                      <DialogClose asChild>
+                        <Button variant="outline"
+                          className="w-full"
+                          onClick={() => {
+                            setOpen(false)
+                          }}
+                        >Cancel</Button>
+                      </DialogClose>
+                    </div>
 
-                                    selected.forEach(item => {
-                                      const subRoles = item.subRoles.map(subRole => {
-                                        if (subRole.volunteers.includes(framework.value)) {
-                                          subRole.volunteers = subRole.volunteers.filter(volunteer => volunteer !== framework.value);
-                                        }
-                                        return subRole;
+
+
+
+                    <div
+                      className="w-1/2"
+                    >
+                      <h1 className="text-2xl font-semibold">Roles</h1>
+                      {roles.map(role => (
+                        <table className="w-full"
+                          key={role._id}
+                        >
+                          <tr>
+                            <td>{role.name}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              {role.subRoles.map(subRole => (
+                                <div className="ml-4"
+                                  key={subRole._id}
+                                >
+                                  <Label>{subRole.name}</Label>
+                                  <FancyMultiSelect
+                                    data={props.users.map(user => ({
+                                      value: user._id,
+                                      label: `${user.first_name} ${user.last_name}`,
+                                    }))}
+                                    placeholder="Select volunteers"
+                                    value={selected}
+                                    setValue={setSelected}
+                                    parentId={role._id}
+                                    roleId={subRole._id}
+                                    onUnselect={framework => {
+                                      let filtered = []
+
+                                      selected.forEach(item => {
+                                        const subRoles = item.subRoles.map(subRole => {
+                                          if (subRole.volunteers.includes(framework.value)) {
+                                            subRole.volunteers = subRole.volunteers.filter(volunteer => volunteer !== framework.value);
+                                          }
+                                          return subRole;
+                                        });
+
+                                        filtered.push({
+                                          parent: item.parent,
+                                          subRoles
+                                        });
                                       });
 
-                                      filtered.push({
-                                        parent: item.parent,
-                                        subRoles
-                                      });
-                                    });
 
 
+                                      console.log("FILTERED", filtered);
 
-                                    console.log("FILTERED", filtered);
+                                    }}
+                                  />
+                                </div>
+                              ))}
+                            </td>
+                          </tr>
+                        </table>
+                      ))}
+                    </div>
 
-                                  }}
-                                />
-                              </div>
-                            ))}
-                          </td>
-                        </tr>
-                      </table>
-                    ))}
-                    <NewEventForm
-                      onSubmit={async e => {
-                        await props.createEvent(e, finalCombined, volunteers);
-                        setOpen(false);
-                      }}
-                    />
                   </DialogContent>
                 </Dialog>
               ) : (
@@ -426,7 +454,7 @@ export default function Dashboard(props) {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </div >
   );
 }
