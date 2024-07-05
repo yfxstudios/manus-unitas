@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 
 // import { longDate } from "@/lib/util/date";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,9 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@/components/ui/dialog";
 import {
   Drawer,
@@ -35,6 +34,7 @@ import Loading from "../loading";
 import EventList from "./_components/eventList";
 import NewEventForm from "./_components/newEventForm";
 import SelectedEvent from "./_components/selectedEvent";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 
 export default function Dashboard(props) {
@@ -352,28 +352,6 @@ export default function Dashboard(props) {
                                     setValue={setSelected}
                                     parentId={role._id}
                                     roleId={subRole._id}
-                                    onUnselect={framework => {
-                                      let filtered = []
-
-                                      selected.forEach(item => {
-                                        const subRoles = item.subRoles.map(subRole => {
-                                          if (subRole.volunteers.includes(framework.value)) {
-                                            subRole.volunteers = subRole.volunteers.filter(volunteer => volunteer !== framework.value);
-                                          }
-                                          return subRole;
-                                        });
-
-                                        filtered.push({
-                                          parent: item.parent,
-                                          subRoles
-                                        });
-                                      });
-
-
-
-                                      console.log("FILTERED", filtered);
-
-                                    }}
                                   />
                                 </div>
                               ))}
@@ -387,32 +365,75 @@ export default function Dashboard(props) {
                 </Dialog>
               ) : (
                 // TODO: FIX DRAWER
-                <Drawer open={open} onOpenChange={setOpen}>
-                  <DrawerTrigger asChild>
+                <Sheet open={open} onOpenChange={setOpen}>
+                  <SheetTrigger asChild>
                     <Button variant="outline">New Event</Button>
-                  </DrawerTrigger>
-                  <DrawerContent>
-                    <DrawerHeader className="text-left">
-                      <DrawerTitle>New Event</DrawerTitle>
-                      <DrawerDescription>
-                        Create a new event for your organization.
-                      </DrawerDescription>
-                    </DrawerHeader>
+                  </SheetTrigger>
+                  <SheetContent
+                    className="w-screen"
+                  >
+                    <ScrollArea className="h-full w-full p-0 xs:p-3">
 
-                    <NewEventForm
-                      className="px-4"
-                      onSubmit={async e => {
-                        await props.createEvent(e);
-                        setOpen(false);
-                      }}
-                    />
-                    <DrawerFooter className="pt-2">
-                      <DrawerClose asChild>
-                        <Button variant="outline">Cancel</Button>
-                      </DrawerClose>
-                    </DrawerFooter>
-                  </DrawerContent>
-                </Drawer>
+                      <div className="xs:m-1">
+                        <SheetHeader className="text-left">
+                          <SheetTitle>New Event</SheetTitle>
+                        </SheetHeader>
+
+                        <div className="mt-4">
+                          <h1 className="text-xl font-semibold">Roles</h1>
+                          {roles.map(role => (
+                            <table className="w-full"
+                              key={role._id}
+                            >
+                              <tr>
+                                <td>{role.name}</td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  {role.subRoles.map(subRole => (
+                                    <div className="ml-4"
+                                      key={subRole._id}
+                                    >
+                                      <Label>{subRole.name}</Label>
+                                      <FancyMultiSelect
+                                        data={props.users.map(user => ({
+                                          value: user._id,
+                                          label: `${user.first_name} ${user.last_name}`,
+                                        }))}
+                                        placeholder="Select volunteers"
+                                        value={selected}
+                                        setValue={setSelected}
+                                        parentId={role._id}
+                                        roleId={subRole._id}
+                                      />
+                                    </div>
+                                  ))}
+                                </td>
+                              </tr>
+                            </table>
+                          ))}
+                        </div>
+
+                        <NewEventForm
+                          onSubmit={async e => {
+                            await props.createEvent(e, finalCombined, volunteers)
+                            setOpen(false);
+                          }}
+                        />
+
+
+                      </div>
+
+
+                      <SheetFooter className="pt-2">
+                        <SheetClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </SheetClose>
+                      </SheetFooter>
+
+                    </ScrollArea>
+                  </SheetContent>
+                </Sheet>
               )}
             </>
           )}
@@ -422,6 +443,7 @@ export default function Dashboard(props) {
               <EventList
                 selectedEvent={selectedEvent}
                 setSelectedEvent={setSelectedEvent}
+                admin={props.user.admin}
               />
             </Suspense>
           </ScrollArea>

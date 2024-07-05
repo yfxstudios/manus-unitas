@@ -23,8 +23,11 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import EditEvent from "../editEvent";
 
 const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
+  const [editing, setEditing] = useState(false)
+
   const getAllUsers = async () => {
     // get the volunteers for each role
     const orgUsers = await getUsers()
@@ -120,11 +123,6 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
 
 
 
-
-  if (orgUsers.length > 0) {
-    console.log("USERS", orgUsers)
-  }
-
   // roles: [
   // {
   //   parent: {
@@ -147,6 +145,50 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
   //   ]
   // }
   // ],
+
+  if (!data || !usersFetched || !userFetched) {
+    return <p>Loading...</p>;
+  } else if (editing) {
+    return (
+      <EditEvent
+        event={data.event}
+        setEditing={setEditing}
+        users={orgUsers}
+        mutate={mutate}
+      />
+    )
+  }
+
+
+  if (data.event.volunteers.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            No volunteers have been assigned to this event yet.
+          </CardTitle>
+        </CardHeader>
+        <CardContent
+          className="flex flex-row gap-2"
+        >
+          <Button onClick={e => {
+            setEditing(true);
+          }}>
+            Edit Event
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={e => {
+              onDelete(data.event._id);
+            }}
+          >
+            Delete Event
+          </Button>
+
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <>
@@ -264,14 +306,21 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
                     Decline Position
                   </Button>
                   {user.admin && (
-                    <Button
-                      variant="destructive"
-                      onClick={e => {
-                        onDelete(data.event._id);
-                      }}
-                    >
-                      Delete Event
-                    </Button>
+                    <>
+                      <Button onClick={e => {
+                        setEditing(true);
+                      }}>
+                        Edit Event
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={e => {
+                          onDelete(data.event._id);
+                        }}
+                      >
+                        Delete Event
+                      </Button>
+                    </>
                   )}
                 </div>
               </CardFooter>

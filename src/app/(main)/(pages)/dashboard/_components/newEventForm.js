@@ -49,7 +49,7 @@ const NewEventForm = (props) => {
 
   return (
     <Form {...form}>
-      <form className='flex flex-col gap-6 p-2' onSubmit={form.handleSubmit(handleSubmit)}
+      <form className={cn('flex flex-col gap-6 p-2', props.className)} onSubmit={form.handleSubmit(handleSubmit)}
       >
         <FormField
           disabled={isLoading}

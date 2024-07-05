@@ -650,7 +650,7 @@ export default async function page() {
                                           
                                             <br>
                                           <span>
-                                            ${format(new Date(event.date), "MMMM dd")} from ${startTimeValue} to ${endTimeValue}
+                                            ${format(new Date(event.date), "MMMM do")} from ${startTimeValue} to ${endTimeValue}
                                           </span>
                                           </td>
                                         </tr>
