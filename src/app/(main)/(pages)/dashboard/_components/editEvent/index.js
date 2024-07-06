@@ -1,5 +1,6 @@
 import { getRoles, updateEvent } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
   CardContent,
@@ -8,11 +9,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FancyMultiSelect from "@/components/ui/multi-select";
+import { TimePeriodSelect } from "@/components/ui/period-select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { TimePicker12 } from "@/components/ui/time-picker-12h";
+import { TimePickerInput } from "@/components/ui/time-picker-input";
 import { longDate } from "@/lib/util/date";
 import { standardTime } from "@/lib/util/time";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import React from "react";
 
 const EditEvent = ({ event, setEditing, users, mutate }) => {
@@ -25,6 +34,17 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
       })),
     }))
   );
+
+  const [title, setTitle] = React.useState(event.title);
+  const [description, setDescription] = React.useState(event.description);
+
+
+  const [date, setDate] = React.useState(new Date(event.date));
+
+
+  const [startTime, setStartTime] = React.useState(event.startTime);
+  const [endTime, setEndTime] = React.useState(event.endTime);
+
 
   const { data, isFetched } = useQuery({
     queryKey: ["roles"],
@@ -105,16 +125,45 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-1">
         <CardTitle className="flex flex-row justify-between items-center">
           <div className="flex-1 text-wrap break-words hyphens-auto">
-            {event.title}
+            <Input value={title} onChange={e => setTitle(e.target.value)}
+              className="text-2xl"
+            />
           </div>
         </CardTitle>
-        <CardDescription>{event.description}</CardDescription>
+        <CardDescription>
+          <Input value={description} onChange={e => setDescription(e.target.value)} />
+        </CardDescription>
       </CardHeader>
       <CardContent className="text-wrap break-words hyphens-auto text-sm xs:text-base">
-        <p>{longDate(event.date)}</p>
+        {/* <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-[280px] justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover> */}
+
+        <div className="flex items-end gap-2">
+          <TimePicker12 date={date} setDate={setDate} />
+        </div>
         <p>
           {standardTime(event.startTime)} to {standardTime(event.endTime)}
         </p>
@@ -144,6 +193,14 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
                             parentId={role._id}
                             roleId={subRole._id}
                             defaultValue={
+                              finalCombined.find(
+                                item => item.parent === role._id
+                              ) &&
+                              finalCombined.find(
+                                item => item.parent === role._id
+                              ).subRoles.find(
+                                subRoleItem => subRoleItem.child === subRole._id
+                              ) &&
                               finalCombined.find(
                                 item => item.parent === role._id
                               ).subRoles.find(

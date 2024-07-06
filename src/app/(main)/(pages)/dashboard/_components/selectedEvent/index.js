@@ -213,76 +213,78 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
                 <br />
                 <div className="flex flex-col space-y-4">
                   {data.event.roles.map(role => {
-                    return (
-                      <Card key={role.parent._id}>
-                        <CardHeader
-                          className="pb-0"
-                        >
-                          <CardTitle>
-                            <h1
-                              className="text-xl p-0 m-0 font-semibold"
-                            >{role.parent.name}</h1>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex flex-col gap-2">
-                            {role.subRoles.map(subRole => {
-                              return (
-                                <div key={subRole.child._id}>
-                                  <p className="font-semibold my-2">
-                                    {subRole.child.name}
-                                  </p>
-                                  <div className="flex flex-col space-y-2">
-                                    {subRole.volunteers.map(volunteer => {
-                                      return (
-                                        <div
-                                          key={volunteer._id}
-                                          className="flex flex-row items-center gap-2"
-                                        >
-                                          <TooltipProvider>
-                                            <Tooltip
-                                              delayDuration={100}
-                                            >
-                                              <TooltipTrigger>
-                                                <Avatar
-                                                  className={cn("border-gray-400 border-2", {
-                                                    "border-green-500": data.event.accepted.includes(volunteer._id),
-                                                    "border-destructive": data.event.rejected.includes(volunteer._id),
-                                                  })}
-                                                >
-                                                  <AvatarFallback
-                                                    className="border-primary-foreground border-2"
-
+                    if (role.subRoles.length > 0) {
+                      return (
+                        <Card key={role.parent._id}>
+                          <CardHeader
+                            className="pb-0"
+                          >
+                            <CardTitle>
+                              <h1
+                                className="text-xl p-0 m-0 font-semibold"
+                              >{role.parent.name}</h1>
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="flex flex-col gap-2">
+                              {role.subRoles.map(subRole => {
+                                return (
+                                  <div key={subRole.child._id}>
+                                    <p className="font-semibold my-2">
+                                      {subRole.child.name}
+                                    </p>
+                                    <div className="flex flex-col space-y-2">
+                                      {subRole.volunteers.map(volunteer => {
+                                        return (
+                                          <div
+                                            key={volunteer._id}
+                                            className="flex flex-row items-center gap-2"
+                                          >
+                                            <TooltipProvider>
+                                              <Tooltip
+                                                delayDuration={100}
+                                              >
+                                                <TooltipTrigger>
+                                                  <Avatar
+                                                    className={cn("border-gray-400 border-2", {
+                                                      "border-green-500": data.event.accepted.includes(volunteer._id),
+                                                      "border-destructive": data.event.rejected.includes(volunteer._id),
+                                                    })}
                                                   >
-                                                    {volunteer.first_name[0]}{volunteer.last_name[0]}
+                                                    <AvatarFallback
+                                                      className="border-primary-foreground border-2"
 
-                                                  </AvatarFallback>
-                                                  <AvatarImage
-                                                    src={volunteer.avatar}
-                                                    alt={volunteer.name}
-                                                    className="border-primary-foreground border-2"
-                                                  />
-                                                </Avatar>
-                                              </TooltipTrigger>
-                                              <TooltipContent>
-                                                <p>
-                                                  {data.event.accepted.includes(volunteer._id) ? "Accepted" : data.event.rejected.includes(volunteer._id) ? "Declined" : "Pending"}
-                                                </p>
-                                              </TooltipContent>
-                                            </Tooltip>
-                                          </TooltipProvider>
-                                          <p>{volunteer.first_name} {volunteer.last_name}</p>
-                                        </div>
-                                      );
-                                    })}
+                                                    >
+                                                      {volunteer.first_name[0]}{volunteer.last_name[0]}
+
+                                                    </AvatarFallback>
+                                                    <AvatarImage
+                                                      src={volunteer.avatar}
+                                                      alt={volunteer.name}
+                                                      className="border-primary-foreground border-2"
+                                                    />
+                                                  </Avatar>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                  <p>
+                                                    {data.event.accepted.includes(volunteer._id) ? "Accepted" : data.event.rejected.includes(volunteer._id) ? "Declined" : "Pending"}
+                                                  </p>
+                                                </TooltipContent>
+                                              </Tooltip>
+                                            </TooltipProvider>
+                                            <p>{volunteer.first_name} {volunteer.last_name}</p>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
+                                );
+                              })}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    }
                   }
                   )}
                 </div>
