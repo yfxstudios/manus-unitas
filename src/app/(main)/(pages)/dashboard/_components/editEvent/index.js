@@ -170,9 +170,39 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
               disabled={(d) => d < new Date().setHours(0, 0, 0, 0)}
               initialFocus
             />
-            <div className="p-3 border-t border-border w-fit text-center">
-              <TimePicker12 setDate={setStartTime} date={startTime} />
-              <TimePicker12 setDate={setEndTime} date={endTime} noLabel />
+            {/* <TimePicker12 setDate={setStartTime} date={startTime} />
+              <TimePicker12 setDate={setEndTime} date={endTime} noLabel /> */}
+            <div className="p-3 border-t border-border w-fit flex flex-row gap-3">
+              <div
+                className={cn(
+                  "flex flex-col text-left justify-around w-full text-sm text-muted-foreground"
+                )}
+              >
+                <p>
+                  Start
+                </p>
+                <p>
+                  End
+                </p>
+              </div>
+              <div>
+                <Input type="time"
+                  value={format(startTime, "HH:mm")}
+                  onChange={e => {
+                    let [hours, minutes] = e.target.value.split(":");
+
+                    setStartTime(new Date(startTime.setHours(hours, minutes)));
+                  }}
+                />
+
+                <Input type="time"
+                  value={format(endTime, "HH:mm")}
+                  onChange={e => {
+                    let [hours, minutes] = e.target.value.split(":");
+                    setEndTime(new Date(endTime.setHours(hours, minutes)))
+                  }}
+                />
+              </div>
             </div>
           </PopoverContent>
         </Popover>

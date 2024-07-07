@@ -235,15 +235,15 @@ export default function Home() {
 
 
 
-      <div div className="min-h-screen bg-base-300 flex flex-col items-center justify-center bg-opacity-0" >
+      <div div className="min-h-screen flex flex-col items-center justify-center" >
         <motion.div
-          className="items-center flex flex-col text-center relative"
+          className="items-center flex flex-col text-center relative px-[15vw] sm:p-0"
         >
           <div className="relative max-w-xl mb-5 z-[10]" data-scroll data-scroll-speed=".3">
             <h1 className="mb-5 text-5xl font-bold text-white md:text-7xl">
               Drive Change.
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#ff0f7b] to-[#f89b29]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#ff0f7b] to-[#f89b29]  xs:text-5xl md:text-7xl text-4xl">
                 Effortlessly
               </span>
             </h1>

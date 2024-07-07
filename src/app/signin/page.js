@@ -83,15 +83,6 @@ export default function SignIn() {
             return;
           }
 
-
-          buttonRef.current.childNodes[0].nodeValue = 'Signing in...';
-          // create span element to show loading spinner
-          const spinner = document.createElement('span');
-          spinner.className = 'loading'
-
-          buttonRef.current.appendChild(spinner);
-          buttonRef.current.classList.add('disabled');
-
           const result = await signIn('credentials', {
             redirect: true,
             email,
@@ -115,8 +106,11 @@ export default function SignIn() {
           <Button
             type='submit'
             className="btn btn-primary"
+            disabled={loading}
             ref={buttonRef}
-          >Sign In</Button>
+          >
+            {loading ? 'Signing In...' : 'Sign In'}
+          </Button>
         </form>
         {error && (
           <div className="absolute bottom-4 right-4 z-50 rounded-lg p-4">
@@ -167,7 +161,11 @@ export default function SignIn() {
 
                   console.log(result)
                 }}
-              >Submit</Button>
+
+                disabled={loading}
+              >
+                {loading ? 'Loading...' : 'Sign In'}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

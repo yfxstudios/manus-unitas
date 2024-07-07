@@ -364,7 +364,6 @@ export default function Dashboard(props) {
                   </DialogContent>
                 </Dialog>
               ) : (
-                // TODO: FIX DRAWER
                 <Sheet open={open} onOpenChange={setOpen}>
                   <SheetTrigger asChild>
                     <Button variant="outline">New Event</Button>

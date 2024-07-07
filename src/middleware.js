@@ -71,4 +71,4 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/settings", "/profile-page"] };
+export const config = { matcher: ["/dashboard", "/people", "/settings", "/analytics", "/settings/profile", "/settings/organization", "/settings/security", "/settings/notifications", "/settings/billing"] };

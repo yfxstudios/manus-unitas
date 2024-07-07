@@ -21,8 +21,7 @@ import {
 } from "@/components/ui/input-otp";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import { CheckCircle, CircleCheck, CircleCheckBig, Loader2 } from "lucide-react";
-import { set } from "mongoose";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -73,7 +72,7 @@ const Security = props => {
           alongside your password when you sign in.
         </p>
         {pageLoaded && _2faStatus === "disabled" && (
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={open} onOpenChange={setOpen}         >
             <DialogTrigger asChild>
               <Button
                 onClick={async () => {
@@ -177,6 +176,7 @@ const Security = props => {
                 onClick={() => {
                   setDisableDialogOpen(true);
                 }}
+                variant="outline"
               >
                 Disable Two-Factor Authentication
               </Button>

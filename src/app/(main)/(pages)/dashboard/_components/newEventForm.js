@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TimePicker12 } from "@/components/ui/time-picker-12h";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 const schema = z.object({
   title: z
@@ -49,6 +50,8 @@ const schema = z.object({
 
 const NewEventForm = props => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const form = useForm({
     mode: "onChange",
@@ -158,7 +161,49 @@ const NewEventForm = props => {
                       disabled={d => d < new Date().setHours(0, 0, 0, 0)}
                       initialFocus
                     />
-                    <div className="p-3 border-t border-border w-fit text-center">
+                    <div className="p-3 border-t border-border w-fit flex flex-row gap-3">
+                      <div
+                        className={cn(
+                          "flex flex-col text-left justify-around w-full text-sm text-muted-foreground"
+                        )}
+                      >
+                        <p>
+                          Start
+                        </p>
+                        <p>
+                          End
+                        </p>
+                      </div>
+                      <div>
+                        <Input type="time"
+                          value={format(field.value.start, "HH:mm")}
+                          onChange={e => {
+                            let [hours, minutes] = e.target.value.split(":");
+
+                            field.onChange({
+                              start: new Date(
+                                field.value.start.setHours(hours, minutes)
+                              ),
+                              end: field.value.end,
+                            });
+                          }}
+                        />
+
+                        <Input type="time"
+                          value={format(field.value.end, "HH:mm")}
+                          onChange={e => {
+                            let [hours, minutes] = e.target.value.split(":");
+                            field.onChange({
+                              start: field.value.start,
+                              end: new Date(
+                                field.value.end.setHours(hours, minutes)
+                              ),
+                            });
+                          }}
+                        />
+
+                      </div>
+                      {/* 
                       <TimePicker12
                         setDate={newTime => {
                           field.onChange({
@@ -172,8 +217,8 @@ const NewEventForm = props => {
                           });
                         }}
                         date={field.value.start}
-                      />
-                      <TimePicker12
+                      /> */}
+                      {/* <TimePicker12
                         setDate={newTime => {
                           field.onChange({
                             start: field.value.start,
@@ -187,7 +232,7 @@ const NewEventForm = props => {
                         }}
                         date={field.value.end}
                         noLabel
-                      />
+                      /> */}
                     </div>
                   </PopoverContent>
                 </Popover>
