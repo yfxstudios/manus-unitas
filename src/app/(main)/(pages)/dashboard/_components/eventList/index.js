@@ -19,10 +19,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { longDate } from "@/lib/util/date";
-import { standardTime } from "@/lib/util/time";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Check, UserRound, UserRoundCheck, UserRoundX, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
 
 
 const Component = ({ setSelectedEvent, selectedEvent, admin }) => {
@@ -113,10 +113,10 @@ const Component = ({ setSelectedEvent, selectedEvent, admin }) => {
                 <CardDescription>{event.description}</CardDescription>
               </CardHeader>
               <CardContent className="text-wrap break-words hyphens-auto">
-                <p>{longDate(event.date)}</p>
+                <p>{format(event.startTime, "PPP")}</p>
                 <p>
-                  {standardTime(event.startTime)} to{" "}
-                  {standardTime(event.endTime)}
+                  {format(event.startTime, "hh:mm aaa")}{" to "}
+                  {format(event.endTime, "hh:mm aaa")}
                 </p>
                 <div className="flex xs:hidden">
                   {event.accepted.includes(user._id) && (
@@ -217,10 +217,10 @@ const Component = ({ setSelectedEvent, selectedEvent, admin }) => {
                   <CardDescription>{event.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-wrap break-words hyphens-auto">
-                  <p>{longDate(event.date)}</p>
+                  <p>{format(event.startTime, "PPP")}</p>
                   <p>
-                    {standardTime(event.startTime)} to{" "}
-                    {standardTime(event.endTime)}
+                    {format(event.startTime, "hh:mm aaa")}{" to "}
+                    {format(event.endTime, "hh:mm aaa")}
                   </p>
                   <div className="flex xs:hidden">
                     {event.accepted.includes(user._id) && (

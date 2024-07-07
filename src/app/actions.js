@@ -171,15 +171,21 @@ export async function handleDecline(id) {
 export async function incrementTime(userId, eventId, incrementTime) {
   const event = await Events.findById(eventId);
 
+  console.log(event.endTime, event.startTime)
+
   const endTime = {
-    hours: event.endTime.split(":")[0],
-    minutes: event.endTime.split(":")[1],
+    hours: parseInt(format(event.endTime, "H")),
+    minutes: parseInt(format(event.endTime, "m")),
   };
 
+
   const startTime = {
-    hours: event.startTime.split(":")[0],
-    minutes: event.startTime.split(":")[1],
+    hours: parseInt(format(event.startTime, "H")),
+    minutes: parseInt(format(event.startTime, "m")),
   };
+
+
+
 
   event.endTime = new Date(0).setHours(endTime.hours, endTime.minutes);
   event.startTime = new Date(0).setHours(startTime.hours, startTime.minutes);
@@ -214,56 +220,11 @@ export const updateEvent = async (id, data, volunteers) => {
 
 
 
+
   const users = await Users.find({ _id: { $in: volunteers } });
 
 
   const emailList = users.map(user => user.email);
-
-  let startTime
-
-  startTime = event.startTime.split(':'); // convert to array
-
-  // fetch
-  var hours = Number(startTime[0]);
-  var minutes = Number(startTime[1]);
-
-  // calculate
-  var startTimeValue;
-
-  if (hours > 0 && hours <= 12) {
-    startTimeValue = "" + hours;
-  } else if (hours > 12) {
-    startTimeValue = "" + (hours - 12);
-  } else if (hours == 0) {
-    startTimeValue = "12";
-  }
-
-  startTimeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-  startTimeValue += (hours >= 12) ? " P.M." : " A.M.";
-
-  let endTime
-
-  endTime = event.endTime.split(':'); // convert to array
-
-  // fetch
-  var hours = Number(endTime[0]);
-  var minutes = Number(endTime[1]);
-
-  // calculate
-  var endTimeValue;
-
-  if (hours > 0 && hours <= 12) {
-    endTimeValue = "" + hours;
-  } else if (hours > 12) {
-    endTimeValue = "" + (hours - 12);
-  } else if (hours == 0) {
-    endTimeValue = "12";
-  }
-
-  endTimeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-  endTimeValue += (hours >= 12) ? " P.M." : " A.M.";
-
-
 
 
   console.log("ROLES", data)
@@ -749,7 +710,7 @@ export const updateEvent = async (id, data, volunteers) => {
                                           
                                             <br>
                                           <span>
-                                            ${format(new Date(event.date), "MMMM do")} from ${startTimeValue} to ${endTimeValue}
+                                            ${format(new Date(event.startTime), "MMMM do")} from ${format(new Date(event.startTime), "h:mm aaa")} to ${format(new Date(event.endTime), "h:mm aaa")}
                                           </span>
                                           </td>
                                         </tr>
@@ -757,6 +718,8 @@ export const updateEvent = async (id, data, volunteers) => {
                                     </td>
                                   </tr>
                                 </table>
+
+
                                 <a href="https://manusunitas.com/dashboard?id=${event._id}" style="color: #FFF" class="button button--green">View Event</a>
                                 <p class="sub"><a href="https://manusunitas.com/settings/notifications">Manage notifications</a></p>
                               </div>

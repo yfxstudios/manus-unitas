@@ -12,15 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FancyMultiSelect from "@/components/ui/multi-select";
-import { TimePeriodSelect } from "@/components/ui/period-select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TimePicker12 } from "@/components/ui/time-picker-12h";
-import { TimePickerInput } from "@/components/ui/time-picker-input";
-import { longDate } from "@/lib/util/date";
-import { standardTime } from "@/lib/util/time";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { add, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import React from "react";
 
@@ -39,11 +35,22 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
   const [description, setDescription] = React.useState(event.description);
 
 
-  const [date, setDate] = React.useState(new Date(event.date));
-
 
   const [startTime, setStartTime] = React.useState(event.startTime);
+
   const [endTime, setEndTime] = React.useState(event.endTime);
+
+  const handleSelect = (newDay) => {
+    if (!newDay) return;
+    if (!startTime) {
+      setStartTime(newDay);
+      return;
+    }
+    const diff = newDay.getTime() - startTime.getTime();
+    const diffInDays = diff / (1000 * 60 * 60 * 24);
+    const newDateFull = add(startTime, { days: Math.ceil(diffInDays) });
+    setStartTime(newDateFull);
+  };
 
 
   const { data, isFetched } = useQuery({
@@ -115,12 +122,14 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
   finalCombined.forEach(item => {
     item.subRoles.forEach(subRole => {
       subRole.volunteers.forEach(volunteer => {
-        volunteers.push(volunteer._id);
+        volunteers.push(volunteer);
       });
     });
   });
 
   volunteers = [...new Set(volunteers)];
+
+  console.log(volunteers)
 
 
   return (
@@ -138,39 +147,40 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="text-wrap break-words hyphens-auto text-sm xs:text-base">
-        {/* <Popover>
+        <Popover>
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
               className={cn(
-                "w-[280px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
+                "min-w-[280px] justify-start text-left font-normal",
+                !startTime && "text-muted-foreground"
               )}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
+              <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
+              {startTime && endTime
+                ? `${format(startTime, `PPP h:mm a`)} - ${format(endTime, "h:mm a")}`
+                : "Select Date & Time"}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
+          <PopoverContent className="w-auto">
             <Calendar
               mode="single"
-              selected={date}
-              onSelect={setDate}
+              selected={startTime}
+              onSelect={(d) => handleSelect(d)}
+              disabled={(d) => d < new Date().setHours(0, 0, 0, 0)}
               initialFocus
             />
+            <div className="p-3 border-t border-border w-fit text-center">
+              <TimePicker12 setDate={setStartTime} date={startTime} />
+              <TimePicker12 setDate={setEndTime} date={endTime} noLabel />
+            </div>
           </PopoverContent>
-        </Popover> */}
-
-        <div className="flex items-end gap-2">
-          <TimePicker12 date={date} setDate={setDate} />
-        </div>
-        <p>
-          {standardTime(event.startTime)} to {standardTime(event.endTime)}
-        </p>
-        <br />
-        <div className="flex flex-col space-y-4">
+        </Popover>
+        <div className="flex flex-col">
           {data.map(role => (
-            <Card key={role._id}>
+            <Card key={role._id}
+              className="mt-4"
+            >
               <CardHeader className="pb-0">
                 <CardTitle>{role.name}</CardTitle>
               </CardHeader>
@@ -223,10 +233,16 @@ const EditEvent = ({ event, setEditing, users, mutate }) => {
           <Button variant="outline" onClick={() => setEditing(false)}>
             Exit Edit Mode
           </Button>
+          {/* TODO: ADD CONFIRMATION DIALOG */}
+
           <Button
             onClick={() => {
               updateEvent(event._id, {
                 $set: {
+                  title: title,
+                  description: description,
+                  startTime: startTime,
+                  endTime: endTime,
                   roles: finalCombined,
                   volunteers: volunteers,
                 }

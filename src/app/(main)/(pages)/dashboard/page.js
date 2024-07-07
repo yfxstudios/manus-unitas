@@ -98,13 +98,14 @@ export default async function page() {
     "use server";
     console.log("Create event handler");
 
+    console.log(e.date.end);
+
 
     const event = new Events({
       title: e.title,
       description: e.description,
-      date: e.date,
-      startTime: e.startTime,
-      endTime: e.endTime,
+      startTime: new Date(e.date.start),
+      endTime: new Date(e.date.end),
       organizationId: user.organizationId,
       volunteers: volunteers,
       roles: roles,
@@ -120,49 +121,6 @@ export default async function page() {
     const users = Users.filter(user => user.notifications.newEvents);
 
 
-    let startTime
-
-    startTime = event.startTime.split(':'); // convert to array
-
-    // fetch
-    var hours = Number(startTime[0]);
-    var minutes = Number(startTime[1]);
-
-    // calculate
-    var startTimeValue;
-
-    if (hours > 0 && hours <= 12) {
-      startTimeValue = "" + hours;
-    } else if (hours > 12) {
-      startTimeValue = "" + (hours - 12);
-    } else if (hours == 0) {
-      startTimeValue = "12";
-    }
-
-    startTimeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-    startTimeValue += (hours >= 12) ? " P.M." : " A.M.";
-
-    let endTime
-
-    endTime = event.endTime.split(':'); // convert to array
-
-    // fetch
-    var hours = Number(endTime[0]);
-    var minutes = Number(endTime[1]);
-
-    // calculate
-    var endTimeValue;
-
-    if (hours > 0 && hours <= 12) {
-      endTimeValue = "" + hours;
-    } else if (hours > 12) {
-      endTimeValue = "" + (hours - 12);
-    } else if (hours == 0) {
-      endTimeValue = "12";
-    }
-
-    endTimeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-    endTimeValue += (hours >= 12) ? " P.M." : " A.M.";
 
 
 
@@ -650,7 +608,7 @@ export default async function page() {
                                           
                                             <br>
                                           <span>
-                                            ${format(new Date(event.date), "MMMM do")} from ${startTimeValue} to ${endTimeValue}
+                                            ${format(new Date(event.endTime), "MMMM do")} from ${format(new Date(event.startTime), "h:mm aaa")} to ${format(new Date(event.endTime), "h:mm aaa")}
                                           </span>
                                           </td>
                                         </tr>

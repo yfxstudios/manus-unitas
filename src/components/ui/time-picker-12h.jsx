@@ -5,8 +5,10 @@ import * as React from "react";
 import { TimePeriodSelect } from "./period-select";
 import { TimePickerInput } from "./time-picker-input";
 
-export function TimePicker12({ date, setDate }) {
-	const [period, setPeriod] = React.useState("PM");
+export function TimePicker12({ date, setDate, noLabel }) {
+	const [period, setPeriod] = React.useState(
+		date.getHours() >= 12 ? "PM" : "AM"
+	);
 
 	const minuteRef = React.useRef(null);
 	const hourRef = React.useRef(null);
@@ -16,9 +18,11 @@ export function TimePicker12({ date, setDate }) {
 	return (
 		<div className="flex items-end gap-2">
 			<div className="grid gap-1 text-center">
-				<Label htmlFor="hours" className="text-xs">
-					Hours
-				</Label>
+				{!noLabel && (
+					<Label htmlFor="hours" className="text-xs">
+						Hours
+					</Label>
+				)}
 				<TimePickerInput
 					picker="12hours"
 					period={period}
@@ -26,12 +30,15 @@ export function TimePicker12({ date, setDate }) {
 					setDate={setDate}
 					ref={hourRef}
 					onRightFocus={() => minuteRef.current?.focus()}
+					
 				/>
 			</div>
 			<div className="grid gap-1 text-center">
-				<Label htmlFor="minutes" className="text-xs">
-					Minutes
-				</Label>
+				{!noLabel && (
+					<Label htmlFor="minutes" className="text-xs">
+						Minutes
+					</Label>
+				)}
 				<TimePickerInput
 					picker="minutes"
 					id="minutes12"
@@ -43,23 +50,6 @@ export function TimePicker12({ date, setDate }) {
 				/>
 			</div>
 			<div className="grid gap-1 text-center">
-				<Label htmlFor="seconds" className="text-xs">
-					Seconds
-				</Label>
-				<TimePickerInput
-					picker="seconds"
-					id="seconds12"
-					date={date}
-					setDate={setDate}
-					ref={secondRef}
-					onLeftFocus={() => minuteRef.current?.focus()}
-					onRightFocus={() => periodRef.current?.focus()}
-				/>
-			</div>
-			<div className="grid gap-1 text-center">
-				<Label htmlFor="period" className="text-xs">
-					Period
-				</Label>
 				<TimePeriodSelect
 					period={period}
 					setPeriod={setPeriod}

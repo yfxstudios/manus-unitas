@@ -17,13 +17,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { longDate } from "@/lib/util/date";
-import { standardTime } from "@/lib/util/time";
 import { cn } from "@/lib/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import EditEvent from "../editEvent";
+import { Badge } from "@/components/ui/badge";
 
 const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
   const [editing, setEditing] = useState(false)
@@ -205,10 +205,10 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
                 <CardDescription>{data.event.description}</CardDescription>
               </CardHeader>
               <CardContent className="text-wrap break-words hyphens-auto text-sm xs:text-base">
-                <p>{longDate(data.event.date)}</p>
+                <p>{format(data.event.startTime, "PPP")}</p>
                 <p>
-                  {standardTime(data.event.startTime)} to{" "}
-                  {standardTime(data.event.endTime)}
+                  {format(data.event.startTime, "hh:mm aaa")} to{" "}
+                  {format(data.event.endTime, "hh:mm aaa")}
                 </p>
                 <br />
                 <div className="flex flex-col space-y-4">
@@ -272,7 +272,7 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
                                                 </TooltipContent>
                                               </Tooltip>
                                             </TooltipProvider>
-                                            <p>{volunteer.first_name} {volunteer.last_name}</p>
+                                            <p>{volunteer.first_name} {volunteer.last_name}</p>  {volunteer._id === user._id && <Badge variant="outline">YOU</Badge>}
                                           </div>
                                         );
                                       })}
@@ -291,22 +291,26 @@ const SelectedEvent = ({ selectedEvent, setSelectedEvent, deleteEvent }) => {
               </CardContent>
               <CardFooter className="flex flex-row justify-end">
                 <div className="flex flex-row flex-wrap gap-4">
-                  <Button
-                    disabled={data.event.accepted.includes(user._id)}
-                    onClick={e => {
-                      onAccept(data.event._id);
-                    }}
-                  >
-                    Accept Position
-                  </Button>
-                  <Button
-                    disabled={data.event.rejected.includes(user._id)}
-                    onClick={e => {
-                      onDecline(data.event._id);
-                    }}
-                  >
-                    Decline Position
-                  </Button>
+                  {data.event.volunteers.includes(user._id) && (
+                    <>
+                      <Button
+                        disabled={data.event.accepted.includes(user._id)}
+                        onClick={e => {
+                          onAccept(data.event._id);
+                        }}
+                      >
+                        Accept Position
+                      </Button>
+                      <Button
+                        disabled={data.event.rejected.includes(user._id)}
+                        onClick={e => {
+                          onDecline(data.event._id);
+                        }}
+                      >
+                        Decline Position
+                      </Button>
+                    </>
+                  )}
                   {user.admin && (
                     <>
                       <Button onClick={e => {

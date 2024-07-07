@@ -10,14 +10,13 @@ const { Schema } = mongoose
 
 const eventSchema = new Schema({
   title: String,
-  date: String,
-  startTime: String,
-  endTime: String,
+  startTime: Date,
+  endTime: Date,
   description: String,
   volunteers: [
     {
-        type: mongoose.Types.ObjectId,
-        ref: Users,
+      type: mongoose.Types.ObjectId,
+      ref: Users,
     }
   ],
   roles: [
