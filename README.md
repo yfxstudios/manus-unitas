@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Manus Unitas
+#### Manus Unitas is a volunteer management software designed to help nonprofits streamline their volunteer programs and drive social impact.
 
 ## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+At the login page, click “Continue with Demo” and either create an account for yourself in the people page (check your spam) or play around with the demo account.
+- - -
+## Features
+| Status | Feature                                             |
+|--------|-----------------------------------------------------|
+| ✅      | NextAuth Login                                      |
+| ✅      | Create events                                       |
+| ✅      | Edit/delete events                                  |
+| ✅      | Event role assignments to individual users          |
+| ✅      | Subaccount management system                        |
+| ✅      | Mongo database integration                          |
+| ✅      | Email notifications and reminders                   |
+| ✅      | Analytics                                           |
+| ✅      | Two-Factor authentication w/ authenticator app      |
+| ✅      | User onboarding/provision account creation by admin |
+- - -
+## Known Issues
+- [ ] Emails filter to spam
+- - -
+## Help & Questions
+Contact [@MatthewYakligian](https://hackclub.slack.com/team/U0823L8GY02 "slack://user?team=T0266FRGM&id=U0823L8GY02") on Slack with any questions. Feedback would be much appreciated.
