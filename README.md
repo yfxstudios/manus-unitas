@@ -7,16 +7,17 @@ At the login page, click “Continue with Demo” and either create an account f
 ## Features
 | Status | Feature                                             |
 |--------|-----------------------------------------------------|
-| ✅      | NextAuth Login                                      |
-| ✅      | Create events                                       |
-| ✅      | Edit/delete events                                  |
-| ✅      | Event role assignments to individual users          |
-| ✅      | Subaccount management system                        |
-| ✅      | Mongo database integration                          |
-| ✅      | Email notifications and reminders                   |
-| ✅      | Analytics                                           |
-| ✅      | Two-Factor authentication w/ authenticator app      |
-| ✅      | User onboarding/provision account creation by admin |
+| ✅ | NextAuth Login                                      |
+| ✅ | Stripe checkout                                     |
+| ✅ | Create events                                       |
+| ✅ | Edit/delete events                                  |
+| ✅ | Event role assignments to individual users          |
+| ✅ | Subaccount management system                        |
+| ✅ | Mongo database integration                          |
+| ✅ | Email notifications and reminders                   |
+| ✅ | Analytics                                           |
+| ✅ | Two-Factor authentication w/ authenticator app      |
+| ✅ | User onboarding/provision account creation by admin |
 - - -
 ## Known Issues
 - [ ] Emails filter to spam
